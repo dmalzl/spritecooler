@@ -1,6 +1,5 @@
 # spritecooler
-
-Porting SPRITE-seq analysis to the 21st century.
+a cooler way to analyse your SPRITE-seq data
 
 ## Introduction
 spritecooler is a nextflow pipeline for processing SPRITE-seq data aligned with the 4DN guidelines.
