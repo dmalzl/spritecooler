@@ -39,6 +39,13 @@ class Main {
 
             --outputDir      Directory name to save results to. (default: 'results')
 
+            --minClusterSize minimum number of reads a SPRITE cluster must have to be included in the analysis
+
+            --maxClusterSize maximum number of reads a SPRITE cluster is allowed to have to be included in the analysis
+            
+            --mergeChunks    number of chunks each dimension of the contact matrix is split into for merging cluster-based coolers
+                             Note this is the square root of the actual number of chunks e.g. setting to 10 will result in 100 chunks
+
             --resolutions    comma-separated list of resolutions in bp to compute in addition to the default resolutions
     			                   default resolutions are 5000,10000,25000,50000,100000,250000,500000,1000000 and resolutions
     			                   specified via this parameter will be added to this list
