@@ -1,0 +1,3 @@
+pairs and cooler generation still need to be chunked (i.e. parameters missing also for merge chunks)
+make merger for multiple replicates of same sample
+modify comotate to have subcommands for combining and annotating
