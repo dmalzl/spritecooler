@@ -19,7 +19,7 @@ if ( params.genome && params.genomes && !params.igenomes_ignore ) {
 
 // Check input path parameters to see if they exist
 checkPathParamList = [
-    params.input,
+    params.samples,
     params.barcodes,
     params.fasta,
     params.chromSizes,
