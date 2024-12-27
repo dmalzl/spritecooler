@@ -14,8 +14,8 @@ workflow EXTRACT_BARCODES {
     EXTRACT_BCS ( 
         ch_trim_fastq,
         barcodes,
-        r1Layout,
-        r2Layout,
+        r1layout,
+        r2layout,
         mismatch
     )
 
