@@ -164,14 +164,4 @@ workflow SPRITECOOLER {
     )
     .alignments
     .set { ch_aligned }
-
-    // implement bam stats like nf-core here
-    // as subworkflow
-
-    MAKE_PAIRS ( ch_aligned )
-    .pairs
-    .set { ch_pairs }
-
-    MAKE_COOLER ( ch_pairs )
-
 }
