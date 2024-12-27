@@ -140,6 +140,7 @@ class SpriteCooler {
             log.error "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
                 "  Read layouts not fully specified. Please make sure both layouts have been specified.\n" +
                 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            System.exit(1)
         }
         Set r1Barcodes = params.r1Layout.tokenize('|')
         Set r2Barcodes = params.r2Layout.tokenize('|')
@@ -148,11 +149,9 @@ class SpriteCooler {
 
     private static Set<String> getAvailableBarcodeCategories(barcodes) {
         def file = new File(barcodes)
-        def rows = file
-            .readLines()
-            .tokenize('\t') 
+        def rows = file.readLines()
 
-        Set bcCategories = rows.collect { it[0] }
+        Set bcCategories = rows.collect { it.tokenize('\t')[0] }
         return bcCategories.minus('SPACER')
     }
 
@@ -164,10 +163,11 @@ class SpriteCooler {
             log.error "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
                 "  Mismatches are not set\n" +
                 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            System.exit(1)
         }
         Set mismatchCategories = params.mismatch
-            .split(',')
-            .collect { it.split(':')[0] }
+            .tokenize(',')
+            .collect { it.tokenize(':')[0] }
         
         return mismatchCategories
     }
@@ -183,6 +183,7 @@ class SpriteCooler {
             log.error "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
                 "  Not all barcode categories from layout are present in the given barcode file.\n" +
                 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            System.exit(1)
         }
         
         def mismatchCategories = parseMismatch(params, log)
@@ -191,6 +192,7 @@ class SpriteCooler {
             log.error "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
                 "  Not all used barcode categories have a corresponding mismatch setting.\n" +
                 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            System.exit(1)
         }
     }
 
