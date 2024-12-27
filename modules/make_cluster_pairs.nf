@@ -9,7 +9,8 @@ process MAKE_CLUSTER_PAIRS {
     path index
 
     output:
-    tuple val(meta), path("pairs"), emit: pairs
+    tuple val(meta), path("pairs"),         emit: pairs
+    tuple val(meta), path("pairs/*stats*"), emit: stats
 
     shell:
     '''
