@@ -135,7 +135,7 @@ class SpriteCooler {
     //
     // check if layout is specified correctly and parse them
     //
-    private static void parseLayout(params, log) {
+    private static Set<String> parseLayout(params, log) {
         if (!params.r1Layout || !params.r2Layout) {
             log.error "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
                 "  Read layouts not fully specified. Please make sure both layouts have been specified.\n" +
@@ -159,7 +159,7 @@ class SpriteCooler {
     //
     // parser mismatch param
     //
-    private static parseMismatch(params, log) {
+    private static Set<String> parseMismatch(params, log) {
         if (!params.mismatch) {
             log.error "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
                 "  Mismatches are not set\n" +
