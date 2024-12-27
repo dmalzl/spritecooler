@@ -3,10 +3,10 @@ process MAKE_DPM_FASTA {
     tag "make_dpm_fasta"
 
     input:
-    path barcodes
+    path(barcodes)
 
     output:
-    path "*fasta", emit: fasta
+    path("*fasta"), emit: fasta
 
     shell:
     '''

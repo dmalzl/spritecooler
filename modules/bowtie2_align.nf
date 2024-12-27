@@ -4,7 +4,7 @@ process BOWTIE2_ALIGN {
 
     input:
     tuple val(meta), path(reads)
-    path index
+    path(index)
 
     output:
     tuple val(meta), path("*sam"), emit: alignments

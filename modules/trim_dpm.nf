@@ -4,7 +4,7 @@ process TRIM_DPM {
 
     input:
     tuple val(meta), path(reads)
-    path dpmfasta
+    path(dpmfasta)
 
     output:
     tuple val(meta), path("*bcextract.fq.gz"), emit: reads

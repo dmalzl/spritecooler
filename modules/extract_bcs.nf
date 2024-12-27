@@ -4,10 +4,10 @@ process EXTRACT_BCS {
 
     input:
     tuple val(meta), path(reads)
-    path barcodes
-    val layout1
-    val layout2
-    val mismatch
+    path(barcodes)
+    val(layout1)
+    val(layout2)
+    val(mismatch)
 
     output:
     tuple val(meta), path("*bcextract.fq.gz"), emit: reads
