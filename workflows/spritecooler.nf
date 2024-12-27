@@ -6,9 +6,9 @@
 SpriteCooler.checkParams( params, log )
 
 if ( params.genome && params.genomes && !params.igenomes_ignore ) {
-    igenomes_bowtie2    = SpriteCooler.getGenomeAttribute(params, 'bowtie2')
-    igenomes_fasta      = SpriteCooler.getGenomeAttribute(params, 'fasta')
-    igenomes_chromSizes = SpriteCooler.getGenomeAttribute(params, 'chromSizes')
+    igenomes_bowtie2    = SpriteCooler.getGenomeAttribute(params, 'bowtie2', log)
+    igenomes_fasta      = SpriteCooler.getGenomeAttribute(params, 'fasta', log)
+    igenomes_chromSizes = SpriteCooler.getGenomeAttribute(params, 'chromSizes', log)
 
 } else {
     igenomes_bowtie2 = ''
@@ -31,7 +31,7 @@ checkPathParamList = [
 for ( param in checkPathParamList ) { if (param) { file( param, checkIfExists: true ) } }
 
 if ( params.resolutions ) {
-    resolutions = WorkflowHicer.makeResolutionsUnique(
+    resolutions = SpriteCooler.makeResolutionsUnique(
         params.defaultResolutions + ',' + params.resolutions
     )
 
@@ -39,7 +39,7 @@ if ( params.resolutions ) {
     resolutions = params.defaultResolutions
 }
 
-resolutionsList = WorkflowHicer.makeResolutionList( resolutions )
+resolutionsList = SpriteCooler.makeResolutionList( resolutions )
 baseResolution = resolutionsList[0]
 
 // setting up for prepare genome subworkflow

@@ -42,7 +42,7 @@ class SpriteCooler {
     // Get attribute from genome config file e.g. fasta
     // raise error if attribute is not available for given genome
     //
-    public static String getGenomeAttribute(params, attribute) {
+    public static String getGenomeAttribute(params, attribute, log) {
         def val = ''
         if (!params.genomes[ params.genome ].containsKey( attribute )) {
             log.error "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
