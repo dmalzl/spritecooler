@@ -52,6 +52,7 @@ class SpriteCooler {
                 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
             System.exit(1)
         }
+        val = params.genomes[ params.genome ][ attribute ]
         return val
     }
 
@@ -118,7 +119,7 @@ class SpriteCooler {
     //
     private static void checkGenomeSettings(params, log) {
         if (!params.genome && !params.fasta) {
-            log.error "Neither genome nor fasta file are specified"
+            log.error " ERROR - Neither genome nor fasta file are specified"
             System.exit(1)
         }
 
@@ -137,9 +138,7 @@ class SpriteCooler {
     //
     private static Set<String> parseLayout(params, log) {
         if (!params.r1Layout || !params.r2Layout) {
-            log.error "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
-                "  Read layouts not fully specified. Please make sure both layouts have been specified.\n" +
-                "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            log.error " ERROR - Read layouts not fully specified. Please make sure both layouts have been specified"
             System.exit(1)
         }
         Set r1Barcodes = params.r1Layout.tokenize('|')
@@ -160,9 +159,7 @@ class SpriteCooler {
     //
     private static Set<String> parseMismatch(params, log) {
         if (!params.mismatch) {
-            log.error "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
-                "  Mismatches are not set\n" +
-                "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            log.error " ERROR - Mismatches are not set"
             System.exit(1)
         }
         Set mismatchCategories = params.mismatch
@@ -180,18 +177,14 @@ class SpriteCooler {
         def bcCategories = getAvailableBarcodeCategories(params.barcodes)
         def bcintersection = layoutCategories.intersect(bcCategories)
         if (!layoutCategories.equals(bcintersection)) {
-            log.error "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
-                "  Not all barcode categories from layout are present in the given barcode file.\n" +
-                "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            log.error " ERROR - Not all barcode categories from layout are present in the given barcode file"
             System.exit(1)
         }
         
         def mismatchCategories = parseMismatch(params, log)
         def mmintersection = mismatchCategories.intersect(layoutCategories)
         if (!mismatchCategories.equals(mmintersection)) {
-            log.error "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
-                "  Not all used barcode categories have a corresponding mismatch setting.\n" +
-                "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+            log.error " ERROR - Not all used barcode categories have a corresponding mismatch setting"
             System.exit(1)
         }
     }
