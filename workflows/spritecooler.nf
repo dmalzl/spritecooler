@@ -126,7 +126,7 @@ workflow SPRITECOOLER {
 
     } else {
         ch_genome = [:]
-        ch_genome.index     = file( dynamic_params.bowtie2Index ).getParent()
+        ch_genome.index     = file( dynamic_params.bowtie2Index )
         ch_genome.sizes     = file( dynamic_params.genomeSizes )
     }
     // concatenate fastqs of samples with multiple readfiles
