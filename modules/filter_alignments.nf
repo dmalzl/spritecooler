@@ -2,7 +2,7 @@ process FILTER_ALIGNMENTS {
 
     tag "$meta.id"
 
-    conda "conda/spritefridge.yml"
+    conda "${NXF_HOME}/assets/dmalzl/spritecooler/conda/spritefridge.yml"
 
     input:
     tuple val(meta), path(bam)

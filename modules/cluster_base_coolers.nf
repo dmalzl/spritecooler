@@ -2,6 +2,8 @@ process CLUSTER_BASE_COOLER {
 
     tag "$meta.id"
 
+    conda "${NXF_HOME}/assets/dmalzl/spritecooler/conda/spritefridge.yml"
+
     input:
     tuple val(meta), path(pairs)
     path chromsizes

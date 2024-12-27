@@ -2,7 +2,7 @@ process XML_TO_TSV {
 
       tag "xml2tsv"
 
-      conda "conda/spritefridge.yml"
+      conda "${NXF_HOME}/assets/dmalzl/spritecooler/conda/spritefridge.yml"
 
       input:
       file(chromSizeXML)

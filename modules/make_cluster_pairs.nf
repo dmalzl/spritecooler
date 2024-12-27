@@ -2,7 +2,7 @@ process MAKE_CLUSTER_PAIRS {
 
     tag "$meta.id"
 
-    conda "bioconda::bowtie2=2.5.4"
+    conda "${NXF_HOME}/assets/dmalzl/spritecooler/conda/spritefridge.yml"
 
     input:
     tuple val(meta), path(alignments)
