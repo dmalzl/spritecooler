@@ -16,7 +16,7 @@ workflow INPUT_CHECK {
 
 def create_fastq_channel(LinkedHashMap row) {
     def meta = [:]
-    meta.id = row.replicate
+    meta.id = row.sample + '_' + row.replicate
     meta.sample = row.sample
 
     // def genomicRead = row.genomic_read.toInterger()
