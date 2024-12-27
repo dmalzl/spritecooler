@@ -6,7 +6,7 @@ process MAKE_DPM_FASTA {
     path(barcodes)
 
     output:
-    path("*fasta"), emit: fasta
+    path("dpm.fasta"), emit: fasta
 
     shell:
     '''
