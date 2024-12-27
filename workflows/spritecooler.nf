@@ -103,7 +103,7 @@ include { BOWTIE2_ALIGN      } from '../modules/bowtie2_align.nf'
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 workflow SPRITECOOLER {
-    ch_input = file( params.input )
+    ch_input = file( params.samples )
 
     INPUT_CHECK ( ch_input )
         .reads

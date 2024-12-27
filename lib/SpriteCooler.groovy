@@ -84,7 +84,7 @@ class SpriteCooler {
         log.info ""
         log.info " parameters "
         log.info " ======================"
-        log.info " samplesheet              : ${params.input}"
+        log.info " samplesheet              : ${params.samples}"
         log.info " barcodes                 : ${params.barcodes}"
         log.info " r1Layout                 : ${params.r1Layout}"
         log.info " r2Layout                 : ${params.r2Layout}"
