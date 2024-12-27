@@ -1,4 +1,4 @@
-process EXTRACT_BARCODES {
+process EXTRACT_BCS {
 
     tag "$meta.id"
 

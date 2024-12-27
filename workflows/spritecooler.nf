@@ -92,11 +92,10 @@ include { INPUT_CHECK        } from '../subworkflows/input_check.nf'
 include { PREPARE_GENOME     } from '../subworkflows/prepare_genome.nf'
 include { CAT_FASTQ          } from '../modules/cat_fastq.nf'
 include { TRIM_GALORE        } from '../modules/trim_galore.nf'
-include { MAKE_DPM_FASTA     } from '../modules/make_dpm_fasta.nf'
-include { TRIM_DPM           } from '../modules/trim_dpm.nf'
+include { EXTRACT_BARCODES   } from '../subworkflows/extract_barcodes.nf'
 include { BOWTIE2_ALIGN      } from '../modules/bowtie2_align.nf'
-include { MAKE_PAIRS         } from '../subworklows/make_pairs.nf'
-include { MAKE_COOLER        } from '../subworkflow/make_cooler.nf'
+// include { MAKE_PAIRS         } from '../subworklows/make_pairs.nf'
+// include { MAKE_COOLER        } from '../subworkflow/make_cooler.nf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -109,8 +108,12 @@ workflow SPRITECOOLER {
     INPUT_CHECK ( ch_input )
         .reads
         .groupTuple(by: [0])
-        .map {
-            meta, fastq -> [ meta, fastq.flatten() ]
+        .branch {
+            meta, fastq ->
+                single  : fastq.size() == 1
+                    return [ meta, fastq.flatten() ]
+                multiple: fastq.size() > 1
+                    return [ meta, fastq.flatten() ]
         }
         .set { ch_fastq }
 
@@ -134,34 +137,17 @@ workflow SPRITECOOLER {
 
     // read QC
     TRIM_GALORE ( ch_cat_fastq )
-        .reads
-        .set { ch_trim_fastq }
 
-    EXTRACT_BARCODES ( 
-        ch_trim_fastq,
+    EXTRACT_BARCODES (
+        TRIM_GALORE.out.reads,
         params.barcodes,
-        params.r1Layout,
-        params.r2Layout,
+        params.r1layout,
+        params.r2layout,
         params.mismatch
     )
-    .reads
-    .set { ch_extract_fastq }
-
-    MAKE_DPM_FASTA ( params.barcodes )
-        .fasta
-        .set { ch_dpm_fasta }
-
-    TRIM_DPM ( 
-        ch_extract_fastq,
-        ch_dpm_fasta
-    )
-    .reads
-    .set { ch_dpm_fastq }
 
     BOWTIE2_ALIGN (
-        ch_dpm_fastq,
+        EXTRACT_BARCODES.out.reads,
         ch_genome.index
     )
-    .alignments
-    .set { ch_aligned }
 }
