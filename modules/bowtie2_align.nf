@@ -1,4 +1,4 @@
-process {
+process BOWTIE2_ALIGN {
 
     tag "$meta.id"
 

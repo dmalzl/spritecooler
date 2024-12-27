@@ -1,4 +1,4 @@
-process {
+process MAKE_DPM_FASTA {
 
     tag "make_dpm_fasta"
 

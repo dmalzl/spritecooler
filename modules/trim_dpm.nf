@@ -1,4 +1,4 @@
-process {
+process TRIM_DPM {
 
     tag "$meta.id"
 

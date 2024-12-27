@@ -1,20 +1,18 @@
-process MERGE_CLUSTER_COOLERS {
+process ANNOTATE_COOLERS {
 
     tag "$meta.id"
 
     input:
     tuple val(meta), path(coolers)
-    val nchunks
+    path clusterbed
 
     output:
     tuple val(meta), path("*.cool"), emit: cool
-
+    
     shell:
     '''
-    spritefridge combine \
+    spritefridge annotate \
         -i !{coolers} \
-        -o !{meta.id}.cool \
-        --nchunks !{nchunks} \
-        --floatcounts
+        -b !{clusterbed}
     '''
 }

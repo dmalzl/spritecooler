@@ -1,4 +1,4 @@
-process {
+process MAKE_CLUSTER_PAIRS {
 
     tag "$meta.id"
 
@@ -11,7 +11,7 @@ process {
 
     shell:
     '''
-    clusterpairs \
+    spritefridge pairs \
         -b !{alignments} \
         -o pairs/!{meta.id} \
         --separator '['

@@ -1,4 +1,4 @@
-process {
+process CLUSTER_BASE_COOLER {
 
     tag "$meta.id"
 
@@ -7,7 +7,7 @@ process {
     path chromsizes
     val resolution
     val genome
-    
+
     output:
     tuple val(meta), path("*base.cool"), emit: cools
 

@@ -1,4 +1,4 @@
-process {
+process EXTRACT_BARCODES {
 
     tag "$meta.id"
 
@@ -15,7 +15,7 @@ process {
 
     shell:
     '''
-    bcextract \
+    spritefridge extractbc \
         -r1 !{reads[0]} \
         -r2 !{reads[1]} \
         -bc !{barcodes} \
