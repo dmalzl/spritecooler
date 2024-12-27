@@ -159,7 +159,7 @@ class SpriteCooler {
     //
     // parser mismatch param
     //
-    private static parseMismatch(params) {
+    private static parseMismatch(params, log) {
         if (!params.mismatch) {
             log.error "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
                 "  Mismatches are not set\n" +
