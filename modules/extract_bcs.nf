@@ -21,9 +21,9 @@ process EXTRACT_BCS {
         -r1 !{reads[0]} \
         -r2 !{reads[1]} \
         -bc !{barcodes} \
-        -l1 !{layout1} \
-        -l2 !{layout2} \
-        -m !{mismatch} \
+        -l1 "!{layout1}" \
+        -l2 "!{layout2}" \
+        -m "!{mismatch}" \
         -o !{meta.id}.bcextract.fq.gz \
         -p !{task.cpus}
     '''
