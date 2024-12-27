@@ -82,7 +82,7 @@ class Main {
         checkConfigProvided(workflow, log)
 
         // Check input has been provided
-        if (!params.input) {
+        if (!params.samples) {
             log.error "Please provide an input samplesheet to the pipeline e.g. '--samples samplesheet.csv'"
             System.exit(1)
         }
