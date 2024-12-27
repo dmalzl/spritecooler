@@ -1,3 +1,5 @@
+import groovy.xml.XmlParser
+
 class SpriteCooler {
     // public methods
         // public methods
@@ -176,16 +178,16 @@ class SpriteCooler {
     private static void checkBarcodesSettings(params, log) {
         def layoutCategories = parseLayout(params, log)
         def bcCategories = getAvailableBarcodeCategories(params.barcodes)
-        def intersection = layoutCategories.intersect(bcCategories)
-        if (!layoutCategories.equals(intersection)) {
+        def bcintersection = layoutCategories.intersect(bcCategories)
+        if (!layoutCategories.equals(bcintersection)) {
             log.error "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
                 "  Not all barcode categories from layout are present in the given barcode file.\n" +
                 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         }
         
         def mismatchCategories = parseMismatch(params, log)
-        def intersection = mismatchCategories.intersect(layoutCategories)
-        if (!mismatchCategories.equals(intersection)) {
+        def mmintersection = mismatchCategories.intersect(layoutCategories)
+        if (!mismatchCategories.equals(mmintersection)) {
             log.error "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
                 "  Not all used barcode categories have a corresponding mismatch setting.\n" +
                 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
