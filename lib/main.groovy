@@ -18,11 +18,10 @@ class Main {
             --samples        Tab-delimited text file specifying the samples
                              to be processed. (default: 'samples.txt')
                              The following columns are required:
-                                - replicate: name of replicate
                                 - sample: name of the sample from which the replicate was taken (used to merge coolers)
+                                - replicate: name of replicate
                                 - fastq_1: Read file with first read mates (R1) in fastq(.gz) format
                                 - fastq_2: Read file with second read mates (R2) in fastq(.gz) format
-                                - genomic_read: indicates which of the reads contains the genomic sequences to align (either 1 or 2)
 
             --barcodes       Tab-delimited file containing barcodes to match when parsing the barcodes from the reads
                              needs to contain three columns in this order barcodecategory, barcodename, barcodesequence but without the header
