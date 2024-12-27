@@ -19,6 +19,6 @@ workflow ALIGN_READS {
     )
 
     emit:
-    bam = SAMTOOLS_SORT_INDEX.out.bam
+    bam = FILTER_ALIGNMENTS.out.bam
     stats = FILTER_ALIGNMENTS.out.stats
 }
