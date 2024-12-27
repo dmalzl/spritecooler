@@ -141,8 +141,8 @@ workflow SPRITECOOLER {
     EXTRACT_BARCODES (
         TRIM_GALORE.out.reads,
         params.barcodes,
-        params.r1layout,
-        params.r2layout,
+        params.r1Layout,
+        params.r2Layout,
         params.mismatch
     )
 
