@@ -23,7 +23,7 @@ workflow EXTRACT_BARCODES {
 
     TRIM_DPM ( 
         EXTRACT_BCS.out.reads,
-        MAKE_DPM_FASTA.fasta
+        MAKE_DPM_FASTA.out.fasta
     )
 
     emit:
