@@ -4,7 +4,7 @@ include { FILTER_ALIGNMENTS    } from '../modules/filter_alignments.nf'
 workflow ALIGN_READS {
     take:
     ch_dpm_fastq
-    bowtie2Index,
+    bowtie2Index
     minMapQ
 
     main:
