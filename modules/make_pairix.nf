@@ -2,6 +2,8 @@ process MAKE_PAIRIX {
 
     tag "$meta.id"
 
+    conda "conda/spritefridge.yml"
+
     input:
     tuple val(meta), path(pairs)
     path chromsizes

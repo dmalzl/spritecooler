@@ -2,6 +2,8 @@ process TRIM_GALORE {
 
     tag "$meta.id"
 
+    conda "bioconda::trim-galore=0.6.10"
+
     input:
     tuple val(meta), path(reads)
 

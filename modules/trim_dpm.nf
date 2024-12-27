@@ -2,6 +2,8 @@ process TRIM_DPM {
 
     tag "$meta.id"
 
+    conda "bioconda::cutadapt=5.0"
+
     input:
     tuple val(meta), path(reads)
     path(dpmfasta)

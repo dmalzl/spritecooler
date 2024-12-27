@@ -2,6 +2,8 @@ process EXTRACT_BCS {
 
     tag "$meta.id"
 
+    conda "conda/spritefridge.yml"
+
     input:
     tuple val(meta), path(reads)
     path(barcodes)

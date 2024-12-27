@@ -2,6 +2,8 @@ process FILTER_ALIGNMENTS {
 
     tag "$meta.id"
 
+    conda "conda/spritefridge.yml"
+
     input:
     tuple val(meta), path(bam)
     val(minq)

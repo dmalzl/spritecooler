@@ -2,6 +2,8 @@ process MERGE_CLUSTER_COOLERS {
 
     tag "$meta.id"
 
+    conda "conda/spritefridge.yml"
+
     input:
     tuple val(meta), path(coolers)
     val nchunks
