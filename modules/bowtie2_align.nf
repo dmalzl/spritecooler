@@ -7,7 +7,7 @@ process BOWTIE2_ALIGN {
     path(index)
 
     output:
-    tuple val(meta), path("*sam"), emit: alignments
+    tuple val(meta), path("*bam"), emit: bam
 
     shell:
     '''
@@ -15,7 +15,8 @@ process BOWTIE2_ALIGN {
         -p !{task.cpus} \
         --phred33 \
         -x !{index} \
-        -U !{reads}
+        -U !{reads} \
+    | samtools view -b > !{meta.id}.bam
     '''
 
 }

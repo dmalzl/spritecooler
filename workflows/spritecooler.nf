@@ -93,7 +93,7 @@ include { PREPARE_GENOME     } from '../subworkflows/prepare_genome.nf'
 include { CAT_FASTQ          } from '../modules/cat_fastq.nf'
 include { TRIM_GALORE        } from '../modules/trim_galore.nf'
 include { EXTRACT_BARCODES   } from '../subworkflows/extract_barcodes.nf'
-include { BOWTIE2_ALIGN      } from '../modules/bowtie2_align.nf'
+include { ALIGN_READS        } from '../subworkflows/align_reads.nf'
 // include { MAKE_PAIRS         } from '../subworklows/make_pairs.nf'
 // include { MAKE_COOLER        } from '../subworkflow/make_cooler.nf'
 
@@ -146,8 +146,13 @@ workflow SPRITECOOLER {
         params.mismatch
     )
 
-    BOWTIE2_ALIGN (
+    ALIGN_READS (
         EXTRACT_BARCODES.out.reads,
-        ch_genome.index
+        ch_genome.index,
+        params.mapq
     )
+
+    // MAKE_PAIRS (
+    //     ALIGN_READS.out.bam
+    // )
 }

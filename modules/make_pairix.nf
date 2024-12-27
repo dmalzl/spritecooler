@@ -7,7 +7,7 @@ process MAKE_PAIRIX {
     path chromsizes
 
     output:
-    tuple val(meta), path('*pairs.blksrt.gz*')
+    tuple val(meta), path('*pairs.blksrt.gz*'), emit: pairix
 
     shell:
     '''

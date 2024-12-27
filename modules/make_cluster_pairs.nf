@@ -7,7 +7,7 @@ process MAKE_CLUSTER_PAIRS {
     path index
 
     output:
-    tuple val(meta), path("pairs"), emit: alignments
+    tuple val(meta), path("pairs"), emit: pairs
 
     shell:
     '''

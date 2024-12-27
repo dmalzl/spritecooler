@@ -92,6 +92,7 @@ class SpriteCooler {
         log.info " minClusterSize           : ${params.minClusterSize}"
         log.info " maxClusterSize           : ${params.maxClusterSize}"
         log.info " mergeChunks              : ${params.mergeChunks}"
+        log.info " mapq                     : ${params.mapq}"
         log.info " Resolutions              : ${dynamic.resolutions}"
         log.info " baseResolution           : ${dynamic.baseResolution}"
         log.info " Genome                   : ${dynamic.genomeName}"
