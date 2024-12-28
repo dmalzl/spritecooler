@@ -94,7 +94,7 @@ include { CAT_FASTQ          } from '../modules/cat_fastq.nf'
 include { TRIMGALORE         } from '../modules/trimgalore.nf'
 include { EXTRACT_BARCODES   } from '../subworkflows/extract_barcodes.nf'
 include { ALIGN_FILTER_READS } from '../subworkflows/align_filter_reads.nf'
-include { MAKE_PAIRS         } from '../subworklows/make_pairs.nf'
+include { MAKE_PAIRS         } from '../subworkflows/make_pairs.nf'
 // include { MAKE_COOLER        } from '../subworkflow/make_cooler.nf'
 
 /*
