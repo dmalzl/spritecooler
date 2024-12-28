@@ -12,6 +12,7 @@ process MAKE_CLUSTER_PAIRS {
 
     output:
     tuple val(meta), path("pairs/*pairs"),  emit: pairs
+    tuple val(meta), path('pairs/*bed'),    emit: bed
     tuple val(meta), path("pairs/*stats*"), emit: stats
 
     shell:

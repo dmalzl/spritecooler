@@ -1,4 +1,6 @@
 include { MAKE_CLUSTER_PAIRS } from '../modules/make_pairs/make_cluster_pairs.nf'
+include { SORT_BED           } from '../modules/make_pairs/sort_bed.nf'
+include { CAT_BED            } from '../modules/make_pairs/cat_bed.nf'
 include { MAKE_PAIRIX        } from '../modules/make_pairs/make_pairix.nf'
 
 workflow MAKE_PAIRS {
@@ -19,12 +21,29 @@ workflow MAKE_PAIRS {
         .flatMap { SpriteCooler.makeChunks( it, 50 ) }
         .set { ch_chunked_pairs }
 
+    SORT_BED ( MAKE_CLUSTER_PAIRS.out.bed )
+
+    SORT_BED.out.bed
+        .map {
+            meta, bed ->
+            meta_new = [:]
+            meta_new.id = meta.sample
+            [ meta_new, bed ]
+        }
+        .groupTuple ( by: [0] )
+        .map {
+            meta, beds ->
+            [ meta, beds.flatten() ]
+        }
+        .set { ch_pairs_bed }
+
     MAKE_PAIRIX (
         ch_chunked_pairs,
         chromSizes
     )
 
     emit:
-    pairs = MAKE_PAIRIX.out.pairs
-    stats = MAKE_CLUSTER_PAIRS.out.stats
+    pairs   = MAKE_PAIRIX.out.pairs
+    bed     = ch_pairs_bed
+    stats   = MAKE_CLUSTER_PAIRS.out.stats
 }

@@ -5,5 +5,65 @@ include { ANNOTATE_CLUSTERS     } from '../modules/make_cooler/annotate_coolers.
 include { BALANCE_MCOOL         } from '../modules/make_cooler/balance_mcool.nf'
 
 workflow MAKE_COOLER {
+    take:
+    ch_chunked_pairs
+    ch_pairs_bed
+    baseResolution
+    resolutions
+    chromSizes
+    genomeName
+    mergeChunks
 
+    main:
+    CLUSTER_BASE_COOLERS (
+        ch_chunked_pairs,
+        chromsizes,
+        baseResolution,
+        genomeName
+    )
+
+    CLUSTER_BASE_COOLER.out.cools
+        .groupTuple ( by: [0] )
+        .set { ch_base_coolers }
+
+    MERGE_CLUSTER_COOLERS (
+        ch_base_coolers,
+        mergeChunks
+    )
+
+    MERGE_CLUSTER_COOLERS.out.cool
+        .map {
+            meta, bed ->
+            meta_new = [:]
+            meta_new.id = meta.sample
+            [ meta_new, bed ]
+        }
+        .groupTuple ( by: [0] )
+        .branch {
+            meta, cools ->
+                single  : cools.size() == 1
+                    return [ meta, cools.flatten() ]
+                multiple: cools.size() > 1
+                    return [ meta, cools.flatten() ]
+        }
+        .set { ch_branched_cools }
+
+    MERGE_REPLICATE_COOLERS ( ch_branched_cools.multiple )
+
+    MERGE_REPLICATE_COOLERS.out.cool
+        .mix ( ch_branched_cool.single )
+        .set { ch_base_cool }
+
+    ZOOMIFY_COOLER (
+        ch_base_cool,
+        resolutions
+    )
+
+    BALANCE_MCOOL ( ZOOMIFY_COOLER.out.mcool )
+
+    BALANCE_MCOOL.out.mcool
+        .join ( ch_pairs_bed )
+        .set { ch_mcool_bed }
+
+    ANNOTATE_CLUSTERS ( ch_mcool_bed )
 }

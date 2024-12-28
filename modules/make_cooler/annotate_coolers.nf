@@ -5,16 +5,16 @@ process ANNOTATE_COOLERS {
     conda "${NXF_HOME}/assets/dmalzl/spritecooler/conda/spritefridge.yml"
 
     input:
-    tuple val(meta), path(coolers)
-    path clusterbed
+    tuple val(meta), path(mcool)
+    tuple val(meta2), path(bed)
 
     output:
-    tuple val(meta), path("*.cool"), emit: cool
+    tuple val(meta), path("*.mcool"), emit: cool
     
     shell:
     '''
     spritefridge annotate \
-        -i !{coolers} \
-        -b !{clusterbed}
+        -i !{mool} \
+        -b !{bed}
     '''
 }

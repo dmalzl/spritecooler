@@ -23,5 +23,4 @@ process MAKE_PAIRIX {
             !{chromsizes}
     done
     '''
-
 }

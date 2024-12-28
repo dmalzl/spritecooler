@@ -95,7 +95,7 @@ include { TRIMGALORE         } from '../modules/trimgalore.nf'
 include { EXTRACT_BARCODES   } from '../subworkflows/extract_barcodes.nf'
 include { ALIGN_FILTER_READS } from '../subworkflows/align_filter_reads.nf'
 include { MAKE_PAIRS         } from '../subworkflows/make_pairs.nf'
-// include { MAKE_COOLER        } from '../subworkflow/make_cooler.nf'
+include { MAKE_COOLER        } from '../subworkflow/make_cooler.nf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -157,5 +157,15 @@ workflow SPRITECOOLER {
         ch_genome.sizes,
         params.minClusterSize,
         params.maxClusterSize
+    )
+
+    MAKE_COOLER (
+        MAKE_PAIRS.out.pairs,
+        MAKE_PAIRS.out.bed,
+        dynamic_params.baseResolution,
+        dynamic_params.resolutions,
+        ch_genome.sizes
+        dynamic_params.genomeName
+        params.mergeChunks
     )
 }

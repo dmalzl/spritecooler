@@ -83,8 +83,8 @@ class SpriteCooler {
     public static ArrayList makeChunks(tuple, chunkSize) {
         def meta    = tuple[0]
         def items   = tuple[1]
-        def chunks = []
-        def chunk = []
+        def chunks  = []
+        def chunk   = []
         for ( item in items ) {
             chunk.add( item )
             if ( chunk.size == chunkSize ) {

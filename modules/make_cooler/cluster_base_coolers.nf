@@ -15,11 +15,14 @@ process CLUSTER_BASE_COOLER {
 
     shell:
     '''
-    cooler cload pairs \
-        --assembly !{genome} \
-        -c1 2 -p1 3 -c2 4 -p2 5 \
-        !{chromsizes}:!{resolution} \
-        !{pairs} \
-        coolers/!{meta.id}_base.cool
+    for pairs in `ls *pairs.gz`;
+    do
+        cooler cload pairs \
+            --assembly !{genome} \
+            -c1 2 -p1 3 -c2 4 -p2 5 \
+            !{chromsizes}:!{resolution} \
+            !{pairs} \
+            coolers/!{meta.id}_base.cool
+    done
     '''
 }
