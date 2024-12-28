@@ -77,6 +77,27 @@ class SpriteCooler {
         return genomeSizeType
     }
 
+        //
+    // distributes meta to all items in a collection
+    //
+    public static ArrayList makeChunks(tuple, chunkSize) {
+        def meta    = tuple[0]
+        def items   = tuple[1]
+        def chunks = []
+        def chunk = []
+        for ( item in items ) {
+            chunk.add( item )
+            if ( chunk.size == chunkSize ) {
+                chunks.add( [ meta, chunk ] )
+                chunk = []
+            }
+        }
+        if ( chunk.size != 0 ) {
+            chunks.add( [ meta, chunk ] )
+        }
+        return chunks
+    }
+
     //
     // Print parameter summary log to screen
     //
@@ -103,15 +124,6 @@ class SpriteCooler {
         log.info " Output Directory         : ${params.outdir}"
         log.info " ======================"
         log.info ""
-    }
-
-    public static ArrayList distributeMetaSingle(tuple) {
-        return distributeMeta(tuple)
-    }
-
-    public static ArrayList distributeMetaPaired(tuple) {
-        def transformed_tuple = [ tuple[0], pairFiles(tuple[1]) ]
-        return distributeMeta(transformed_tuple)
     }
 
     // private methods
@@ -188,19 +200,6 @@ class SpriteCooler {
             log.error " ERROR - Not all used barcode categories have a corresponding mismatch setting"
             System.exit(1)
         }
-    }
-
-    //
-    // distributes meta to all items in a collection
-    //
-    private static ArrayList distributeMeta(tuple) {
-        def meta    = tuple[0]
-        def items   = tuple[1]
-        def distributed = []
-        for (item in items) {
-            distributed.add( [ meta, item ] )
-        }
-        return distributed
     }
 
     //

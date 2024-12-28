@@ -6,10 +6,12 @@ process MAKE_CLUSTER_PAIRS {
 
     input:
     tuple val(meta), path(alignments)
-    path index
+    val(minClusterSize)
+    val(maxClusterSize)
+
 
     output:
-    tuple val(meta), path("pairs"),         emit: pairs
+    tuple val(meta), path("pairs/*pairs"),  emit: pairs
     tuple val(meta), path("pairs/*stats*"), emit: stats
 
     shell:
@@ -17,6 +19,8 @@ process MAKE_CLUSTER_PAIRS {
     spritefridge pairs \
         -b !{alignments} \
         -o pairs/!{meta.id} \
+        -cl !{minClusterSize} \
+        -ch !{maxClusterSize} \
         --separator '['
     '''
 }

@@ -1,7 +1,7 @@
-include { BOWTIE2_ALIGN        } from '../modules/align_reads/bowtie2_align.nf'
-include { FILTER_ALIGNMENTS    } from '../modules/align_reads/filter_alignments.nf'
+include { BOWTIE2_ALIGN        } from '../modules/align_filter_reads/bowtie2_align.nf'
+include { FILTER_ALIGNMENTS    } from '../modules/align_filter_reads/filter_alignments.nf'
 
-workflow ALIGN_READS {
+workflow ALIGN_FILTER_READS {
     take:
     ch_dpm_fastq
     bowtie2Index

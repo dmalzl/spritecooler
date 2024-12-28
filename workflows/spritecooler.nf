@@ -93,8 +93,8 @@ include { PREPARE_GENOME     } from '../subworkflows/prepare_genome.nf'
 include { CAT_FASTQ          } from '../modules/cat_fastq.nf'
 include { TRIMGALORE         } from '../modules/trimgalore.nf'
 include { EXTRACT_BARCODES   } from '../subworkflows/extract_barcodes.nf'
-include { ALIGN_READS        } from '../subworkflows/align_reads.nf'
-// include { MAKE_PAIRS         } from '../subworklows/make_pairs.nf'
+include { ALIGN_FILTER_READS } from '../subworkflows/align_filter_reads.nf'
+include { MAKE_PAIRS         } from '../subworklows/make_pairs.nf'
 // include { MAKE_COOLER        } from '../subworkflow/make_cooler.nf'
 
 /*
@@ -146,13 +146,16 @@ workflow SPRITECOOLER {
         params.mismatch
     )
 
-    ALIGN_READS (
+    ALIGN_FILTER_READS (
         EXTRACT_BARCODES.out.reads,
         ch_genome.index,
         params.mapq
     )
 
-    // MAKE_PAIRS (
-    //     ALIGN_READS.out.bam
-    // )
+    MAKE_PAIRS (
+        ALIGN_READS.out.bam,
+        ch_genome.sizes,
+        params.minClusterSize,
+        params.maxClusterSize
+    )
 }
