@@ -3,4 +3,4 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - cutadapt=0.6.10
+  - trim-galore=0.6.10
