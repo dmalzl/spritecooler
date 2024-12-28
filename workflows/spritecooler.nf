@@ -91,7 +91,7 @@ SpriteCooler.paramsSummaryLog( params, dynamic_params, log )
 include { INPUT_CHECK        } from '../subworkflows/input_check.nf'
 include { PREPARE_GENOME     } from '../subworkflows/prepare_genome.nf'
 include { CAT_FASTQ          } from '../modules/cat_fastq.nf'
-include { TRIM_GALORE        } from '../modules/trim_galore.nf'
+include { TRIMGALORE         } from '../modules/trimgalore.nf'
 include { EXTRACT_BARCODES   } from '../subworkflows/extract_barcodes.nf'
 include { ALIGN_READS        } from '../subworkflows/align_reads.nf'
 // include { MAKE_PAIRS         } from '../subworklows/make_pairs.nf'
@@ -136,11 +136,11 @@ workflow SPRITECOOLER {
         .set { ch_cat_fastq }
 
     // read QC
-    TRIM_GALORE ( ch_cat_fastq )
+    TRIMGALORE ( ch_cat_fastq )
 
     EXTRACT_BARCODES (
-        TRIM_GALORE.out.reads,
-        file( params.barcodes ),
+        TRIMGALORE.out.reads,
+        file ( params.barcodes ),
         params.r1Layout,
         params.r2Layout,
         params.mismatch

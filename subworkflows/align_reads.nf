@@ -1,5 +1,5 @@
-include { BOWTIE2_ALIGN        } from '../modules/bowtie2_align.nf'
-include { FILTER_ALIGNMENTS    } from '../modules/filter_alignments.nf'
+include { BOWTIE2_ALIGN        } from '../modules/align_reads/bowtie2_align.nf'
+include { FILTER_ALIGNMENTS    } from '../modules/align_reads/filter_alignments.nf'
 
 workflow ALIGN_READS {
     take:
