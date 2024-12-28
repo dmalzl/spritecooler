@@ -2,7 +2,7 @@ process TRIMGALORE {
 
     tag "$meta.id"
 
-    conda "bioconda::trim-galore=0.6.10"
+    conda "${NXF_HOME}/assets/dmalzl/spritecooler/conda/trimgalore.yml"
 
     input:
     tuple val(meta), path(reads)

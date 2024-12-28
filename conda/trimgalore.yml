@@ -1,0 +1,6 @@
+name: trimgalore
+channels:
+  - bioconda
+  - defaults
+dependencies:
+  - cutadapt=0.6.10
