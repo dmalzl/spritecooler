@@ -2,7 +2,7 @@ process BOWTIE2_ALIGN {
 
     tag "$meta.id"
 
-    conda "bioconda::bowtie2=2.5.4 bioconda::samtools=1.21"
+    conda "${NXF_HOME}/assets/dmalzl/spritecooler/conda/align.yml"
 
     input:
     tuple val(meta), path(reads)

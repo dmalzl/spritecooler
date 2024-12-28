@@ -2,7 +2,7 @@ process TRIM_DPM {
 
     tag "$meta.id"
 
-    conda "bioconda::cutadapt=5.0"
+    conda "${NXF_HOME}/assets/dmalzl/spritecooler/conda/cutadapt.yml"
 
     input:
     tuple val(meta), path(reads)
