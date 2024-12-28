@@ -1,7 +1,7 @@
 
-include { GUNZIP as GUNZIP_FASTA } from '../modules/gunzip.nf'
-include { XML_TO_TSV             } from '../modules/xml_to_tsv.nf'
-include { BOWTIE2_BUILD_INDEX    } from '../modules/bowtie2_build_index.nf'
+include { GUNZIP as GUNZIP_FASTA } from '../modules/prepare_genome/gunzip.nf'
+include { XML_TO_TSV             } from '../modules/prepare_genome/xml_to_tsv.nf'
+include { BOWTIE2_BUILD_INDEX    } from '../modules/prepare_genome/bowtie2_build_index.nf'
 
 workflow PREPARE_GENOME {
     take:
