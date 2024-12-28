@@ -153,7 +153,7 @@ workflow SPRITECOOLER {
     )
 
     MAKE_PAIRS (
-        ALIGN_READS.out.bam,
+        ALIGN_FILTER_READS.out.bam,
         ch_genome.sizes,
         params.minClusterSize,
         params.maxClusterSize
