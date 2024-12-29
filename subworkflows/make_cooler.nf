@@ -17,7 +17,7 @@ workflow MAKE_COOLER {
     main:
     CLUSTER_BASE_COOLERS (
         ch_chunked_pairs,
-        chromsizes,
+        chromSizes,
         baseResolution,
         genomeName
     )
