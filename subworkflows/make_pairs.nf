@@ -1,6 +1,5 @@
 include { MAKE_CLUSTER_PAIRS } from '../modules/make_pairs/make_cluster_pairs.nf'
 include { SORT_BED           } from '../modules/make_pairs/sort_bed.nf'
-include { CAT_BED            } from '../modules/make_pairs/cat_bed.nf'
 include { MAKE_PAIRIX        } from '../modules/make_pairs/make_pairix.nf'
 
 workflow MAKE_PAIRS {
