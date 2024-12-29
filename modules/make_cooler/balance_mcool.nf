@@ -2,6 +2,8 @@ process BALANCE_MCOOL {
 
     tag "$meta.id"
 
+    conda "${NXF_HOME}/assets/dmalzl/spritecooler/conda/spritefridge.yml"
+
     input:
     tuple val(meta), path(mcool)
 
