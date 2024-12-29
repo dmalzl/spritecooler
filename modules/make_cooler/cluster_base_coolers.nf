@@ -1,4 +1,4 @@
-process CLUSTER_BASE_COOLER {
+process CLUSTER_BASE_COOLERS {
 
     tag "$meta.id"
 
