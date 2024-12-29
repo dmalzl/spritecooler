@@ -22,7 +22,7 @@ workflow MAKE_COOLER {
         genomeName
     )
 
-    CLUSTER_BASE_COOLER.out.cools
+    CLUSTER_BASE_COOLERS.out.cools
         .groupTuple ( by: [0] )
         .set { ch_base_coolers }
 
