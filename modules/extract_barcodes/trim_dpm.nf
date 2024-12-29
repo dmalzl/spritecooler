@@ -9,15 +9,15 @@ process TRIM_DPM {
     path(dpmfasta)
 
     output:
-    tuple val(meta), path("*bcextract.fq.gz"), emit: reads
-    path "*stats.tsv",                         emit: reports // needs to be fixed for cutadapt output
+    tuple val(meta), path("*dpmtrim.fq"),       emit: reads
+    // path "*stats.tsv",                      emit: stats
 
     shell:
     '''
     cutadapt \
         -a GATCGGAAGAG \
         -g file:!{dpmfasta} \
-        -o trimmed/!{meta.id}.dpm.fq \
+        -o !{meta.id}.dpmtrim.fq \
         -j !{task.cpus} \
         !{reads}
     '''
