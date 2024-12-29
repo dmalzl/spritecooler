@@ -11,18 +11,19 @@ process CLUSTER_BASE_COOLER {
     val genome
 
     output:
-    tuple val(meta), path("*base.cool"), emit: cools
+    tuple val(meta), path("coolers/*.cool"), emit: cools
 
     shell:
     '''
-    for pairs in `ls *pairs.gz`;
+    for pairs in `ls *pairs.blksrt.gz`;
     do
+        pairsbase=$(basename ${pairs%.pairs.blksrt.gz})
         cooler cload pairs \
             --assembly !{genome} \
             -c1 2 -p1 3 -c2 4 -p2 5 \
             !{chromsizes}:!{resolution} \
-            !{pairs} \
-            coolers/!{meta.id}_base.cool
+            ${pairs} \
+            coolers/${pairsbase}_base.cool
     done
     '''
 }
