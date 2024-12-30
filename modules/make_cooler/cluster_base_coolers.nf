@@ -16,7 +16,7 @@ process CLUSTER_BASE_COOLERS {
     shell:
     '''
     mkdir coolers
-    for pairs in `ls *pairs.blksrt.gz`;
+    for pairs in `ls pairs/*pairs.blksrt.gz`;
     do
         pairsbase=$(basename ${pairs%.pairs.blksrt.gz})
         cooler cload pairs \
