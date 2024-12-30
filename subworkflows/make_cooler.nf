@@ -25,6 +25,10 @@ workflow MAKE_COOLER {
 
     CLUSTER_BASE_COOLERS.out.cools
         .groupTuple ( by: [0] )
+        .map {
+            meta, coolers ->
+            [ meta, coolers.flatten() ]
+        }
         .set { ch_base_coolers }
 
     MERGE_CLUSTER_COOLERS (
