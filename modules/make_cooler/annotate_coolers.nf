@@ -8,7 +8,7 @@ process ANNOTATE_COOLERS {
     tuple val(meta), path(mcool), path(bed)
 
     output:
-    tuple val(meta), path("*.mcool"), emit: mcool
+    tuple val(meta), path("*annotated.mcool"), emit: mcool
     
     shell:
     '''

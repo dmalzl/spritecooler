@@ -5,7 +5,7 @@ process MERGE_CLUSTER_COOLERS {
     conda "${NXF_HOME}/assets/dmalzl/spritecooler/conda/spritefridge.yml"
 
     input:
-    tuple val(meta), path(coolers)
+    tuple val(meta), path(coolers, name: 'coolers/*')
     val nchunks
 
     output:

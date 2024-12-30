@@ -82,7 +82,7 @@ def main():
 
     for alignment_count in alignments_per_read.values():
         if alignment_count > 1:
-            stats['multimappting'] += 1
+            stats['multimapping'] += 1
             continue
 
         stats['unique'] += 1
@@ -93,4 +93,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    

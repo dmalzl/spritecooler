@@ -16,7 +16,8 @@ process ZOOMIFY_COOLER {
     cooler zoomify \
         -p !{task.cpus} \
         -r !{resolutions} \
-        -o !{meta.id}.mcool
+        -o !{meta.id}.mcool \
+        !{cooler}
     '''
 
 }

@@ -5,7 +5,7 @@ process CLUSTER_BASE_COOLERS {
     conda "${NXF_HOME}/assets/dmalzl/spritecooler/conda/spritefridge.yml"
 
     input:
-    tuple val(meta), path(pairs)
+    tuple val(meta), path(pairs, name: 'pairs/*')
     path chromsizes
     val resolution
     val genome
@@ -15,6 +15,7 @@ process CLUSTER_BASE_COOLERS {
 
     shell:
     '''
+    mkdir coolers
     for pairs in `ls *pairs.blksrt.gz`;
     do
         pairsbase=$(basename ${pairs%.pairs.blksrt.gz})
