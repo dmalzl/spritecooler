@@ -23,6 +23,7 @@ def parse_args():
         required = True,
         help = 'name of the outputfile to write'
     )
+    return parser.parse_args()
 
 
 def main():
