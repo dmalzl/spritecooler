@@ -20,7 +20,7 @@ def parse_args():
     parser.add_argument(
         '--output',
         '-o',
-        requried = True,
+        required = True,
         help = 'name of the outputfile to write'
     )
 
