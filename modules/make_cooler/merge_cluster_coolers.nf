@@ -9,7 +9,8 @@ process MERGE_CLUSTER_COOLERS {
     val nchunks
 
     output:
-    tuple val(meta), path("*.cool"), emit: cool
+    tuple val(meta), path("*.cool"),    emit: cool
+    tuple val(meta), path("*.mcool"),   emit: mcool
 
     shell:
     '''
@@ -18,5 +19,7 @@ process MERGE_CLUSTER_COOLERS {
         -o !{meta.id}.cool \
         --nchunks !{nchunks} \
         --floatcounts
+
+    clustermcool.py -i !{coolers} -o !{meta.id}.mcool
     '''
 }
