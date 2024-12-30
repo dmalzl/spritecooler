@@ -15,11 +15,11 @@ process MERGE_CLUSTER_COOLERS {
     shell:
     '''
     spritefridge combine \
-        -i !{coolers} \
+        -i coolers \
         -o !{meta.id}.cool \
         --nchunks !{nchunks} \
         --floatcounts
 
-    clustermcool.py -i !{coolers} -o !{meta.id}.mcool
+    clustermcool.py -i coolers -o !{meta.id}.mcool
     '''
 }
