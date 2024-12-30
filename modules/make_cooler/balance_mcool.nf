@@ -10,7 +10,7 @@ process BALANCE_MCOOL {
     output:
     tuple val(meta), path("*mcool"), emit: mcool
 
-    script:
+    shell:
     '''
     spritefridge balance \
         -m !{mcool} \
