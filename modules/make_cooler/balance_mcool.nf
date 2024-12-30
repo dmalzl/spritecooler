@@ -8,13 +8,14 @@ process BALANCE_MCOOL {
     tuple val(meta), path(mcool)
 
     output:
-    tuple val(meta), path("*mcool"), emit: mcool
+    tuple val(meta), path("*balance.mcool"), emit: mcool
 
     shell:
     '''
     spritefridge balance \
         -m !{mcool} \
         -p !{task.cpus} \
+        -o !{meta.id}.balance.mcool
         --overwrite
     '''
 }
