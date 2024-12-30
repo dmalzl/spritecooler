@@ -27,9 +27,7 @@ workflow PREPARE_GENOME {
         )
 
     } else {
-        def bwt2_base = file( dynamic_params.bowtie2Index ).getSimpleName()
-        def bwt2_dir = file( dynamic_params.bowtie2Index ).getParent()
-        ch_bowtie2_index = [ bwt2_base, bwt2_dir ]
+        ch_bowtie2_index = file ( dynamic_params.bowtie2Index )
     }
 
     if ("chromSizes" in prepare_genome_for_tools) {
