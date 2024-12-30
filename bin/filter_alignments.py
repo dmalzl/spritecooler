@@ -2,7 +2,12 @@
 
 import argparse as ap
 import pysam as ps
+import logging
 
+logging.basicConfig(
+    format='%(asctime)s - %(message)s',
+    level=logging.INFO
+)
 
 def parse_args():
     parser = ap.ArgumentParser()
@@ -50,8 +55,13 @@ def main():
         'wb', 
         template = inbam
     )
+    nprocessed = 0
     for alignment in inbam.fetch(until_eof = True):
         name = alignment.query_name
+        nprocessed += 1
+
+        if not nprocessed % 1e5:
+            logging.info(f'processed {nprocessed} alignments')
         if not alignment.is_mapped:
             stats['unmapped'] += 1
             continue
@@ -80,3 +90,7 @@ def main():
     with open(args.outprefix + '.stats.tsv', 'w') as statsfile:
         statsfile.write('\t'.join(statsheader) + '\n')
         statsfile.write('\t'.join([str(stats[k]) for k in statsheader]) + '\n')
+
+if __name__ == '__main__':
+    main()
+    
