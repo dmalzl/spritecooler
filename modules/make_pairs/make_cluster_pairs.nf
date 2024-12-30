@@ -17,6 +17,7 @@ process MAKE_CLUSTER_PAIRS {
 
     shell:
     '''
+    mkdir pairs
     spritefridge pairs \
         -b !{alignments} \
         -o pairs/!{meta.id} \
