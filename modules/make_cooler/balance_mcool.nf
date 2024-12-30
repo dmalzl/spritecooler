@@ -12,6 +12,9 @@ process BALANCE_MCOOL {
 
     script:
     """
-    spritefridge balance -m !{mcool} -p !{task.cpus}
+    spritefridge balance \
+        -m !{mcool} \
+        -p !{task.cpus} \
+        --overwrite
     """
 }
