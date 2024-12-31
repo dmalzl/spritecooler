@@ -15,7 +15,7 @@ process BALANCE_MCOOL {
     spritefridge balance \
         -m !{mcool} \
         -p !{task.cpus} \
-        -o !{meta.id}.balance.mcool
+        -o !{meta.id}.balance.mcool \
         --overwrite
     '''
 }
