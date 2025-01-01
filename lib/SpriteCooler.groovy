@@ -7,35 +7,14 @@ class SpriteCooler {
         checkGenomeSettings(params, log)
         checkBarcodesSettings(params, log)
     }
-    //
-    // include specified resolutions in resolution list sort them and remove duplicates
-    //
-    public static String makeResolutionsUnique(resolutionString) {
-        def resolutionsList = makeResolutionList(resolutionString)
 
-        resolutionsList.sort()
-        resolutionsList.unique()
-
-        def sb = new StringBuilder()
-        for (Integer i: resolutionsList) {
-            if (sb.length() > 0) {
-                sb.append(",");
-            }
-            sb.append(i.toString())
-        }
-
-        return sb.toString()
-    }
-
-    //
-    // convert resolutions string to list
-    //
-    public static ArrayList<Integer> makeResolutionList(resolutionString) {
-        def resolutionsList = resolutionString
+    public static int getBaseResolution(resolutions) {
+        def reslist = resolutions
             .tokenize(',')
-            .collect { it.toInteger() }
+            .collect { resolutionToInt(it) }
+            .sort()
 
-        return resolutionsList
+        return reslist[0]
     }
 
     //
@@ -147,6 +126,13 @@ class SpriteCooler {
         }
     }
 
+    private static int resolutionToInt(resolution) {
+        def end = resolution.length()
+        if (!resolution.isNumber()) {
+            end = resolution.length() - 1
+        }
+        return resolution.substring(0, end).toInteger()
+    }
     //
     // check if layout is specified correctly and parse them
     //

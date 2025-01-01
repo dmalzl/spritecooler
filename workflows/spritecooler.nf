@@ -30,17 +30,8 @@ checkPathParamList = [
 
 for ( param in checkPathParamList ) { if (param) { file( param, checkIfExists: true ) } }
 
-if ( params.resolutions ) {
-    resolutions = SpriteCooler.makeResolutionsUnique(
-        params.defaultResolutions + ',' + params.resolutions
-    )
-
-} else {
-    resolutions = params.defaultResolutions
-}
-
-resolutionsList = SpriteCooler.makeResolutionList( resolutions )
-baseResolution = resolutionsList[0]
+resolutions = params.resolutions ? params.resolutions : params.defaultResolutions
+baseResolution = SpriteCooler.getBaseResolution(resolutions)
 
 // setting up for prepare genome subworkflow
 def prepare_genome_for_tools = []
