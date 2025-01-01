@@ -19,6 +19,7 @@ workflow ALIGN_FILTER_READS {
     )
 
     emit:
-    bam = FILTER_ALIGNMENTS.out.bam
-    stats = FILTER_ALIGNMENTS.out.stats
+    bam         = FILTER_ALIGNMENTS.out.bam
+    align       = BOWTIE2_ALIGN.out.log
+    filtered    = FILTER_ALIGNMENTS.out.stats
 }

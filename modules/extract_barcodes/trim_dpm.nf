@@ -9,8 +9,8 @@ process TRIM_DPM {
     path(dpmfasta)
 
     output:
-    tuple val(meta), path("*dpmtrim.fq"),       emit: reads
-    // path "*stats.tsv",                      emit: stats
+    tuple val(meta), path("*dpmtrim.fq"),   emit: reads
+    tuple val(meta), path("*report.txt"),   emit: reports
 
     shell:
     '''
@@ -19,6 +19,7 @@ process TRIM_DPM {
         -g file:!{dpmfasta} \
         -o !{meta.id}.dpmtrim.fq \
         -j !{task.cpus} \
-        !{reads}
+        !{reads} \
+    > !{meta.id}.report.txt
     '''
 }

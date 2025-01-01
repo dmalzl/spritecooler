@@ -9,7 +9,8 @@ process BOWTIE2_ALIGN {
     path(index)
 
     output:
-    tuple val(meta), path("*bam"), emit: bam
+    tuple val(meta), path('*bam'),          emit: bam
+    tuple val(meta), path('*bowtie2.log'),  emit: log
 
     shell:
     '''
@@ -24,6 +25,7 @@ process BOWTIE2_ALIGN {
         --phred33 \
         -x $INDEX \
         -U !{reads} \
+    2> !{meta.id}.bowtie2.log \
     | samtools view -b > !{meta.id}.bam
     '''
 
