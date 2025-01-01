@@ -33,5 +33,6 @@ workflow EXTRACT_BARCODES {
     reads   = TRIM_DPM.out.reads
     extract = EXTRACT_BCS.out.stats
     trim    = TRIM_DPM.out.reports
-    fastqc  = FASTQC.out
+    html    = FASTQC.out.html
+    zip     = FASTQC.out.zip
 }
