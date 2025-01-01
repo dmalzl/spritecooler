@@ -34,7 +34,7 @@ workflow MAKE_PAIRS {
             meta, beds ->
             [ meta, beds.flatten() ]
         }
-        .set { ch_pairs_bed }
+        .set { ch_sample_pairs_bed }
 
     MAKE_PAIRIX (
         ch_chunked_pairs,
@@ -43,6 +43,6 @@ workflow MAKE_PAIRS {
 
     emit:
     pairs   = MAKE_PAIRIX.out.pairs
-    bed     = ch_pairs_bed
+    bed     = SORT_BED.out.bed.mix ( ch_sample_pairs_bed )
     stats   = MAKE_CLUSTER_PAIRS.out.stats
 }
