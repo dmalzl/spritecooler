@@ -2,7 +2,7 @@ process CLUSTER_BASE_COOLERS {
 
     tag "$meta.id"
 
-    conda "${NXF_HOME}/assets/dmalzl/spritecooler/conda/spritefridge.yml"
+    conda "${workflow.projectDir}/conda/spritefridge.yml"
 
     input:
     tuple val(meta), path(pairs, name: 'pairs/*')

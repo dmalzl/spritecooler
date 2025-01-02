@@ -2,7 +2,7 @@ process TRIMGALORE {
 
     tag "$meta.id"
 
-    conda "${NXF_HOME}/assets/dmalzl/spritecooler/conda/trimgalore.yml"
+    conda "${workflow.projectDir}/conda/trimgalore.yml"
 
     input:
     tuple val(meta), path(reads)

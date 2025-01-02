@@ -2,7 +2,7 @@ process MAKE_DPM_FASTA {
 
     tag "make_dpm_fasta"
 
-    conda "${NXF_HOME}/assets/dmalzl/spritecooler/conda/spritefridge.yml"
+    conda "${workflow.projectDir}/conda/spritefridge.yml"
 
     input:
     file(barcodes)
