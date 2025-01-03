@@ -12,7 +12,7 @@ process MULTIQC {
     tuple val(meta), path(dpm_trim, name: 'dpm_trim/*')
     tuple val(meta), path(bowtie_stats, name: 'bowtie_stats/*')
     tuple val(meta), path(filter_stats, name: 'filter_stats/*')
-    tuple val(meta), path(cluster_size: 'cluster_size/*')
+    tuple val(meta), path(cluster_size, name: 'cluster_size/*')
 
     output:
     path "*multiqc_report.html", emit: report
