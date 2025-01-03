@@ -8,6 +8,7 @@ process MAKE_CLUSTER_PAIRS {
     tuple val(meta), path(alignments)
     val(minClusterSize)
     val(maxClusterSize)
+    path(mqc_header)
 
 
     output:

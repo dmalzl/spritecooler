@@ -8,12 +8,14 @@ workflow MAKE_PAIRS {
     chromSizes
     minClusterSize
     maxClusterSize
+    mqc_header
 
     main:
     MAKE_CLUSTER_PAIRS (
         ch_filtered_bam,
         minClusterSize,
-        maxClusterSize
+        maxClusterSize,
+        mqc_header
     )
 
     MAKE_CLUSTER_PAIRS.out.pairs

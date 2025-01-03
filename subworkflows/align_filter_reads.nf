@@ -6,6 +6,7 @@ workflow ALIGN_FILTER_READS {
     ch_dpm_fastq
     bowtie2Index
     minMapQ
+    mqc_header
 
     main:
     BOWTIE2_ALIGN (
@@ -15,7 +16,8 @@ workflow ALIGN_FILTER_READS {
 
     FILTER_ALIGNMENTS ( 
         BOWTIE2_ALIGN.out.bam,
-        minMapQ
+        minMapQ,
+        mqc_header
     )
 
     emit:

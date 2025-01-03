@@ -10,6 +10,7 @@ workflow EXTRACT_BARCODES {
     r1layout
     r2layout
     mismatch
+    mqc_header
 
     main:
     EXTRACT_BCS ( 
@@ -17,7 +18,8 @@ workflow EXTRACT_BARCODES {
         barcodes,
         r1layout,
         r2layout,
-        mismatch
+        mismatch,
+        mqc_header
     )
 
     MAKE_DPM_FASTA ( barcodes )

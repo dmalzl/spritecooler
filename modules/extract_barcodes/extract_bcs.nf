@@ -10,6 +10,7 @@ process EXTRACT_BCS {
     val(layout1)
     val(layout2)
     val(mismatch)
+    path(mqc_header)
 
     output:
     tuple val(meta), path("*bcextract.fq.gz"), emit: reads

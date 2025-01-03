@@ -76,6 +76,16 @@ SpriteCooler.paramsSummaryLog( params, dynamic_params, log )
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    INSTANTIATE MULTIQC CONFIGS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+ch_multiqc_config   = file ( "${workflow.projectDir}/assets/multiqc/multiqc_config.yml",    checkIfExists: true )
+ch_extractbc_mqch   = file ( "${workflow.projectDir}/assets/multiqc/extracbc_header.txt",   checkIfExists: true )
+ch_filter_mqch      = file ( "${workflow.projectDir}/assets/multiqc/filter_header.txt",     checkIfExists: true )
+ch_pairs_mqch       = file ( "${workflow.projectDir}/assets/multiqc/pairs_header.txt",      checkIfExists: true )
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     IMPORT LOCAL MODULES/SUBWORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
@@ -137,20 +147,23 @@ workflow SPRITECOOLER {
         file ( params.barcodes ),
         params.r1Layout,
         params.r2Layout,
-        params.mismatch
+        params.mismatch,
+        ch_extractbc_mqch
     )
 
     ALIGN_FILTER_READS (
         EXTRACT_BARCODES.out.reads,
         ch_genome.index,
-        params.mapq
+        params.mapq,
+        ch_filter_mqch
     )
 
     MAKE_PAIRS (
         ALIGN_FILTER_READS.out.bam,
         ch_genome.sizes,
         params.minClusterSize,
-        params.maxClusterSize
+        params.maxClusterSize,
+        ch_pairs_mqch
     )
 
     MAKE_COOLER (
@@ -164,7 +177,7 @@ workflow SPRITECOOLER {
     )
 
     MULTIQC (
-        file ( "$projectDir/assets/multiqc_config.yml", checkIfExists: true ),
+        ch_multiqc_config,
         FASTQC.out.zip,
         TRIMGALORE.out.reports,
         TRIMGALORE.out.zip,

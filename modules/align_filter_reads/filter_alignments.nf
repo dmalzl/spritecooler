@@ -7,6 +7,7 @@ process FILTER_ALIGNMENTS {
     input:
     tuple val(meta), path(bam)
     val(minq)
+    path(mqc_header)
 
     output:
     tuple val(meta), path("*filtered.bam"), emit: bam
