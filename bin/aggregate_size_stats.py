@@ -58,7 +58,8 @@ def main():
         .to_csv(
             args.output,
             header = False,
-            index = False
+            index = False,
+            sep = '\t'
         )
 
 
