@@ -3,7 +3,7 @@ process CAT_FASTQ {
     tag "$meta.id"
 
     input:
-    tuple val(meta), path(reads, name: "input/*")
+    tuple val(meta), path(reads, name: "input*/*")
 
     output:
     tuple val(meta), path("*.fq.gz"), emit: reads
