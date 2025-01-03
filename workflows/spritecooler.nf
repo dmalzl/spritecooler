@@ -164,8 +164,7 @@ workflow SPRITECOOLER {
     )
 
     MULTIQC (
-        file ( params.multiqc_config ),
-        file ( params.multiqc_custon_configs ),
+        file ( "$projectDir/assets/multiqc_config.yml", checkIfExists: true ),
         FASTQC.out.zip,
         TRIMGALORE.out.reports,
         TRIMGALORE.out.zip,
