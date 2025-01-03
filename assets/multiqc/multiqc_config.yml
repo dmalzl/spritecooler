@@ -67,6 +67,19 @@ extra_fn_clean_exts:
 sp:
   cutadapt:
     fn: "*trimming_report.txt"
+  
+  barcode_extraction:
+    fn: "*.stats.mqc.tsv"
+
+  cluster_size:
+    fn: "*aggsize.mqc.tsv"
+
+  alignment_filtering:
+    fn: "*.stats.tsv"
+
+  alignment_deduplication:
+    fn: "*.dupstats.tsv"
+  
 
 custom_content:
   order:
