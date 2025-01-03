@@ -5,16 +5,16 @@ process MULTIQC {
 
     input:
     path multiqc_config
-    tuple val(meta), path(fastqc_raw,   name: 'fastqc_raw/*')
-    tuple val(meta), path(adapter_trim, name: 'adapter_trim/*')
-    tuple val(meta), path(fastqc_trim,  name: 'fastqc_trim/*')
-    tuple val(meta), path(extract_bc,   name: 'extract_bc/*')
-    tuple val(meta), path(dpm_trim,     name: 'dpm_trim/*')
-    tuple val(meta), path(fastqc_dpm,   name: 'fastqc_dpm/*')
-    tuple val(meta), path(bowtie_stats, name: 'bowtie_stats/*')
-    tuple val(meta), path(filter_stats, name: 'filter_stats/*')
-    tuple val(meta), path(cluster_size, name: 'cluster_size/*')
-    tuple val(meta), path(dedup_stats,  name: 'dedup/*')
+    path('fastqc_raw/*')
+    path('adapter_trim/*')
+    path('fastqc_trim/*')
+    path('extract_bc/*')
+    path('dpm_trim/*')
+    path('fastqc_dpm/*')
+    path('bowtie_stats/*')
+    path('filter_stats/*')
+    path('cluster_size/*')
+    path('dedup/*')
 
     output:
     path "*multiqc_report.html", emit: report

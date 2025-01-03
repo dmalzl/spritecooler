@@ -1,6 +1,7 @@
 # id: 'alignment_deduplication'
 # section_name: 'Alignment Deduplication'
 # description: "shows basic statistics on duplicated reads"
+# anchor: 'dedup_stats'
 # plot_type: 'bargraph'
 # pconfig:
 #     id: "alignment_dedup_plot"

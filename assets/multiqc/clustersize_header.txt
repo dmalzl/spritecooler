@@ -1,6 +1,7 @@
 # id: 'cluster_size'
 # section_name: 'Cluster Size'
 # description: "shows aggregated statistics on identified clusters and their sizes"
+# anchor: 'cluster_size'
 # plot_type: 'bargraph'
 # pconfig:
 #     id: "cluster_size_plot"

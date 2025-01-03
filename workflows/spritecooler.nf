@@ -180,15 +180,15 @@ workflow SPRITECOOLER {
 
     MULTIQC (
         ch_multiqc_config,
-        FASTQC.out.zip.collect(),
-        TRIMGALORE.out.reports.collect(),
-        TRIMGALORE.out.zip.collect(),
-        EXTRACT_BARCODES.out.extract.collect(),
-        EXTRACT_BARCODES.out.trim.collect(),
-        EXTRACT_BARCODES.out.zip.collect(),
-        ALIGN_FILTER_READS.out.align.collect(),
-        ALIGN_FILTER_READS.out.filtered.collect(),
-        MAKE_PAIRS.out.sizestats.collect(),
-        MAKE_PAIRS.out.dupstats.collect()
+        FASTQC.out.zip.collect { it[1].flatten() }
+        TRIMGALORE.out.reports.collect { it[1] },
+        TRIMGALORE.out.zip { it[1].flatten() },
+        EXTRACT_BARCODES.out.extract.collect { it[1] },
+        EXTRACT_BARCODES.out.trim.collect { it[1] },
+        EXTRACT_BARCODES.out.zip.collect { it[1] },
+        ALIGN_FILTER_READS.out.align.collect { it[1] },
+        ALIGN_FILTER_READS.out.filtered.collect { it[1] },
+        MAKE_PAIRS.out.sizestats.collect { it[1] },
+        MAKE_PAIRS.out.dupstats.collect { it[1] }
     )
 }
