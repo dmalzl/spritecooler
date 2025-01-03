@@ -23,6 +23,6 @@ process MULTIQC {
 
     shell:
     '''
-    multiqc -f $args $custom_config .
+    multiqc -f .
     '''
 }
