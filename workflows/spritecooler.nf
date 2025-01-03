@@ -182,7 +182,7 @@ workflow SPRITECOOLER {
         ch_multiqc_config,
         FASTQC.out.zip.collect { it[1].flatten() },
         TRIMGALORE.out.reports.collect { it[1] },
-        TRIMGALORE.out.zip { it[1].flatten() },
+        TRIMGALORE.out.zip.collect { it[1].flatten() },
         EXTRACT_BARCODES.out.extract.collect { it[1] },
         EXTRACT_BARCODES.out.trim.collect { it[1] },
         EXTRACT_BARCODES.out.zip.collect { it[1] },
