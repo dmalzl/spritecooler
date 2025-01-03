@@ -81,6 +81,11 @@ class SpriteCooler {
     // Print parameter summary log to screen
     //
     public static void paramsSummaryLog(params, dynamic, log) {
+        log.info "++++++++++++++++++++++++++++++++"
+        log.info "+                              +"
+        log.info "+      SPRITECOOLER ${params.version}      +"
+        log.info "+                              +"
+        log.info "++++++++++++++++++++++++++++++++"
         log.info ""
         log.info " parameters "
         log.info " ======================"

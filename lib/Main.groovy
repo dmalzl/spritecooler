@@ -2,17 +2,17 @@ class Main {
     //
     // Print help to screen if required
     //
-    public static void help(log) {
+    public static void help(version, log) {
         log.info"""
         ================================================================
-         spritecooler
+         spritecooler ${version}
         ================================================================
          DESCRIPTION
 
-         Basic processing of HiC data.
+         Basic processing of SPRITE-seq data
 
          Usage:
-         nextflow run pavrilab/hicer-nf
+         nextflow run dmalzl/spritecooler
 
          Options:
             --samples        Tab-delimited text file specifying the samples
@@ -59,9 +59,7 @@ class Main {
             standard         local execution
             singularity      local execution with singularity
             cbe              CBE cluster execution with singularity
-
-         Docker:
-         dmalzl/spritecooler:latest
+            cbecustom        CBE cluster execution with conda
 
          Authors:
          Daniel Malzl (daniel@lbi-netmed.com)
@@ -74,7 +72,7 @@ class Main {
     public static void initialise(workflow, params, log) {
         // Print help to screen if required
         if (params.help) {
-            log.info help(log)
+            log.info help(params.version, log)
             System.exit(0)
         }
 
