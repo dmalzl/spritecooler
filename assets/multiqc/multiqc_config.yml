@@ -14,6 +14,12 @@ run_modules:
 # Order of modules
 module_order:
   - custom_content
+  - bowtie2:
+    name: "Bowtie2 alignment stats"
+    info: "This section of the report shows Bowtie2 aligment statistics"
+    path_filters:
+      - "./bowtie_stats/*bowtie2.log"
+
   - fastqc:
       name: "FastQC (raw)"
       info: "This section of the report shows FastQC results before adapter trimming."
@@ -43,12 +49,6 @@ module_order:
       info: "This section of the report shows FastQC results after DPM trimming."
       path_filters:
         - "./fastqc_dpm/*.zip"
-
-  - bowtie2:
-      name: "Bowtie2 alignment stats"
-      info: "This section of the report shows Bowtie2 aligment statistics"
-      path_filters:
-        - "./bowtie_stats/*bowtie2.log"
 
 
 extra_fn_clean_exts:
