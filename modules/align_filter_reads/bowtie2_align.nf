@@ -25,8 +25,10 @@ process BOWTIE2_ALIGN {
         --phred33 \
         -x $INDEX \
         -U !{reads} \
-    2> !{meta.id}.bowtie2.log \
+    2> !{meta.id}.tmp.log \
     | samtools view -b > !{meta.id}.bam
+
+    cat !{meta.id}.tmp.log | grep -v Warning > !{meta.id}.bowtie2.log
     '''
 
 }

@@ -48,7 +48,7 @@ module_order:
       name: "Bowtie2 alignment stats"
       info: "This section of the report shows Bowtie2 aligment statistics"
       path_filters:
-        - "./bowtie_stats/*log"
+        - "./bowtie_stats/*bowtie2.log"
 
 
 extra_fn_clean_exts:
