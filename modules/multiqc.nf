@@ -10,6 +10,7 @@ process MULTIQC {
     tuple val(meta), path(fastqc_trim,  name: 'fastqc_trim/*')
     tuple val(meta), path(extract_bc,   name: 'extract_bc/*')
     tuple val(meta), path(dpm_trim,     name: 'dpm_trim/*')
+    tuple val(meta), path(fastqc_dpm,   name: 'fastqc_dpm/*')
     tuple val(meta), path(bowtie_stats, name: 'bowtie_stats/*')
     tuple val(meta), path(filter_stats, name: 'filter_stats/*')
     tuple val(meta), path(cluster_size, name: 'cluster_size/*')

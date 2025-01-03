@@ -1,0 +1,9 @@
+# id: 'alignment_filtering'
+# section_name: 'Alignment Filtering'
+# description: "shows basic statistics on filtering alignments for mapping quality and multimappers"
+# plot_type: 'bargraph'
+# pconfig:
+#     id: "alignment_filter_plot"
+#     title: "Filtering Stats"
+#     xlab: "# Reads"
+#     cpswitch_counts_label: "Number of Reads"

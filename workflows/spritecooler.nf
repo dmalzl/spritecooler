@@ -185,6 +185,7 @@ workflow SPRITECOOLER {
         TRIMGALORE.out.zip,
         EXTRACT_BARCODES.out.extract,
         EXTRACT_BARCODES.out.trim,
+        EXTRACT_BARCODES.out.zip,
         ALIGN_FILTER_READS.out.align,
         ALIGN_FILTER_READS.out.filtered,
         MAKE_PAIRS.out.sizestats,

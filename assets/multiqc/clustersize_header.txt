@@ -1,0 +1,9 @@
+# id: 'cluster_size'
+# section_name: 'Cluster Size'
+# description: "shows aggregated statistics on identified clusters and their sizes"
+# plot_type: 'bargraph'
+# pconfig:
+#     id: "cluster_size_plot"
+#     title: "Cluster Size Stats"
+#     xlab: "# Clusters"
+#     cpswitch_counts_label: "Number of Clusters"

@@ -1,0 +1,9 @@
+# id: 'alignment_deduplication'
+# section_name: 'Alignment Deduplication'
+# description: "shows basic statistics on duplicated reads"
+# plot_type: 'bargraph'
+# pconfig:
+#     id: "alignment_dedup_plot"
+#     title: "Deduplication Stats"
+#     xlab: "# Reads"
+#     cpswitch_counts_label: "Number of Reads"
