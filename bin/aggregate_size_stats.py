@@ -40,7 +40,7 @@ def main():
     stats = pd.read_csv(
         args.input,
         sep = '\t',
-        header = False,
+        header = None,
         names = ['size', 'count']
     )
     stats['bins'] = pd.cut(
