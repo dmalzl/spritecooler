@@ -19,6 +19,7 @@ process TRIM_DPM {
         -g file:!{dpmfasta} \
         -o !{meta.id}.dpmtrim.fq \
         -j !{task.cpus} \
+        --minimum-length 20 \
         !{reads} \
     > !{meta.id}.report.txt
     '''
