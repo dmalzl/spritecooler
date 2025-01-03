@@ -2,6 +2,7 @@
 # section_name: 'Alignment Deduplication'
 # description: "shows basic statistics on duplicated reads"
 # anchor: 'dedup_stats'
+# format: 'tsv'
 # plot_type: 'bargraph'
 # pconfig:
 #     id: "alignment_dedup_plot"

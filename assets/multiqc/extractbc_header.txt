@@ -2,6 +2,7 @@
 # section_name: 'Barcode Extraction'
 # description: "shows basic statistics on extracted barcodes per read"
 # anchor: 'barcode_extraction'
+# format: 'tsv'
 # plot_type: 'bargraph'
 # pconfig:
 #     id: "barcode_extraction_plot"

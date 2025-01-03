@@ -14,7 +14,7 @@ process EXTRACT_BCS {
 
     output:
     tuple val(meta), path("*bcextract.fq.gz"), emit: reads
-    tuple val(meta), path("*stats.mqc.tsv"),   emit: stats
+    tuple val(meta), path("*_mqc.tsv"),   emit: stats
 
     shell:
     '''
@@ -29,6 +29,7 @@ process EXTRACT_BCS {
         -p !{task.cpus}
 
     # remove aggregate stats for multiqc
-    tail -n +3 !{meta.id}.bcextract.stats.tsv > !{meta.id}.stats.mqc.tsv
+    tail -n +3 !{meta.id}.bcextract.stats.tsv > tmp.stats.tsv
+    cat !{mqc_header} tmp.stats.tsv > !{meta.id}_extractstats_mqc.tsv
     '''
 }

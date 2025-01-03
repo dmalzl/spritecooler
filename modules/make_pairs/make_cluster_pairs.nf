@@ -11,12 +11,11 @@ process MAKE_CLUSTER_PAIRS {
     path(mqc_size_header)
     path(mqc_dedup_header)
 
-
     output:
     tuple val(meta), path("pairs/*pairs"),      emit: pairs
     tuple val(meta), path('pairs/*bed'),        emit: bed
-    tuple val(meta), path("*aggsize.mqc.tsv"),  emit: size
-    tuple val(meta), path("*dupstats.mqc.tsv"), emit: duplicate
+    tuple val(meta), path("*aggsize_mqc.tsv"),  emit: size
+    tuple val(meta), path("*dupstats_mqc.tsv"), emit: duplicate
 
     shell:
     '''
@@ -30,7 +29,7 @@ process MAKE_CLUSTER_PAIRS {
 
     aggregate_size_stats.py -i pairs/!{meta.id}.sizestats.tsv -o !{meta.id}.aggsize.tsv
 
-    cat !{mqc_size_header} !{meta.id}.aggsize.tsv > !{meta.id}.aggsize.mqc.tsv
-    cat !{mqc_dedup_header} pairs/!{meta.id}.duplicatestats.tsv > !{meta.id}.dupstats.mqc.tsv
+    cat !{mqc_size_header} !{meta.id}.aggsize.tsv > !{meta.id}_aggsize_mqc.tsv
+    cat !{mqc_dedup_header} pairs/!{meta.id}.duplicatestats.tsv > !{meta.id}_dupstats_mqc.tsv
     '''
 }

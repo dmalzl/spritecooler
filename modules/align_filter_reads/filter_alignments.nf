@@ -11,7 +11,7 @@ process FILTER_ALIGNMENTS {
 
     output:
     tuple val(meta), path("*filtered.bam"), emit: bam
-    tuple val(meta), path("*stats.tsv"),    emit: stats
+    tuple val(meta), path("*_mqc.tsv"),    emit: stats
 
     shell:
     '''
@@ -19,6 +19,8 @@ process FILTER_ALIGNMENTS {
         -i !{bam} \
         -q !{minq} \
         -o !{meta.id}
+
+    cat !{mqc_header} !{meta.id}.stats.tsv > !{meta.id}_filterstats_mqc.tsv
     '''
 
 }

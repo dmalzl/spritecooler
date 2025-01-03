@@ -2,6 +2,7 @@
 # section_name: 'Alignment Filtering'
 # description: "shows basic statistics on filtering alignments for mapping quality and multimappers"
 # anchor: 'alignment_filtering'
+# format: 'tsv'
 # plot_type: 'bargraph'
 # pconfig:
 #     id: "alignment_filter_plot"
