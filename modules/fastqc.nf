@@ -12,7 +12,8 @@ process FASTQC {
     tuple val(meta), path("*.zip") , emit: zip
 
     script:
-    def paired = true ? reads.length() > 1 : false
+    def nfiles = reads.size()
+    def paired = true ? nfiles > 1 : false
     if (paired) {
         """
         [ ! -f  ${meta.id}_1.fq.gz ] && ln -s ${reads[0]} ${meta.id}_1.fq.gz
