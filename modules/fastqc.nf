@@ -13,9 +13,9 @@ process FASTQC {
 
     script:
     def nfiles = reads.size()
-    def paired = true ? nfiles > 1 : false
+    def paired = nfiles > 1 ? true : false
     if (paired) {
-        extension = '.gz' ? reads[0].extension == 'gz' : ''
+        extension = reads[0].extension == 'gz' ? '.gz' : ''
         """
         [ ! -f  ${meta.id}_1.fq${extension} ] && ln -s ${reads[0]} ${meta.id}_1.fq${extension}
         [ ! -f  ${meta.id}_2.fq${extension} ] && ln -s ${reads[1]} ${meta.id}_2.fq${extension}
@@ -25,7 +25,7 @@ process FASTQC {
             ${meta.id}_2.fq${extension}
         """
     } else {
-        extension = '.gz' ? reads.extension == 'gz' : ''
+        extension = reads.extension == 'gz' ? 'gz' : ''
         """
         [ ! -f  ${meta.id}.fq${extension} ] && ln -s ${reads} ${meta.id}.fq${extension}
         fastqc \\
