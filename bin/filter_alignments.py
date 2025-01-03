@@ -67,7 +67,7 @@ def main():
             stats['unmapped'] += 1
             continue
 
-        if not alignment.mapping_quality < min_mapq:
+        if alignment.mapping_quality < min_mapq:
             stats[min_mapq_key] += 1
             continue
         
@@ -93,7 +93,7 @@ def main():
             statsfile.write(
                 f'{k}\t{stats[k]}\n'
             )
-            
+
 
 if __name__ == '__main__':
     main()
