@@ -14,7 +14,7 @@ process EXTRACT_BCS {
 
     output:
     tuple val(meta), path("*bcextract.fq.gz"), emit: reads
-    tuple val(meta), path("*stats.tsv"),       emit: stats
+    tuple val(meta), path("*bcstats.tsv"),     emit: stats
 
     shell:
     '''
@@ -27,5 +27,7 @@ process EXTRACT_BCS {
         -m "!{mismatch}" \
         -o !{meta.id}.bcextract.fq.gz \
         -p !{task.cpus}
+
+    tail -n +3 !{meta.id}.bcextract.stats.tsv > !{meta.id}.bcstats.tsv
     '''
 }
