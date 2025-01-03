@@ -56,6 +56,10 @@ extra_fn_clean_exts:
   - ".dpmtrim"
   - "_1"
   - "_2"
+  - "_filterstats"
+  - "_dupstats"
+  - "_aggsize"
+  - "_extractstats"
   - "_trimmed_val_1"
   - "_trimmed_val_2"
 
