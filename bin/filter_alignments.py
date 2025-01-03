@@ -62,7 +62,7 @@ def main():
 
         if not nprocessed % 1e5:
             logging.info(f'processed {nprocessed} alignments')
-            
+
         if not alignment.is_mapped:
             stats['unmapped'] += 1
             continue
@@ -89,8 +89,11 @@ def main():
         stats['unique'] += 1
 
     with open(args.outprefix + '.stats.tsv', 'w') as statsfile:
-        statsfile.write('\t'.join(statsheader) + '\n')
-        statsfile.write('\t'.join([str(stats[k]) for k in statsheader]) + '\n')
+        for k in statsheader:
+            statsfile.write(
+                f'{k}\t{stats[k]}\n'
+            )
+            
 
 if __name__ == '__main__':
     main()

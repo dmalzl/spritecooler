@@ -79,10 +79,11 @@ SpriteCooler.paramsSummaryLog( params, dynamic_params, log )
     INSTANTIATE MULTIQC CONFIGS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-ch_multiqc_config   = file ( "${workflow.projectDir}/assets/multiqc/multiqc_config.yml",    checkIfExists: true )
-ch_extractbc_mqch   = file ( "${workflow.projectDir}/assets/multiqc/extracbc_header.txt",   checkIfExists: true )
-ch_filter_mqch      = file ( "${workflow.projectDir}/assets/multiqc/filter_header.txt",     checkIfExists: true )
-ch_pairs_mqch       = file ( "${workflow.projectDir}/assets/multiqc/pairs_header.txt",      checkIfExists: true )
+ch_multiqc_config       = file ( "${workflow.projectDir}/assets/multiqc/multiqc_config.yml",        checkIfExists: true )
+ch_extractbc_mqch       = file ( "${workflow.projectDir}/assets/multiqc/extracbc_header.txt",       checkIfExists: true )
+ch_alignfilter_mqch     = file ( "${workflow.projectDir}/assets/multiqc/alignfilter_header.txt",    checkIfExists: true )
+ch_clustersize_mqch     = file ( "${workflow.projectDir}/assets/multiqc/clustersize_header.txt",    checkIfExists: true )
+ch_dedup_mqch           = file ( "${workflow.projectDir}/assets/multiqc/dedup_header.txt",          checkIfExists: true )
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -155,7 +156,7 @@ workflow SPRITECOOLER {
         EXTRACT_BARCODES.out.reads,
         ch_genome.index,
         params.mapq,
-        ch_filter_mqch
+        ch_alignfilter_mqch
     )
 
     MAKE_PAIRS (
@@ -163,7 +164,8 @@ workflow SPRITECOOLER {
         ch_genome.sizes,
         params.minClusterSize,
         params.maxClusterSize,
-        ch_pairs_mqch
+        ch_clustersize_mqch,
+        ch_dedup_mqch
     )
 
     MAKE_COOLER (
@@ -185,6 +187,7 @@ workflow SPRITECOOLER {
         EXTRACT_BARCODES.out.trim,
         ALIGN_FILTER_READS.out.align,
         ALIGN_FILTER_READS.out.filtered,
-        MAKE_PAIRS.out.stats
+        MAKE_PAIRS.out.sizestats,
+        MAKE_PAIRS.out.dupstats
     )
 }

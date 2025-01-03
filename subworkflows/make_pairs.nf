@@ -8,14 +8,16 @@ workflow MAKE_PAIRS {
     chromSizes
     minClusterSize
     maxClusterSize
-    mqc_header
+    mqc_size_header
+    mqc_dedup_header
 
     main:
     MAKE_CLUSTER_PAIRS (
         ch_filtered_bam,
         minClusterSize,
         maxClusterSize,
-        mqc_header
+        mqc_size_header,
+        mqc_dedup_header
     )
 
     MAKE_CLUSTER_PAIRS.out.pairs
@@ -44,7 +46,8 @@ workflow MAKE_PAIRS {
     )
 
     emit:
-    pairs   = MAKE_PAIRIX.out.pairs
-    bed     = SORT_BED.out.bed.mix ( ch_sample_pairs_bed )
-    stats   = MAKE_CLUSTER_PAIRS.out.stats
+    pairs       = MAKE_PAIRIX.out.pairs
+    bed         = SORT_BED.out.bed.mix ( ch_sample_pairs_bed )
+    sizestats   = MAKE_CLUSTER_PAIRS.out.size
+    dupstats    = MAKE_CLUSTER_PAIRS.out.duplicate
 }
