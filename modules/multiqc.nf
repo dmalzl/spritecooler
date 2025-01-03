@@ -1,7 +1,7 @@
 process MULTIQC {
     tag 'multiqc'
 
-    conda "bioconda::multiqc=1.20"
+    conda "${workflow.projectDir}/conda/multiqc.yml"
 
     input:
     path multiqc_config
