@@ -50,7 +50,6 @@ module_order:
       path_filters:
         - "./fastqc_dpm/*.zip"
 
-
 extra_fn_clean_exts:
   - ".bcextract"
   - ".dpmtrim"
