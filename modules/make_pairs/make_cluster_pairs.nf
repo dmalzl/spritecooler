@@ -30,7 +30,7 @@ process MAKE_CLUSTER_PAIRS {
 
     aggregate_size_stats.py -i pairs/!{meta.id}.sizestats.tsv -o !{meta.id}.aggsize.tsv
 
-    cat !{mqc_size_header} !{meta.id}.aggstats.tsv > !{meta.id}.aggstats.mqc.tsv
+    cat !{mqc_size_header} !{meta.id}.aggsize.tsv > !{meta.id}.aggsize.mqc.tsv
     cat !{mqc_dedup_header} pairs/!{meta.id}.duplicatestats.tsv > !{meta.id}.dupstats.mqc.tsv
     '''
 }
