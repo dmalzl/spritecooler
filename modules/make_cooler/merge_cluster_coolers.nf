@@ -20,6 +20,6 @@ process MERGE_CLUSTER_COOLERS {
         --nchunks !{nchunks} \
         --floatcounts
 
-    clustermcool.py -i coolers -o !{meta.id}.cluster.mcool
+    cluster_mcool.py -i coolers -o !{meta.id}.cluster.mcool
     '''
 }

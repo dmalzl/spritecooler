@@ -83,10 +83,12 @@ include { INPUT_CHECK        } from '../subworkflows/input_check.nf'
 include { PREPARE_GENOME     } from '../subworkflows/prepare_genome.nf'
 include { CAT_FASTQ          } from '../modules/cat_fastq.nf'
 include { TRIMGALORE         } from '../modules/trimgalore.nf'
+include { FASTQC             } from '../modules/fastqc.nf'
 include { EXTRACT_BARCODES   } from '../subworkflows/extract_barcodes.nf'
 include { ALIGN_FILTER_READS } from '../subworkflows/align_filter_reads.nf'
 include { MAKE_PAIRS         } from '../subworkflows/make_pairs.nf'
 include { MAKE_COOLER        } from '../subworkflows/make_cooler.nf'
+include { MULTIQC            } from '../modules/multiqc.nf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -126,7 +128,8 @@ workflow SPRITECOOLER {
         .mix ( ch_fastq.single )
         .set { ch_cat_fastq }
 
-    // read QC
+    FASTQC ( ch_cat_fastq )
+
     TRIMGALORE ( ch_cat_fastq )
 
     EXTRACT_BARCODES (
@@ -158,5 +161,18 @@ workflow SPRITECOOLER {
         ch_genome.sizes,
         dynamic_params.genomeName,
         params.mergeChunks
+    )
+
+    MULTIQC (
+        file ( params.multiqc_config ),
+        file ( params.multiqc_custon_configs ),
+        FASTQC.out.zip,
+        TRIMGALORE.out.reports,
+        TRIMGALORE.out.zip,
+        EXTRACT_BARCODES.out.extract,
+        EXTRACT_BARCODES.out.trim,
+        ALIGN_FILTER_READS.out.align,
+        ALIGN_FILTER_READS.out.filtered,
+        MAKE_PAIRS.out.stats
     )
 }

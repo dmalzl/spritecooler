@@ -62,6 +62,7 @@ def main():
 
         if not nprocessed % 1e5:
             logging.info(f'processed {nprocessed} alignments')
+            
         if not alignment.is_mapped:
             stats['unmapped'] += 1
             continue
