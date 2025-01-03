@@ -80,7 +80,7 @@ SpriteCooler.paramsSummaryLog( params, dynamic_params, log )
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 ch_multiqc_config       = file ( "${workflow.projectDir}/assets/multiqc/multiqc_config.yml",        checkIfExists: true )
-ch_extractbc_mqch       = file ( "${workflow.projectDir}/assets/multiqc/extracbc_header.txt",       checkIfExists: true )
+ch_extractbc_mqch       = file ( "${workflow.projectDir}/assets/multiqc/extractbc_header.txt",       checkIfExists: true )
 ch_alignfilter_mqch     = file ( "${workflow.projectDir}/assets/multiqc/alignfilter_header.txt",    checkIfExists: true )
 ch_clustersize_mqch     = file ( "${workflow.projectDir}/assets/multiqc/clustersize_header.txt",    checkIfExists: true )
 ch_dedup_mqch           = file ( "${workflow.projectDir}/assets/multiqc/dedup_header.txt",          checkIfExists: true )
