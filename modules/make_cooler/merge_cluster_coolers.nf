@@ -12,14 +12,20 @@ process MERGE_CLUSTER_COOLERS {
     tuple val(meta), path("*.cool"),    emit: cool
     tuple val(meta), path("*.mcool"),   emit: mcool
 
-    shell:
-    '''
+    script:
+    def nfiles = cooler.size() + 100
+    """
+    # set max filehandle limit correctly to avoid OSError
+    default=$(ulimit -n)
+    ulimit -n ${nfiles}
+
     spritefridge combine \
         -i coolers \
-        -o !{meta.id}.cool \
-        --nchunks !{nchunks} \
-        --floatcounts
+        -o ${meta.id}.cool
 
-    cluster_mcool.py -i coolers -o !{meta.id}.cluster.mcool
-    '''
+    cluster_mcool.py -i coolers -o ${meta.id}.cluster.mcool
+
+    reset
+    ulimit -n \$default
+    """
 }
