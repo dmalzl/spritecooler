@@ -10,12 +10,12 @@ process BALANCE_MCOOL {
     output:
     tuple val(meta), path("*balance.mcool"), emit: mcool
 
-    shell:
-    '''
-    spritefridge balance \
-        -m !{mcool} \
-        -p !{task.cpus} \
-        -o !{meta.id}.balance.mcool \
+    script:
+    """
+    spritefridge balance \\
+        -m ${mcool} \\
+        -p ${task.cpus} \\
+        -o ${meta.id}.balance.mcool \\
         --overwrite
-    '''
+    """
 }

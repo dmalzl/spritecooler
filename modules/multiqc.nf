@@ -21,8 +21,8 @@ process MULTIQC {
     path "*_data"              , emit: data
     path "*_plots"             , emit: plots
 
-    shell:
-    '''
+    script:
+    """
     multiqc -f .
-    '''
+    """
 }

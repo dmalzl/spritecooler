@@ -10,8 +10,8 @@ process MAKE_DPM_FASTA {
     output:
     path("dpm.fasta"), emit: fasta
 
-    shell:
-    '''
-    make_dpm_fasta.py -i !{barcodes} -o dpm.fasta
-    '''
+    script:
+    """
+    make_dpm_fasta.py -i ${barcodes} -o dpm.fasta
+    """
 }

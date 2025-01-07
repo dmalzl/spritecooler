@@ -20,10 +20,10 @@ process BOWTIE2_BUILD_INDEX {
     """
     mkdir bowtie2Index
 
-    bowtie2-build \
-        ${genomeFasta} \
-        bowtie2Index/${bwt2_base} \
-        --threads ${task.cpus} \
+    bowtie2-build \\
+        ${genomeFasta} \\
+        bowtie2Index/${bwt2_base} \\
+        --threads ${task.cpus} \\
         ${largeIndexFlag}
     """
 }

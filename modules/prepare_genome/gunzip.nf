@@ -12,8 +12,6 @@ process GUNZIP {
     gunzip = archive.toString() - '.gz'
 
     """
-    gunzip \
-        -f \
-        ${archive}
+    gunzip -f ${archive}
     """
 }

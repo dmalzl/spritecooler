@@ -13,14 +13,13 @@ process FILTER_ALIGNMENTS {
     tuple val(meta), path("*filtered.bam"), emit: bam
     tuple val(meta), path("*_mqc.tsv"),    emit: stats
 
-    shell:
-    '''
-    filter_alignments.py \
-        -i !{bam} \
-        -q !{minq} \
-        -o !{meta.id}
+    script:
+    """
+    filter_alignments.py \\
+        -i ${bam} \\
+        -q ${minq} \\
+        -o ${meta.id}
 
-    cat !{mqc_header} !{meta.id}.stats.tsv > !{meta.id}_filterstats_mqc.tsv
-    '''
-
+    cat ${mqc_header} ${meta.id}.stats.tsv > ${meta.id}_filterstats_mqc.tsv
+    """
 }

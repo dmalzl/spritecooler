@@ -13,18 +13,18 @@ process CLUSTER_BASE_COOLERS {
     output:
     tuple val(meta), path("coolers/*.cool"), emit: cools
 
-    shell:
-    '''
+    script:
+    """
     mkdir coolers
     for pairs in `ls pairs/*pairs.blksrt.gz`;
     do
-        pairsbase=$(basename ${pairs%.pairs.blksrt.gz})
-        cooler cload pairs \
-            --assembly !{genome} \
-            -c1 2 -p1 3 -c2 4 -p2 5 \
-            !{chromsizes}:!{resolution} \
-            ${pairs} \
+        pairsbase=\$(basename \${pairs%.pairs.blksrt.gz})
+        cooler cload pairs \\
+            --assembly ${genome} \\
+            -c1 2 -p1 3 -c2 4 -p2 5 \\
+            ${chromsizes}:${resolution} \\
+            \${pairs} \\
             coolers/${pairsbase}_base.cool
     done
-    '''
+    """
 }

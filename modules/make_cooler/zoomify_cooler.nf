@@ -11,13 +11,12 @@ process ZOOMIFY_COOLER {
     output:
     tuple val(meta), path("*.mcool"), emit: mcool
 
-    shell:
-    '''
-    cooler zoomify \
-        -p !{task.cpus} \
-        -r !{resolutions} \
-        -o !{meta.id}.mcool \
-        !{cooler}
-    '''
-
+    script:
+    """
+    cooler zoomify \\
+        -p ${task.cpus} \\
+        -r ${resolutions} \\
+        -o ${meta.id}.mcool \\
+        ${cooler}
+    """
 }

@@ -10,8 +10,8 @@ process MERGE_REPLICATE_COOLERS {
     output:
     tuple val(meta), path("*.cool"), emit: cool
 
-    shell:
-    '''
-    cooler merge !{meta.id}.cool !{coolers}
-    '''
+    script:
+    """
+    cooler merge ${meta.id}.cool ${coolers}
+    """
 }

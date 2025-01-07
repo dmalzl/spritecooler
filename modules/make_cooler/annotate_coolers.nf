@@ -10,10 +10,10 @@ process ANNOTATE_COOLERS {
     output:
     tuple val(meta), path("*annotated.mcool"), emit: mcool
     
-    shell:
-    '''
-    spritefridge annotate \
-        -i !{mcool} \
-        -b !{bed}
-    '''
+    script:
+    """
+    spritefridge annotate \\
+        -i ${mcool} \\
+        -b ${bed}
+    """
 }
