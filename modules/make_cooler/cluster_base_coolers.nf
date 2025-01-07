@@ -24,7 +24,7 @@ process CLUSTER_BASE_COOLERS {
             -c1 2 -p1 3 -c2 4 -p2 5 \\
             ${chromsizes}:${resolution} \\
             \${pairs} \\
-            coolers/${pairsbase}_base.cool
+            coolers/\${pairsbase}_base.cool
     done
     """
 }
