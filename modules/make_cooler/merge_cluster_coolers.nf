@@ -13,7 +13,6 @@ process MERGE_CLUSTER_COOLERS {
     tuple val(meta), path("*.mcool"),   emit: mcool
 
     script:
-    def nfiles = cooler.size() + 100
     """
     spritefridge combine \\
         -i coolers \\
