@@ -89,9 +89,6 @@ The minimum number of reads a SPRITE cluster must have to be included in the ana
 
 #### `--maxClusterSize` 
 The maximum number of reads a SPRITE cluster is allowed to have to be included in the analysis (default: 1000)
-            
-#### `--mergeChunks`    
-The number of chunks each dimension of the contact matrix is split into for merging cluster-based coolers. Note this is the square root of the actual number of chunks e.g. setting to 2 will result in 100 chunks (default: 2)
 
 #### `--resolutions`    
 comma-separated list of resolutions in bp to compute in addition to the default resolutions (see [cooler zoomify](https://cooler.readthedocs.io/en/latest/cli.html#cooler-zoomify); default: 5000N)
@@ -104,3 +101,6 @@ Alternatively, path to genome FASTA file to use for alignment
 
 #### `--chromSizes`     
 A tab-separated file containing chromosome names and their sizes
+
+#### `--genomeMask`
+BED file to use for filtering reads from problematic regions
