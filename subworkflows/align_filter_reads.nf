@@ -23,7 +23,7 @@ workflow ALIGN_FILTER_READS {
         mqc_filter_header
     )
 
-    if (!ch_genome_mask.isEmpty()) {
+    if (ch_genome_mask.ifEmpty(true)) {
 
         FILTER_MASKED_REGIONS (
             FILTER_ALIGNMENTS.out.bam,
@@ -37,7 +37,7 @@ workflow ALIGN_FILTER_READS {
 
         ch_bam          = FILTER_ALIGNMENTS.out.bam
         ch_mask_stats   = Channel.empty()
-        
+
     }
 
     emit:

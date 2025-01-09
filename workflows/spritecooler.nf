@@ -136,7 +136,7 @@ workflow SPRITECOOLER {
     }
     
     // concatenate fastqs of samples with multiple readfiles
-    if (!ch_fastq.multiple.isEmpty()) {
+    if (ch_fastq.multiple.ifEmpty(true)) {
 
         CAT_FASTQ ( ch_fastq.multiple )
             .reads
