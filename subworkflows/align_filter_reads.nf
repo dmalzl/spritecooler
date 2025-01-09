@@ -23,26 +23,15 @@ workflow ALIGN_FILTER_READS {
         mqc_filter_header
     )
 
-    if (!ch_genome_mask.ifEmpty(true)) {
-
-        FILTER_MASKED_REGIONS (
-            FILTER_ALIGNMENTS.out.bam,
-            ch_genome_mask,
-            mqc_mask_header
-        )
-        ch_bam          = FILTER_MASKED_REGIONS.out.bam
-        ch_mask_stats   = FILTER_MASKED_REGIONS.out.stats
-
-    } else {
-
-        ch_bam          = FILTER_ALIGNMENTS.out.bam
-        ch_mask_stats   = Channel.empty()
-
-    }
+    FILTER_MASKED_REGIONS (
+        FILTER_ALIGNMENTS.out.bam,
+        ch_genome_mask,
+        mqc_mask_header
+    )
 
     emit:
-    bam         = ch_bam
+    bam         = FILTER_MASKED_REGIONS.out.bam
     align       = BOWTIE2_ALIGN.out.log
     filtered    = FILTER_ALIGNMENTS.out.stats
-    masked      = ch_mask_stats
+    masked      = FILTER_MASKED_REGIONS.out.stats
 }

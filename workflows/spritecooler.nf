@@ -23,6 +23,7 @@ checkPathParamList = [
     params.barcodes,
     params.fasta,
     params.chromSizes,
+    params.genomeMask,
     igenomes_bowtie2,
     igenomes_fasta,
     igenomes_chromSizes
@@ -136,19 +137,10 @@ workflow SPRITECOOLER {
     }
     
     // concatenate fastqs of samples with multiple readfiles
-    if (!ch_fastq.multiple.ifEmpty(true)) {
-
-        CAT_FASTQ ( ch_fastq.multiple )
-            .reads
-            .mix ( ch_fastq.single )
-            .set { ch_cat_fastq }
-
-    } else {
-
-        ch_cat_fastq = ch_fastq.single
-
-    }
-
+    CAT_FASTQ ( ch_fastq.multiple )
+        .reads
+        .mix ( ch_fastq.single )
+        .set { ch_cat_fastq }
 
     FASTQC ( ch_cat_fastq )
 
