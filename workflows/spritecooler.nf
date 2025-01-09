@@ -159,7 +159,7 @@ workflow SPRITECOOLER {
         EXTRACT_BARCODES.out.reads,
         ch_genome.index,
         params.mapq,
-        file ( ch_genome_mask ),
+        file ( params.genomeMask ),
         ch_alignfilter_mqch,
         ch_mask_mqch
     )
