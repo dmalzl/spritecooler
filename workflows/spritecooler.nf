@@ -154,14 +154,12 @@ workflow SPRITECOOLER {
         params.mismatch,
         ch_extractbc_mqch
     )
-
-    ch_genome_mask = params.genomeMask ? Channel.fromPath(params.genomeMask) : Channel.empty()
     
     ALIGN_FILTER_READS (
         EXTRACT_BARCODES.out.reads,
         ch_genome.index,
         params.mapq,
-        ch_genome_mask,
+        file ( ch_genome_mask ),
         ch_alignfilter_mqch,
         ch_mask_mqch
     )
