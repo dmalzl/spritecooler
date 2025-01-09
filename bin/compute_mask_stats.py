@@ -9,13 +9,13 @@ def parse_args():
     parser.add_argument(
         '--input',
         '-i',
-        requried = True,
+        required = True,
         help = 'unfiltered bam file'
     )
     parser.add_argument(
         '--masked',
         '-m',
-        requried = True,
+        required = True,
         help = 'filtered bam file'
     )
     parser.add_argument(
