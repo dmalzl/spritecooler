@@ -84,6 +84,7 @@ ch_extractbc_mqch       = file ( "${workflow.projectDir}/assets/multiqc/extractb
 ch_alignfilter_mqch     = file ( "${workflow.projectDir}/assets/multiqc/alignfilter_header.txt",    checkIfExists: true )
 ch_clustersize_mqch     = file ( "${workflow.projectDir}/assets/multiqc/clustersize_header.txt",    checkIfExists: true )
 ch_dedup_mqch           = file ( "${workflow.projectDir}/assets/multiqc/dedup_header.txt",          checkIfExists: true )
+ch_mask_mqch            = file ( "${workflow.projectDir}/assets/multiqc/mask_header.txt",           checkIfExists: true )
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -133,11 +134,21 @@ workflow SPRITECOOLER {
         ch_genome.index     = file( dynamic_params.bowtie2Index )
         ch_genome.sizes     = file( dynamic_params.genomeSizes )
     }
+    
     // concatenate fastqs of samples with multiple readfiles
-    CAT_FASTQ ( ch_fastq.multiple )
-        .reads
-        .mix ( ch_fastq.single )
-        .set { ch_cat_fastq }
+    if (!ch_fastq.multiple.empty()) {
+
+        CAT_FASTQ ( ch_fastq.multiple )
+            .reads
+            .mix ( ch_fastq.single )
+            .set { ch_cat_fastq }
+
+    } else {
+
+        ch_cat_fastq = ch_fastq.single
+
+    }
+
 
     FASTQC ( ch_cat_fastq )
 
@@ -152,11 +163,15 @@ workflow SPRITECOOLER {
         ch_extractbc_mqch
     )
 
+    ch_genome_mask = params.genomeMask ? Channel.fromPath(params.genomeMask) : Channel.empty()
+    
     ALIGN_FILTER_READS (
         EXTRACT_BARCODES.out.reads,
         ch_genome.index,
         params.mapq,
-        ch_alignfilter_mqch
+        ch_genome_mask,
+        ch_alignfilter_mqch,
+        ch_mask_mqch
     )
 
     MAKE_PAIRS (
@@ -188,6 +203,7 @@ workflow SPRITECOOLER {
         EXTRACT_BARCODES.out.zip.collect { it[1] },
         ALIGN_FILTER_READS.out.align.collect { it[1] },
         ALIGN_FILTER_READS.out.filtered.collect { it[1] },
+        ALIGN_FILTER_READS.out.masked.collect { it[1] },
         MAKE_PAIRS.out.sizestats.collect { it[1] },
         MAKE_PAIRS.out.dupstats.collect { it[1] }
     )

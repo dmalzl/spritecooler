@@ -11,7 +11,7 @@ process FILTER_ALIGNMENTS {
 
     output:
     tuple val(meta), path("*filtered.bam"), emit: bam
-    tuple val(meta), path("*_mqc.tsv"),    emit: stats
+    tuple val(meta), path("*_mqc.tsv"),     emit: stats
 
     script:
     """

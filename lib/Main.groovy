@@ -36,24 +36,20 @@ class Main {
                              has to be given as a comma-separated list of colon-separated category:nmismatch values
                              e.g. category1:0,category2:2,...
 
-            --outputDir      Directory name to save results to. (default: 'results')
-
             --minClusterSize minimum number of reads a SPRITE cluster must have to be included in the analysis (default: 2)
 
             --maxClusterSize maximum number of reads a SPRITE cluster is allowed to have to be included in the analysis (default: 1000)
-            
-            --mergeChunks    number of chunks each dimension of the contact matrix is split into for merging cluster-based coolers
-                             Note this is the square root of the actual number of chunks e.g. setting to 10 will result in 100 chunks (default: 10)
 
             --resolutions    comma-separated list of resolutions in bp to compute in addition to the default resolutions
-    			                   default resolutions are 5000,10000,25000,50000,100000,250000,500000,1000000 and resolutions
-    			                   specified via this parameter will be added to this list
+    			             default resolutions are 5000N (see cooler zoomify) and resolutions specified via this parameter will be added to this list
 
+            --outputDir      Directory name to save results to. (default: 'results')
 
          References:
             --genome         Name of reference (hg38, mm10, ...)
             --fasta          Alternatively, path to genome fasta file which will be digested
             --chromSizes     tab-separated file containing chromosome names and their sizes
+            --genomeMask     BED file containing blacklisted regions. If given reads mapping to these regions will be filtered
 
          Profiles:
             standard         local execution

@@ -1,0 +1,11 @@
+# id: 'alignment_masking'
+# section_name: 'Alignment masking'
+# description: "shows basic statistics of filtering out reads in mask genomic regions"
+# anchor: 'alignment_masking'
+# format: 'tsv'
+# plot_type: 'bargraph'
+# pconfig:
+#     id: "alignment_masking_plot"
+#     title: "Masking Stats"
+#     xlab: "# Reads"
+#     cpswitch_counts_label: "Number of Reads"
