@@ -18,7 +18,8 @@ nextflow run dmalzl/spritecooler \
         --r1Layout DPM \
         --r2Layout 'Y|SPACER|ODD|SPACER|EVEN|SPACER|ODD' \
         --mismatch 'DPM:0,Y:0,EVEN:2,ODD:2' \
-        --genome GRCh38
+        --genome GRCh38 \
+        --genomeMask GRCh38.blacklist.bed
 ```
 
 Here `samples.csv` is a comma-separated file containing sample information including paths to the files containing the raw sequence data (has to have the follwing format)
