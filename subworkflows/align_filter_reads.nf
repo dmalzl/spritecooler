@@ -23,7 +23,7 @@ workflow ALIGN_FILTER_READS {
         mqc_filter_header
     )
 
-    if (ch_genome_mask.ifEmpty(true)) {
+    if (!ch_genome_mask.ifEmpty(true)) {
 
         FILTER_MASKED_REGIONS (
             FILTER_ALIGNMENTS.out.bam,
