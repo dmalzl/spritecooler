@@ -40,8 +40,8 @@ def main():
     filtered = alignment_counts(args.masked)
     n_masked = unfiltered - filtered
     with open(args.output, 'w') as stats:
-        stats.write(f'valid\t{filtered}')
-        stats.write(f'masked\t{n_masked}')
+        stats.write(f'valid\t{filtered}\n')
+        stats.write(f'masked\t{n_masked}\n')
 
 
 if __name__ == '__main__':
