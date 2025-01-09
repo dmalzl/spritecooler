@@ -1,4 +1,4 @@
-process FILTER_ALIGNMENTS {
+process FILTER_MASKED_REGIONS {
 
     tag "$meta.id"
 
