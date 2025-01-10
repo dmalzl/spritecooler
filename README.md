@@ -1,6 +1,8 @@
 # spritecooler
 a cooler way to analyse your SPRITE-seq data
 
+[![Nextflow](https://img.shields.io/badge/nextflow-%E2%89%A523.10.1-brightgreen.svg)](https://www.nextflow.io/)
+
 ## Introduction
 spritecooler is a nextflow pipeline for processing SPRITE-seq data aligned with the 4DN guidelines. It was developed be a complete reimplementation of the sprite-pipeline [v1.0](https://github.com/GuttmanLab/sprite-pipeline) (still lacks the RNA-DNA processing part of [v2.0](https://github.com/GuttmanLab/sprite2.0-pipeline)) in nextflow and Python
 leveraging the [Cooler framework](https://github.com/open2c/cooler) for contact matrix creating, storage and manipulation. This also enables the data to be integrated in existing Hi-C workflows and viewers
@@ -81,7 +83,7 @@ c_2_1,c_8_10,c_5_20,...
 ```
 where each alignment is recorded as `c_<clustersize>_<clusternumber>`. This information can later be used to assess the number of clusters overlapping a given set of regions of interest
 
-The final result of the pipeline is then saved to the folder set with `--outdir` (default: `results`). This includes the balanced and annotated contact matrix (`<outdir>/cool/annotated`), the individual contact matrices for each clustersize as multicooler (`<outdir>/cool/base`; these are raw contacts at base resolution (default: 5kb) without downweighting and no balancing), the filtered alignments (`<outdir>/alignments`) and the respective BED files (`<outdir>/clusterbed`). Optionally, you can also set `--savePairs true` to save the generated pairs files for each cluster and `--saveQfilteredAlignments true` to save alignments before blacklist filtering (`<outdir>/alignments`).
+The final result of the pipeline is then saved to the folder set with `--outdir` (default: `results`). This includes the balanced and annotated contact matrix (`<outdir>/cool/annotated`), the individual contact matrices for each clustersize as multicooler (`<outdir>/cool/base`; these are raw contacts at base resolution (default: 5kb) without downweighting and no balancing), the filtered alignments (`<outdir>/alignments`) and the respective BED files (`<outdir>/clusterbed`). Optionally, you can also set `--savePairs true` to save the generated pairs files for each cluster and `--saveQfilteredAlignments true` to save alignments before blacklist filtering (`<outdir>/alignments`). Additionally, the generated MultiQC report will be saved to (`<outdir>/multiqc`)
 
 ## Parameters
 This section provides an overview of the available command line arguments of the pipeline
