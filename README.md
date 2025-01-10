@@ -1,7 +1,7 @@
 # spritecooler
-a cooler way to analyse your SPRITE-seq data
-
 [![Nextflow](https://img.shields.io/badge/nextflow-%E2%89%A523.10.1-brightgreen.svg)](https://www.nextflow.io/)
+
+a cooler way to analyse your SPRITE-seq data
 
 ## Introduction
 spritecooler is a nextflow pipeline for processing SPRITE-seq data aligned with the 4DN guidelines. It was developed be a complete reimplementation of the sprite-pipeline [v1.0](https://github.com/GuttmanLab/sprite-pipeline) (still lacks the RNA-DNA processing part of [v2.0](https://github.com/GuttmanLab/sprite2.0-pipeline)) in nextflow and Python
@@ -49,7 +49,7 @@ Executing the above command will run through all necessary steps to process the 
 1. *Quality control and adapter trimming*
 This step will run `fastqc` as well as `trim_galore` to assess the quality of the raw reads and remove any sequencing adapter contamination from the raw sequencing data.
 2. *Barcode extraction*
-The QCd reads are then processed to extract the used barcode sequence. Only reads with a full complement of barcodes are retained. For this we use a Python reimplementation of the original Guttman Java tool. In theory this reimplementation is should be flexible enough to accomodate any barcoding scheme but has a few quirks that need to be thought of when fiddling with it. The code below shows the main loop the extraction goes through:
+The QCd reads are then processed to extract the used barcode sequence. Only reads with a full complement of barcodes are retained. For this we use a Python reimplementation of the original Guttman Java tool. In theory this reimplementation is should be flexible enough to accomodate any barcoding scheme but has a few quirks that need to be thought of when fiddling with it. The code below shows the main loop the extraction goes through. So in essence the set number of mismatches allowed do not apply to DPM and NY sequences. A useful thing to keep in mind might be that in the end, only the barcode name is recorded in the read. This means that the barcode category can accomodate more than just barcodes of this category. e.g. adding RPMs to DPM category to allow RNA-DNA interaction data processing etc.
 ```python
 for bc_category, min_bc_len, max_bc_len in layout:
         if bc_category.startswith('S'):
@@ -67,7 +67,6 @@ for bc_category, min_bc_len, max_bc_len in layout:
 
         # find matching barcode by use of regular expression
 ```
-So in essence the set number of mismatches allowed do not apply to DPM and NY sequences. A useful thing to keep in mind might be that in the end, only the barcode name is recorded in the read. This means that the barcode category can accomodate more than just barcodes of this category. e.g. adding RPMs to DPM category to allow RNA-DNA interaction data processing etc.
 3. *Trimming DPM remnants*
 The given DPM barcodes are converted to FASTA format and used with `cutadapt` to remove any 3' DPM contamination from the raw reads after which another `fastqc` run is executed.
 4. *Alignment and filtering*
@@ -77,11 +76,7 @@ The filtered alignments are then processed to identify clusters based on the ide
 6. *Generating contact matrices*
 Generated pairs files for each cluster size are then ingested with cooler to generate contact matrices for each clustersize. These contact matrices are then subsequently merged by simply summing over their downweighted counts per bin (e.g. for a clustersize of 250 the corresponding matrix is simply multiplied by 2/250 before summing). The resulting merged matrix is then coarsend to different bin sizes (`cooler zoomify`; default: 5000N) and balanced using iterative correction and Knight-Ruiz per chromosome and genomewide.
 7. *Annotating cluster identity of contacts per bin*
-The last step of the pipeline is adding the cluster identity of the recorded contacts to each bin, which is done by intersecting the aformentioned BED file (see step 5) with the genome bins. The results are then written to the `bins` table of the generated cooler for each bin size. The format of the annotation looks somewhat like this
-```
-c_2_1,c_8_10,c_5_20,...
-```
-where each alignment is recorded as `c_<clustersize>_<clusternumber>`. This information can later be used to assess the number of clusters overlapping a given set of regions of interest
+The last step of the pipeline is adding the cluster identity of the recorded contacts to each bin, which is done by intersecting the aformentioned BED file (see step 5) with the genome bins. The results are then written to the `bins` table of the generated cooler for each bin size. The format of the annotation looks somewhat like this `c_2_1,c_8_10,c_5_20,...` where each alignment is recorded as `c_<clustersize>_<clusternumber>`. This information can later be used to assess the number of clusters overlapping a given set of regions of interest
 
 The final result of the pipeline is then saved to the folder set with `--outdir` (default: `results`). This includes the balanced and annotated contact matrix (`<outdir>/cool/annotated`), the individual contact matrices for each clustersize as multicooler (`<outdir>/cool/base`; these are raw contacts at base resolution (default: 5kb) without downweighting and no balancing), the filtered alignments (`<outdir>/alignments`) and the respective BED files (`<outdir>/clusterbed`). Optionally, you can also set `--savePairs true` to save the generated pairs files for each cluster and `--saveQfilteredAlignments true` to save alignments before blacklist filtering (`<outdir>/alignments`). Furthermore, balanced mcools can be saved without annotation using `--saveBalanced true` (`<outdir>/cool/balanced`). Additionally, the generated MultiQC report will be saved to (`<outdir>/multiqc`)
 
