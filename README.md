@@ -83,7 +83,7 @@ c_2_1,c_8_10,c_5_20,...
 ```
 where each alignment is recorded as `c_<clustersize>_<clusternumber>`. This information can later be used to assess the number of clusters overlapping a given set of regions of interest
 
-The final result of the pipeline is then saved to the folder set with `--outdir` (default: `results`). This includes the balanced and annotated contact matrix (`<outdir>/cool/annotated`), the individual contact matrices for each clustersize as multicooler (`<outdir>/cool/base`; these are raw contacts at base resolution (default: 5kb) without downweighting and no balancing), the filtered alignments (`<outdir>/alignments`) and the respective BED files (`<outdir>/clusterbed`). Optionally, you can also set `--savePairs true` to save the generated pairs files for each cluster and `--saveQfilteredAlignments true` to save alignments before blacklist filtering (`<outdir>/alignments`). Additionally, the generated MultiQC report will be saved to (`<outdir>/multiqc`)
+The final result of the pipeline is then saved to the folder set with `--outdir` (default: `results`). This includes the balanced and annotated contact matrix (`<outdir>/cool/annotated`), the individual contact matrices for each clustersize as multicooler (`<outdir>/cool/base`; these are raw contacts at base resolution (default: 5kb) without downweighting and no balancing), the filtered alignments (`<outdir>/alignments`) and the respective BED files (`<outdir>/clusterbed`). Optionally, you can also set `--savePairs true` to save the generated pairs files for each cluster and `--saveQfilteredAlignments true` to save alignments before blacklist filtering (`<outdir>/alignments`). Furthermore, balanced mcools can be saved without annotation using `--saveBalanced true` (`<outdir>/cool/balanced`). Additionally, the generated MultiQC report will be saved to (`<outdir>/multiqc`)
 
 ## Parameters
 This section provides an overview of the available command line arguments of the pipeline
@@ -132,12 +132,6 @@ The minimum mapping quality for a given alignment to be retained (default: 20)
 #### `--outdir`      
 Directory name to save results to. (default: 'results')
 
-#### `--savePairs`
-whether to write pairs files to results. set to `--savePairs true` in case you want the pairs files (default: false)
-
-#### `--saveQfilteredAlignments`
-whether to also save quality filtered primary alignments. set to `--saveQfilteredAlignments true`(default: false)
-
 #### `--minClusterSize` 
 The minimum number of reads a SPRITE cluster must have to be included in the analysis (default: 2)
 
@@ -158,3 +152,12 @@ A tab-separated file containing chromosome names and their sizes
 
 #### `--genomeMask`
 BED file to use for filtering reads from problematic regions
+
+#### `--savePairs`
+whether to write pairs files to results. set to `--savePairs true` in case you want the pairs files (default: false)
+
+#### `--saveQfilteredAlignments`
+whether to also save quality filtered primary alignments. set to `--saveQfilteredAlignments true`(default: false)
+
+#### `--saveBalanced`
+whether to also save the unannotated balanced multicoolers. set to `--saveBalanced true`(default: false)
