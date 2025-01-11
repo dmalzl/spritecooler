@@ -78,7 +78,7 @@ Generated pairs files for each cluster size are then ingested with cooler to gen
 7. *Annotating cluster identity of contacts per bin*
 The last step of the pipeline is adding the cluster identity of the recorded contacts to each bin, which is done by intersecting the aformentioned BED file (see step 5) with the genome bins. The results are then written to the `bins` table of the generated cooler for each bin size. The format of the annotation looks somewhat like this `c_2_1,c_8_10,c_5_20,...` where each alignment is recorded as `c_<clustersize>_<clusternumber>`. This information can later be used to assess the number of clusters overlapping a given set of regions of interest
 
-The final result of the pipeline is then saved to the folder set with `--outdir` (default: `results`). This includes the balanced and annotated contact matrix (`<outdir>/cool/annotated`), the individual contact matrices for each clustersize as multicooler (`<outdir>/cool/base`; these are raw contacts at base resolution (default: 5kb) without downweighting and no balancing), the filtered alignments (`<outdir>/alignments`) and the respective BED files (`<outdir>/clusterbed`). Optionally, you can also set `--savePairs true` to save the generated pairs files for each cluster and `--saveQfilteredAlignments true` to save alignments before blacklist filtering (`<outdir>/alignments`). Furthermore, balanced mcools can be saved without annotation using `--saveBalanced true` (`<outdir>/cool/balanced`). Additionally, the generated MultiQC report will be saved to (`<outdir>/multiqc`)
+The final result of the pipeline is then saved to the folder set with `--outdir` (default: `results`). This includes the balanced and annotated contact matrix (`<outdir>/cool/annotated`), the individual contact matrices for each clustersize as multicooler (`<outdir>/cool/base`; these are raw contacts at base resolution (default: 5kb) without downweighting and no balancing), the filtered alignments (`<outdir>/alignments`) and the respective BED files (`<outdir>/clusterbed`). Optionally, you can also set `--savePairs true` to save the generated pairs files for each cluster and `--saveQfilteredAlignments true` to save alignments before blacklist filtering (`<outdir>/alignments`). Additionally, the generated MultiQC report will be saved to (`<outdir>/multiqc`)
 
 ## Parameters
 This section provides an overview of the available command line arguments of the pipeline
@@ -153,6 +153,3 @@ whether to write pairs files to results. set to `--savePairs true` in case you w
 
 #### `--saveQfilteredAlignments`
 whether to also save quality filtered primary alignments. set to `--saveQfilteredAlignments true`(default: false)
-
-#### `--saveBalanced`
-whether to also save the unannotated balanced multicoolers. set to `--saveBalanced true`(default: false)
