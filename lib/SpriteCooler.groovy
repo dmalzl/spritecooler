@@ -99,6 +99,7 @@ class SpriteCooler {
         log.info " maxClusterSize           : ${params.maxClusterSize}"
         log.info " mapq                     : ${params.mapq}"
         log.info " savePairs                : ${params.savePairs}"
+        log.info " saveQfilteredAlignments  : ${params.saveQfilteredAlignments}"
         log.info " Resolutions              : ${dynamic.resolutions}"
         log.info " baseResolution           : ${dynamic.baseResolution}"
         log.info " Genome                   : ${dynamic.genomeName}"
