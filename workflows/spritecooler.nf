@@ -179,8 +179,7 @@ workflow SPRITECOOLER {
         dynamic_params.baseResolution,
         dynamic_params.resolutions,
         ch_genome.sizes,
-        dynamic_params.genomeName,
-        params.mergeChunks
+        dynamic_params.genomeName
     )
 
     MULTIQC (

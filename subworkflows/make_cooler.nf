@@ -13,7 +13,6 @@ workflow MAKE_COOLER {
     resolutions
     chromSizes
     genomeName
-    mergeChunks
 
     main:
     CLUSTER_BASE_COOLERS (
@@ -32,8 +31,7 @@ workflow MAKE_COOLER {
         .set { ch_base_coolers }
 
     MERGE_CLUSTER_COOLERS (
-        ch_base_coolers,
-        mergeChunks
+        ch_base_coolers
     )
 
     MERGE_CLUSTER_COOLERS.out.cool

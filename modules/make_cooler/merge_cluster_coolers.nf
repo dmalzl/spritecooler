@@ -6,7 +6,6 @@ process MERGE_CLUSTER_COOLERS {
 
     input:
     tuple val(meta), path(coolers, name: 'coolers/*')
-    val nchunks
 
     output:
     tuple val(meta), path("*.cool"),    emit: cool
