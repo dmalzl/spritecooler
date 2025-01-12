@@ -64,7 +64,7 @@ workflow MAKE_COOLER {
 
     BALANCE_MCOOL ( ZOOMIFY_COOLER.out.mcool )
 
-    BALANCE_MCOOL.out.mcool
+    ZOOMIFY_COOLER.out.mcool
         .join ( ch_pairs_bed )
         .set { ch_mcool_bed }
 
