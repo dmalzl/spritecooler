@@ -48,7 +48,7 @@ workflow EXTRACT_BARCODES {
         r2layout,
         mismatch,
         mqc_overall_header,
-        mqc_overall_header
+        mqc_poswise_header
     )
 
     MAKE_DPM_FASTA ( barcodes )
@@ -65,11 +65,11 @@ workflow EXTRACT_BARCODES {
         .join ( ch_extract_passed, by: [0] )
         .branch {
             meta, reads, pass ->
-            passed: pass
-                return [ meta, reads ]
+                passed: pass
+                    return [ meta, reads ]
 
-            failed: !pass
-                return [ meta, reads ]
+                failed: !pass
+                    return [ meta, reads ]
         }
         .set { ch_pass_fail_extract }
 
