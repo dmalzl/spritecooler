@@ -73,12 +73,12 @@ workflow EXTRACT_BARCODES {
         }
         .set { ch_pass_fail_extract }
 
-    ch_pass_fail_extract
+    ch_pass_fail_extract.failed
         .map {
             meta, reads -> 
             log_failed ( meta )
         }
-        
+
     TRIM_DPM ( 
         ch_pass_fail_extract.passed,
         MAKE_DPM_FASTA.out.fasta
