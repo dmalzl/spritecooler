@@ -33,7 +33,7 @@ process EXTRACT_BCS {
     # remove aggregate stats for multiqc
     tail -n +3 ${meta.id}.bcextract.overall.stats.tsv > tmp.stats.tsv
     cat ${mqc_overall_header} tmp.stats.tsv > ${meta.id}_overall_extractstats_mqc.tsv
-    cat ${mqc_poswise_header} ${meta_id}.bcexract.poswise.stats.tsv > ${meta.id}_poswise_extractstats_mqc.tsv
+    cat ${mqc_poswise_header} ${meta.id}.bcexract.poswise.stats.tsv > ${meta.id}_poswise_extractstats_mqc.tsv
     head -n 2 ${meta.id}.bcextract.overall.stats.tsv > ${meta.id}_valid_invalid_count.tsv
     """
 }
