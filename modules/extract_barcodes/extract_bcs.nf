@@ -10,11 +10,13 @@ process EXTRACT_BCS {
     val(layout1)
     val(layout2)
     val(mismatch)
-    path(mqc_header)
+    path(mqc_overall_header)
+    path(mqc_poswise_header)
 
     output:
-    tuple val(meta), path("*bcextract.fq.gz"), emit: reads
-    tuple val(meta), path("*_mqc.tsv"),   emit: stats
+    tuple val(meta), path("*bcextract.fq.gz"),          emit: reads
+    tuple val(meta), path("*_mqc.tsv"),                 emit: stats
+    tuple val(meta), path("*valid_invalid_count.tsv"),  emit: summary
 
     script:
     """
@@ -29,7 +31,9 @@ process EXTRACT_BCS {
         -p ${task.cpus}
 
     # remove aggregate stats for multiqc
-    tail -n +3 ${meta.id}.bcextract.stats.tsv > tmp.stats.tsv
-    cat ${mqc_header} tmp.stats.tsv > ${meta.id}_extractstats_mqc.tsv
+    tail -n +3 ${meta.id}.bcextract.overall.stats.tsv > tmp.stats.tsv
+    cat ${mqc_overall_header} tmp.stats.tsv > ${meta.id}_overall_extractstats_mqc.tsv
+    cat ${mqc_poswise_header} ${meta_id}.bcexract.poswise.stats.tsv > ${meta.id}_poswise_extractstats_mqc.tsv
+    head -n 2 ${meta.id}.bcextract.overall.stats.tsv > ${meta.id}_valid_invalid_count.tsv
     """
 }

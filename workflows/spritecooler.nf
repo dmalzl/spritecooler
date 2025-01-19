@@ -80,12 +80,13 @@ SpriteCooler.paramsSummaryLog( params, dynamic_params, log )
     INSTANTIATE MULTIQC CONFIGS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-ch_multiqc_config       = file ( "${workflow.projectDir}/assets/multiqc/multiqc_config.yml",        checkIfExists: true )
-ch_extractbc_mqch       = file ( "${workflow.projectDir}/assets/multiqc/extractbc_header.txt",      checkIfExists: true )
-ch_alignfilter_mqch     = file ( "${workflow.projectDir}/assets/multiqc/alignfilter_header.txt",    checkIfExists: true )
-ch_clustersize_mqch     = file ( "${workflow.projectDir}/assets/multiqc/clustersize_header.txt",    checkIfExists: true )
-ch_dedup_mqch           = file ( "${workflow.projectDir}/assets/multiqc/dedup_header.txt",          checkIfExists: true )
-ch_mask_mqch            = file ( "${workflow.projectDir}/assets/multiqc/mask_header.txt",           checkIfExists: true )
+ch_multiqc_config           = file ( "${workflow.projectDir}/assets/multiqc/multiqc_config.yml",            checkIfExists: true )
+ch_extractbc_overall_mqch   = file ( "${workflow.projectDir}/assets/multiqc/extractbc_overall_header.txt",  checkIfExists: true )
+ch_extractbc_poswise_mqch   = file ( "${workflow.projectDir}/assets/multiqc/extractbc_poswise_header.txt",  checkIfExists: true )
+ch_alignfilter_mqch         = file ( "${workflow.projectDir}/assets/multiqc/alignfilter_header.txt",        checkIfExists: true )
+ch_clustersize_mqch         = file ( "${workflow.projectDir}/assets/multiqc/clustersize_header.txt",        checkIfExists: true )
+ch_dedup_mqch               = file ( "${workflow.projectDir}/assets/multiqc/dedup_header.txt",              checkIfExists: true )
+ch_mask_mqch                = file ( "${workflow.projectDir}/assets/multiqc/mask_header.txt",               checkIfExists: true )
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -152,7 +153,8 @@ workflow SPRITECOOLER {
         params.r1Layout,
         params.r2Layout,
         params.mismatch,
-        ch_extractbc_mqch
+        ch_extractbc_overall_mqch,
+        ch_extractbc_poswise_mqch
     )
     
     ALIGN_FILTER_READS (

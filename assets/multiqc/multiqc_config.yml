@@ -59,7 +59,8 @@ extra_fn_clean_exts:
   - "_dupstats"
   - "_aggsize"
   - "_maskstats"
-  - "_extractstats"
+  - "_overall_extractstats"
+  - "_poswise_extractstats"
   - "_trimmed_val_1"
   - "_trimmed_val_2"
 
