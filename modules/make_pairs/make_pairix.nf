@@ -19,7 +19,7 @@ process MAKE_PAIRIX {
             -c1 2 -c2 4 \\
             -p1 3 -p2 5 \\
             -p ${task.cpus} \\
-            \$pairfile \
+            \$pairfile \\
             ${chromsizes}
     done
     """
