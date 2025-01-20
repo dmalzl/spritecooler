@@ -27,7 +27,11 @@ workflow MAKE_PAIRS {
     // when number of valid reads (i.e. with full complement of barcodes) is low
     // pipeline tends to crash due to some weird behaviour of file emission
     // we filter anything that has a very low number of pairs files 
-    def n_clusters_expected = maxClusterSize - minClusterSize
+
+    def n_clusters_expected = 0
+    // apparently this does not work in the same line as var def so we do it here
+    n_clusters_expected = maxClusterSize - minClusterSize
+    
     MAKE_CLUSTER_PAIRS.out.pairs
         .map {
             meta, pairs ->
