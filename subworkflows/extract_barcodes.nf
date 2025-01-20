@@ -8,6 +8,7 @@ def check_nvalid_reads(summarypath) {
         .fromPath ( summarypath ) 
         .splitCsv ( header: false, sep: '\t')
         .map { it -> it[1] }
+        .toInteger()
         .set { summarystats }
 
     summarystats
