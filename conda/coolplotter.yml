@@ -1,0 +1,11 @@
+name: coolplotter
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - pip=24.3.1
+  - python=3.12.8
+  - pip:
+      - cooler==0.10.3
+      - matplotlib

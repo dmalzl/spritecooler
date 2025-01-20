@@ -62,6 +62,8 @@ workflow MAKE_COOLER {
         resolutions
     )
 
+    PLOT_COOLER ( ZOOMIFY_COOLER.out.mcool )
+
     BALANCE_MCOOL ( ZOOMIFY_COOLER.out.mcool )
 
     ZOOMIFY_COOLER.out.mcool
