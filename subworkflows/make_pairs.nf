@@ -2,6 +2,10 @@ include { MAKE_CLUSTER_PAIRS } from '../modules/make_pairs/make_cluster_pairs.nf
 include { SORT_BED           } from '../modules/make_pairs/sort_bed.nf'
 include { MAKE_PAIRIX        } from '../modules/make_pairs/make_pairix.nf'
 
+def log_failed(meta) {
+    log.warn "percent valid reads for ${meta.id} below 5%. Skipping for further processing"
+}
+
 workflow MAKE_PAIRS {
     take:
     ch_filtered_bam
@@ -20,7 +24,31 @@ workflow MAKE_PAIRS {
         mqc_dedup_header
     )
 
+    // when number of valid reads (i.e. with full complement of barcodes) is low
+    // pipeline tends to crash due to some weird behaviour of file emission
+    // we filter anything that has a very low number of pairs files 
     MAKE_CLUSTER_PAIRS.out.pairs
+        .map {
+            meta, pairs ->
+            [ meta, pairs, pairs.size() > 10 ]
+        }
+        .branch {
+            meta, pairs, pass ->
+                passed: pass
+                    return [ meta, pairs ]
+
+                failed: !pass
+                    return [ meta, pairs ]
+        }
+        .set { ch_pairs }
+        
+    ch_pairs.failed
+        .map { 
+            meta, pairs -> 
+            log_failed(meta)
+        }
+    
+    ch_pairs.passed
         .flatMap { SpriteCooler.makeChunks( it, 50 ) }
         .set { ch_chunked_pairs }
 
