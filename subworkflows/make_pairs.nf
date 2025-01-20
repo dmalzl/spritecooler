@@ -3,7 +3,7 @@ include { SORT_BED           } from '../modules/make_pairs/sort_bed.nf'
 include { MAKE_PAIRIX        } from '../modules/make_pairs/make_pairix.nf'
 
 def log_failed(meta) {
-    log.warn "percent valid reads for ${meta.id} below 5%. Skipping for further processing"
+    log.warn "number of pairsfiles for ${meta.id} below 5% of expected. Excluding from further processing"
 }
 
 workflow MAKE_PAIRS {
@@ -27,11 +27,16 @@ workflow MAKE_PAIRS {
     // when number of valid reads (i.e. with full complement of barcodes) is low
     // pipeline tends to crash due to some weird behaviour of file emission
     // we filter anything that has a very low number of pairs files 
+    def n_clusters_expected = maxClusterSize - minClusterSize
     MAKE_CLUSTER_PAIRS.out.pairs
         .map {
             meta, pairs ->
-            [ meta, pairs, pairs.size() > 10 ]
+            [ meta, pairs.size() / n_clusters_expected * 100 > 5 ]
         }
+        .set { ch_npairs_filter }
+
+    MAKE_CLUSTER_PAIRS.out.pairs
+        .join( ch_npairs_filter )
         .branch {
             meta, pairs, pass ->
                 passed: pass
@@ -41,18 +46,24 @@ workflow MAKE_PAIRS {
                     return [ meta, pairs ]
         }
         .set { ch_pairs }
-        
+
     ch_pairs.failed
         .map { 
             meta, pairs -> 
             log_failed(meta)
         }
+
+    // use join to only keep beds of passed samples
+    ch_pairs.passed
+        .map { it -> it[0] }
+        .join( MAKE_CLUSTER_PAIRS.out.bed, remainder: false )
+        .set { ch_bed_passed }
     
     ch_pairs.passed
         .flatMap { SpriteCooler.makeChunks( it, 50 ) }
         .set { ch_chunked_pairs }
 
-    SORT_BED ( MAKE_CLUSTER_PAIRS.out.bed )
+    SORT_BED ( ch_bed_passed )
 
     SORT_BED.out.bed
         .map {
