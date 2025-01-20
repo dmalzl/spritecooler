@@ -7,3 +7,5 @@
 # pconfig:
 #     id: "barcode_extraction_plot_poswise"
 #     title: "Poswise Extraction Stats"
+#     min: 0
+#     max: 100
