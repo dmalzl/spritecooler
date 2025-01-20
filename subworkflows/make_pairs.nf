@@ -31,12 +31,8 @@ workflow MAKE_PAIRS {
     MAKE_CLUSTER_PAIRS.out.pairs
         .map {
             meta, pairs ->
-            [ meta, pairs.size() / n_clusters_expected * 100 > 5 ]
+            [ meta, pairs, pairs.size() / n_clusters_expected * 100 > 5 ]
         }
-        .set { ch_npairs_filter }
-
-    MAKE_CLUSTER_PAIRS.out.pairs
-        .join( ch_npairs_filter )
         .branch {
             meta, pairs, pass ->
                 passed: pass
