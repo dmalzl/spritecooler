@@ -14,14 +14,14 @@ process PLOT_COOLER {
     """
     mkdir plots
 
-    coolfile=${mcool}::/resolutions/1000000
-    for chrom in `cooler dump -t chroms | cut -f 1`;
+    coolpath=${mcool}::/resolutions/1000000
+    for chrom in `cooler dump -t chroms \${coolpath} | cut -f 1`;
     do
         cooler show \\
             --zmin 0 \\
             --cmap afmhot_r \\
             -o plots/${meta.id}_\${chrom}.pdf \\
-            \$coolfile \\
+            \$coolpath \\
             \$chrom
     done
     """
