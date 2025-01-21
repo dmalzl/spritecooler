@@ -2,7 +2,7 @@ process BOWTIE2_ALIGN {
 
     tag "$meta.id"
 
-    conda "${NXF_HOME}/assets/dmalzl/spritecooler/conda/align.yml"
+    conda "${workflow.projectDir}/conda/bowtie2.yml"
 
     input:
     tuple val(meta), path(reads)

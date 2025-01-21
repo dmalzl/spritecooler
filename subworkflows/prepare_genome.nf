@@ -2,6 +2,7 @@
 include { GUNZIP as GUNZIP_FASTA } from '../modules/prepare_genome/gunzip.nf'
 include { XML_TO_TSV             } from '../modules/prepare_genome/xml_to_tsv.nf'
 include { BOWTIE2_BUILD_INDEX    } from '../modules/prepare_genome/bowtie2_build_index.nf'
+include { STAR_GENOMEGENERATE    } from '../modules/prepare_genome/star_genomegenerate.nf'
 
 workflow PREPARE_GENOME {
     take:
@@ -30,6 +31,16 @@ workflow PREPARE_GENOME {
         ch_bowtie2_index = file ( dynamic_params.bowtie2Index )
     }
 
+    if ("star" in prepare_genome_for_tools) {
+        ch_star_index = STAR_GENOMEGENERATE (
+            ch_fasta,
+            dynamic_params.gtf
+        )
+
+    } else {
+        ch_star_index = file ( dynamic_params.starIndex )
+    }
+
     if ("chromSizes" in prepare_genome_for_tools) {
         ch_genome_sizes = XML_TO_TSV (
             file( dynamic_params.genomeSizes )
@@ -40,7 +51,7 @@ workflow PREPARE_GENOME {
     }
 
     emit:
-    index      = ch_bowtie2_index
-    sizes      = ch_genome_sizes
-
+    bowtie2     = ch_bowtie2_index
+    star        = ch_star_index
+    sizes       = ch_genome_sizes
 }

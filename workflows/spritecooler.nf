@@ -6,13 +6,17 @@
 SpriteCooler.checkParams( params, log )
 
 if ( params.genome && params.genomes && !params.igenomes_ignore ) {
-    igenomes_bowtie2    = SpriteCooler.getGenomeAttribute(params, 'bowtie2', log)
-    igenomes_fasta      = SpriteCooler.getGenomeAttribute(params, 'fasta', log)
+    igenomes_bowtie2    = SpriteCooler.getGenomeAttribute(params, 'bowtie2',    log)
+    igenomes_star       = SpriteCooler.getGenomeAttribute(params, 'star',       log)
+    igenomes_gtf        = SpriteCooler.getGenomeAttribute(params, 'gtf',       log)
+    igenomes_fasta      = SpriteCooler.getGenomeAttribute(params, 'fasta',      log)
     igenomes_chromSizes = SpriteCooler.getGenomeAttribute(params, 'chromSizes', log)
 
 } else {
-    igenomes_bowtie2 = ''
-    igenomes_fasta = ''
+    igenomes_bowtie2    = ''
+    igenomes_star       = ''
+    igenomes_gtf        = ''
+    igenomes_fasta      = ''
     igenomes_chromSizes = ''
 
 }
@@ -23,13 +27,18 @@ checkPathParamList = [
     params.barcodes,
     params.fasta,
     params.chromSizes,
-    params.genomeMask,
+    params.genomeMask
+]
+
+checkPathiGenomes = [
     igenomes_bowtie2,
+    igenomes_star,
     igenomes_fasta,
     igenomes_chromSizes
 ]
 
 for ( param in checkPathParamList ) { if (param) { file( param, checkIfExists: true ) } }
+for ( param in checkPathiGenomes  ) { if (param) { file( param, checkIfExists: true ) } }
 
 resolutions = params.resolutions ? params.resolutions : params.defaultResolutions
 baseResolution = SpriteCooler.getBaseResolution(resolutions)
@@ -40,26 +49,20 @@ def prepare_genome_for_tools = []
 // if we do not have --genome
 if ( !params.genome ) {
     // bowtie2 index
+    if ( !params.gtf ) {
+        log.error "--genome not specified and no GTF given, which is needed for STAR. Exiting!"
+        System.exit(1)
+    }
     if ( params.fasta ) {
         prepare_genome_for_tools << "bowtie2"
+        prepare_genome_for_tools << "star"
 
     } else {
-        log.error "Neither --genome nor --fasta are specified but needed for bowtie2 index."
+        log.error "Neither --genome nor --fasta are specified but needed for Bowtie2/STAR index. Exiting!"
         System.exit(1)
     }
 
     if ( params.chromSizes.endsWith("xml") ) {
-        prepare_genome_for_tools << "chromSizes"
-    }
-
-// if --genome is specified we check if everything is there
-} else {
-    if ( !igenomes_bowtie2 ) {
-        log.info "Bowtie2 index not found in igenomes config file. Computing from igenomes_fasta"
-        prepare_genome_for_tools << "bowtie2"
-    }
-
-    if ( igenomes_chromSizes.endsWith("xml") ) {
         prepare_genome_for_tools << "chromSizes"
     }
 }
@@ -68,6 +71,8 @@ dynamic_params = [:]
 dynamic_params.genomeFasta      = params.genome ? igenomes_fasta : params.fasta
 dynamic_params.genomeSizes      = params.genome ? igenomes_chromSizes : params.chromSizes
 dynamic_params.bowtie2Index     = igenomes_bowtie2 ? igenomes_bowtie2 : "computed from fasta"
+dynamic_params.starIndex        = igenomes_star ? igenomes_bowtie2 : "computed from fasta"
+dynamic_params.gtf              = params.gtf ? params.gtf : igenomes_gtf
 dynamic_params.genomeSizeType   = SpriteCooler.getGenomeSizeType( dynamic_params.genomeSizes )
 dynamic_params.genomeName       = params.genome ? params.genome : file(dynamic_params.genomeFasta).getSimpleName()
 dynamic_params.baseResolution   = baseResolution
@@ -108,20 +113,12 @@ include { MULTIQC                   } from '../modules/multiqc.nf'
 
 //define some simple utilities
 def remove_null(files) {
-    def file = null
-    for (f in files) {
-        if (!f) continue
-        file = f
+    def ret = []
+    for (file in files) {
+        if (!file) continue
+        ret.add(file)
     }
-    return file
-}
-
-def all(files) {
-    def all_files = true
-    for (f in files) {
-        if (!f) all_files = false
-    }
-    return all_files
+    return ret
 }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -178,7 +175,7 @@ workflow SPRITECOOLER {
     
     ALIGN_FILTER_READS_DPM (
         EXTRACT_BARCODES.out.dpm,
-        ch_genome.bowtie,
+        ch_genome.bowtie2,
         params.mapq,
         file ( params.genomeMask ),
         ch_alignfilter_mqch,
@@ -208,24 +205,11 @@ workflow SPRITECOOLER {
 
     ALIGN_FILTER_READS_DPM.out.bam
         .join ( ALIGN_FILTER_READS_RPM.out.bam, remainder: true )
-        .map { it -> [it[0], it[1..-1]] }
-        .branch {
-            meta, files ->
-                multiple: all(files)
-                    return [meta, files]
-                    
-                single: !all(files)
-                    return [meta, remove_null(files)]
-        }
-        .set { ch_join_bams }
-    
-    CAT_RPM_DPM_BAM ( ch_bams.multiple )
-        .bam
-        .mix ( ch_bams.single )
-        .set { ch_dpmrpm_bams }
+        .map { it -> [it[0], remove_null(it[1..-1])] }
+        .set { ch_bams }
 
     MAKE_PAIRS (
-        ch_dpmrpm_bams,
+        ch_bams,
         ch_genome.sizes,
         params.minClusterSize,
         params.maxClusterSize,

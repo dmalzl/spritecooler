@@ -34,7 +34,7 @@ workflow EXTRACT_BARCODES {
     )
 
     SPLIT_RPM_DPM ( 
-        TRIM_PPM_DPM.out.reads,
+        TRIM_RPM_DPM.out.reads,
         mqc_dpmrpm_header
     )
 

@@ -1,4 +1,4 @@
-include { STAR_ALIGN            } from '../modules/align_filter_reads/bowtie2_align.nf'
+include { STAR_ALIGN            } from '../modules/align_filter_reads/star_align.nf'
 include { FILTER_ALIGNMENTS     } from '../modules/align_filter_reads/filter_alignments.nf'
 include { FILTER_MASKED_REGIONS } from '../modules/align_filter_reads/filter_masked_regions.nf'
 
