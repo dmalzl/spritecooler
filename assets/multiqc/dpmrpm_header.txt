@@ -1,0 +1,11 @@
+# id: 'dpm_rpm_stats'
+# section_name: 'DPM RPM split statistics'
+# description: "shows number of DPM / RPM containing reads"
+# anchor: 'dpm_rpm_stats'
+# format: 'tsv'
+# plot_type: 'bargraph'
+# pconfig:
+#     id: "dpm_rpm_plot"
+#     title: "DPM RPM split stats"
+#     xlab: "# Reads"
+#     cpswitch_counts_label: "Number of Reads"

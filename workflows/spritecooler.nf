@@ -83,6 +83,7 @@ SpriteCooler.paramsSummaryLog( params, dynamic_params, log )
 ch_multiqc_config           = file ( "${workflow.projectDir}/assets/multiqc/multiqc_config.yml",            checkIfExists: true )
 ch_extractbc_overall_mqch   = file ( "${workflow.projectDir}/assets/multiqc/extractbc_overall_header.txt",  checkIfExists: true )
 ch_extractbc_poswise_mqch   = file ( "${workflow.projectDir}/assets/multiqc/extractbc_poswise_header.txt",  checkIfExists: true )
+ch_dpmrpm_mqch              = file ( "${workflow.projectDir}/assets/multiqc/dpmrpm_header.txt",             checkIfExists: true )
 ch_alignfilter_mqch         = file ( "${workflow.projectDir}/assets/multiqc/alignfilter_header.txt",        checkIfExists: true )
 ch_clustersize_mqch         = file ( "${workflow.projectDir}/assets/multiqc/clustersize_header.txt",        checkIfExists: true )
 ch_dedup_mqch               = file ( "${workflow.projectDir}/assets/multiqc/dedup_header.txt",              checkIfExists: true )
@@ -93,16 +94,17 @@ ch_mask_mqch                = file ( "${workflow.projectDir}/assets/multiqc/mask
     IMPORT LOCAL MODULES/SUBWORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-include { INPUT_CHECK        } from '../subworkflows/input_check.nf'
-include { PREPARE_GENOME     } from '../subworkflows/prepare_genome.nf'
-include { CAT_FASTQ          } from '../modules/cat_fastq.nf'
-include { TRIMGALORE         } from '../modules/trimgalore.nf'
-include { FASTQC             } from '../modules/fastqc.nf'
-include { EXTRACT_BARCODES   } from '../subworkflows/extract_barcodes.nf'
-include { ALIGN_FILTER_READS } from '../subworkflows/align_filter_reads.nf'
-include { MAKE_PAIRS         } from '../subworkflows/make_pairs.nf'
-include { MAKE_COOLER        } from '../subworkflows/make_cooler.nf'
-include { MULTIQC            } from '../modules/multiqc.nf'
+include { INPUT_CHECK               } from '../subworkflows/input_check.nf'
+include { PREPARE_GENOME            } from '../subworkflows/prepare_genome.nf'
+include { CAT_FASTQ                 } from '../modules/cat_fastq.nf'
+include { TRIMGALORE                } from '../modules/trimgalore.nf'
+include { FASTQC                    } from '../modules/fastqc.nf'
+include { EXTRACT_BARCODES          } from '../subworkflows/extract_barcodes.nf'
+include { ALIGN_FILTER_READS_DPM    } from '../subworkflows/align_filter_reads_dpm.nf'
+include { ALIGN_FILTER_READS_RPM    } from '../subworkflows/align_filter_reads_rpm.nf'
+include { MAKE_PAIRS                } from '../subworkflows/make_pairs.nf'
+include { MAKE_COOLER               } from '../subworkflows/make_cooler.nf'
+include { MULTIQC                   } from '../modules/multiqc.nf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -157,13 +159,29 @@ workflow SPRITECOOLER {
         ch_extractbc_poswise_mqch
     )
     
-    ALIGN_FILTER_READS (
-        EXTRACT_BARCODES.out.reads,
-        ch_genome.index,
+    ALIGN_FILTER_READS_DPM (
+        EXTRACT_BARCODES.out.dpm,
+        ch_genome.bowtie,
         params.mapq,
         file ( params.genomeMask ),
         ch_alignfilter_mqch,
         ch_mask_mqch
+    )
+
+    ALIGN_FILTER_READS_RPM (
+        EXTRACT_BARCODES.out.rpm,
+        ch_genome.star,
+        params.mapq,
+        file ( params.genomeMask ),
+        ch_alignfilter_mqch,
+        ch_mask_mqch
+    )
+
+    ALIGN_FILTER_READS_DPM.out.bam
+        .join ( ALIGN_FILTER_READS_RPM.out.bam, remainder: true )
+        
+    CAT_RPM_DPM_BAM (
+
     )
 
     MAKE_PAIRS (

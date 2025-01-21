@@ -16,6 +16,7 @@ process TRIM_DPM {
     """
     cutadapt \\
         -a GATCGGAAGAG \\
+        -a ATCAGCACTTA \\
         -g file:${dpmfasta} \\
         -o ${meta.id}.dpmtrim.fq \\
         -j ${task.cpus} \\
