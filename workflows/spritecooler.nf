@@ -106,6 +106,23 @@ include { MAKE_PAIRS                } from '../subworkflows/make_pairs.nf'
 include { MAKE_COOLER               } from '../subworkflows/make_cooler.nf'
 include { MULTIQC                   } from '../modules/multiqc.nf'
 
+//define some simple utilities
+def remove_null(files) {
+    def file = null
+    for (f in files) {
+        if (!f) continue
+        file = f
+    }
+    return file
+}
+
+def all(files) {
+    def all_files = true
+    for (f in files) {
+        if (!f) all_files = false
+    }
+    return all_files
+}
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     RUN MAIN WORKFLOW
@@ -126,7 +143,7 @@ workflow SPRITECOOLER {
         }
         .set { ch_fastq }
 
-        // prepare genome files
+    // prepare genome files
     if (!prepare_genome_for_tools.isEmpty()) {
         ch_genome = PREPARE_GENOME (
             prepare_genome_for_tools,
@@ -177,15 +194,38 @@ workflow SPRITECOOLER {
         ch_mask_mqch
     )
 
+    ALIGN_FILTER_READS_DPM.out.align
+        .mix ( ALIGN_FILTER_READS_RPM.out.align )
+        .set { ch_align_stats }
+
+    ALIGN_FILTER_READS_DPM.out.filtered
+        .mix ( ALIGN_FILTER_READS_RPM.out.filtered )
+        .set { ch_filter_stats }
+
+    ALIGN_FILTER_READS_DPM.out.masked
+        .mix ( ALIGN_FILTER_READS_RPM.out.masked )
+        .set { ch_mask_stats }
+
     ALIGN_FILTER_READS_DPM.out.bam
         .join ( ALIGN_FILTER_READS_RPM.out.bam, remainder: true )
-        
-    CAT_RPM_DPM_BAM (
-
-    )
+        .map { it -> [it[0], it[1..-1]] }
+        .branch {
+            meta, files ->
+                multiple: all(files)
+                    return [meta, files]
+                    
+                single: !all(files)
+                    return [meta, remove_null(files)]
+        }
+        .set { ch_join_bams }
+    
+    CAT_RPM_DPM_BAM ( ch_bams.multiple )
+        .bam
+        .mix ( ch_bams.single )
+        .set { ch_dpmrpm_bams }
 
     MAKE_PAIRS (
-        ALIGN_FILTER_READS.out.bam,
+        ch_dpmrpm_bams,
         ch_genome.sizes,
         params.minClusterSize,
         params.maxClusterSize,
@@ -208,11 +248,12 @@ workflow SPRITECOOLER {
         TRIMGALORE.out.reports.collect { it[1] },
         TRIMGALORE.out.zip.collect { it[1].flatten() },
         EXTRACT_BARCODES.out.extract.collect { it[1] },
+        EXTRACT_BARCODES.out.split.collect { it[1] }
         EXTRACT_BARCODES.out.trim.collect { it[1] },
         EXTRACT_BARCODES.out.zip.collect { it[1] },
-        ALIGN_FILTER_READS.out.align.collect { it[1] },
-        ALIGN_FILTER_READS.out.filtered.collect { it[1] },
-        ALIGN_FILTER_READS.out.masked.collect { it[1] },
+        ch_align_stats.collect { it[1] },
+        ch_filter_stats.collect { it[1] },
+        ch_mask_stats.collect { it[1] },
         MAKE_PAIRS.out.sizestats.collect { it[1] },
         MAKE_PAIRS.out.dupstats.collect { it[1] }
     )
