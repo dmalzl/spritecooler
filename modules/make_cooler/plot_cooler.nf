@@ -18,7 +18,6 @@ process PLOT_COOLER {
     for chrom in `cooler dump -t chroms \${coolpath} | cut -f 1`;
     do
         cooler show \\
-            --zmin 0 \\
             --cmap afmhot_r \\
             -o plots/${meta.id}_\${chrom}.pdf \\
             \$coolpath \\

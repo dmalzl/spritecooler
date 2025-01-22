@@ -75,7 +75,8 @@ sp:
 
 custom_content:
   order:
-    - barcode_extraction
+    - barcode_extraction_overall
+    - barcode_extraction_poswise
     - cluster_size
     - alignment_filtering
     - alignment_deduplication

@@ -31,9 +31,12 @@ process EXTRACT_BCS {
         -p ${task.cpus}
 
     # remove aggregate stats for multiqc
-    tail -n +3 ${meta.id}.bcextract.overall.stats.tsv > tmp.stats.tsv
-    cat ${mqc_overall_header} tmp.stats.tsv > ${meta.id}_overall_extractstats_mqc.tsv
-    cat ${mqc_poswise_header} ${meta.id}.bcextract.poswise.stats.tsv > ${meta.id}_poswise_extractstats_mqc.tsv
-    head -n 2 ${meta.id}.bcextract.overall.stats.tsv > ${meta.id}_valid_invalid_count.tsv
+    tail -n +3 ${meta.id}.bcextract.overall.stats.tsv > tmp.overall.tsv
+    cat ${mqc_overall_header} tmp.overall.tsv > ${meta.id}_overall_extractstats_mqc.tsv
+
+    # make samplename column
+    echo "Sample_Name\n${meta.id}" > sample_name_col.txt
+    paste sample_name_col.txt ${meta.id}.bcextract.poswise.stats.tsv > tmp.poswise.tsv
+    cat ${mqc_poswise_header} tmp.poswise.tsv > ${meta.id}_poswise_extractstats_mqc.tsv
     """
 }

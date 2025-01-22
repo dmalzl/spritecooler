@@ -1,7 +1,7 @@
-# id: 'barcode_extraction'
-# section_name: 'Barcode Extraction'
+# id: 'barcode_extraction_overall'
+# section_name: 'Barcode Extraction Overall'
 # description: "shows overall statistics on extracted barcodes per read"
-# anchor: 'barcode_extraction'
+# anchor: 'barcode_extraction_overall'
 # format: 'tsv'
 # plot_type: 'bargraph'
 # pconfig:
