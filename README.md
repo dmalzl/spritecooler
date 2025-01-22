@@ -7,7 +7,7 @@ a cooler way to analyse your SPRITE-seq data
 spritecooler is a nextflow pipeline for processing SPRITE-seq data aligned with the 4DN guidelines. It was developed be a somewhat complete reimplementation of the sprite-pipeline [v2.0](https://github.com/GuttmanLab/sprite-pipeline) in nextflow and Python leveraging the [Cooler framework](https://github.com/open2c/cooler) for contact matrix creating, storage and manipulation. This also enables the data to be integrated in existing Hi-C workflows and viewers such as [higlass](https://higlass.io/)
 
 ## Installation
-To run the pipeline you need to install [nextflow](https://www.nextflow.io/) (version 23.10.1 or higher) and any distribution of [conda](https://docs.anaconda.com/) (we recommend [miniconda](https://docs.anaconda.com/miniconda/); make sure you have one of the newer versions here also; the pipeline currenly runs on conda environments, may change to containers in the future). 
+To run the pipeline you need to install [nextflow](https://www.nextflow.io/) (version 23.10.1 or higher) and any distribution of [conda](https://docs.anaconda.com/) (we recommend [miniconda](https://docs.anaconda.com/miniconda/); make sure you have one of the newer versions here also; the pipeline currenly runs on conda environments, may change to containers in the future).
 
 ## Usage
 After installing the prerequisites the pipeline can be run with a variation of the following command (this example uses human data from the [original SPRITE-seq paper](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE114242))
@@ -15,11 +15,10 @@ After installing the prerequisites the pipeline can be run with a variation of t
 nextflow run dmalzl/spritecooler \
         --samples samples.csv \
         --barcodes barcodes.tsv \
-        --r1Layout DPM \
+        --r1Layout DPMRPM \
         --r2Layout 'Y|SPACER|ODD|SPACER|EVEN|SPACER|ODD' \
         --mismatch 'DPM:0,Y:0,EVEN:2,ODD:2' \
-        --genome GRCh38 \
-        --genomeMask GRCh38.blacklist.bed
+        --genome GRCh38
 ```
 
 Here `samples.csv` is a comma-separated file containing sample information including paths to the files containing the raw sequence data (has to have the follwing format)
@@ -39,6 +38,19 @@ EVEN    Even2Bo5        CTAGGTGGCGGTCTG
 EVEN    Even2Bo2        GTGACATTAAGGTTG
 EVEN    Even2Bo6        TATCAATGATGGTGC
 EVEN    Even2Bo3        CCTCACGTCTAGGCG
+```
+
+**Note that the above command will only work if you have a local mirror of the used [iGenomes](https://ewels.github.io/AWS-iGenomes/) genome you specified. Otherwise you will need to supply all files necessary to generate the STAR and Bowtie2 indexes via `--fasta` and `--gtf`. If `--blacklist` is not supplied the blacklist filtering step will simply be skipped. The following command shows an example of how to use a custom genome file
+```
+nextflow run dmalzl/spritecooler \
+        --samples samples.csv \
+        --barcodes barcodes.tsv \
+        --r1Layout DPMRPM \
+        --r2Layout 'Y|SPACER|ODD|SPACER|EVEN|SPACER|ODD' \
+        --mismatch 'DPM:0,Y:0,EVEN:2,ODD:2' \
+        --fasta genome.fa \
+        --gtf genes.gtf \
+        [--blacklist genome_blacklist.bed]
 ```
 
 ## Steps
@@ -62,18 +74,22 @@ for bc_category, min_bc_len, max_bc_len, allowed_mismatches in layout:
 
         # find matching barcode by use of regular expression
 ```
-3. *Trimming DPM remnants*
-The given DPM barcodes are converted to FASTA format and used with `cutadapt` to remove any 3' DPM contamination from the raw reads after which another `fastqc` run is executed.
-4. *Alignment and filtering*
-After quality control and barcode extraction, the genomic sequence containing read is aligned to the reference genome. The produced alignments are then filtered such that (i) only primary alignments with a mapping quality higher then the set `--minq` and (ii) only alignments outside of the blacklisted regions (see `--genomeMask`) are retained
-5. *Identifying clusters and making pairs files*
+3. *Trimming DPM/RPM remnants*
+The given DPM/RPM barcodes are converted to FASTA format and used with `cutadapt` to remove any 3' DPM contamination from the raw reads after which another `fastqc` run is executed.
+4. *Splitting reads into DNA/RNA containing reads*
+After trimming barcode remnants the reads are split into two files one containing DPM (i.e. DNA) reads and the other containing RPM (i.e. RNA) reads which are aligned separately.
+5. *Alignment and filtering*
+After quality control and barcode extraction and splitting, the genomic sequence / RNA containing reads are aligned to the reference genome using either Bowtie2 (DNA) or STAR (RNA). The produced alignments are then filtered such that (i) only primary alignments with a mapping quality higher then the set `--minq` and (ii) only alignments outside of the blacklisted regions (see `--blacklist`) are retained
+6. *Identifying clusters and making pairs files*
 The filtered alignments are then processed to identify clusters based on the identified barcode sequences. Since we count an interaction for each pair of reads in a given cluster downweighted by 2/n, where n is the number of reads in the cluster and due to the communtativity of multiplication in a sum we then simply write all read pairs of clusters of the same size to a single pairs file for ingestions with cooler. The generated pairs files for each cluster are also reformated to pairix format for easy ingestion with any other software in the 4DN universe. This step also records the cluster identity of each alignment in the form of a BED file, which is later used to annotate the contact matrices (see step 7).
-6. *Generating contact matrices*
+7. *Generating contact matrices*
 Generated pairs files for each cluster size are then ingested with cooler to generate contact matrices for each clustersize. These contact matrices are then subsequently merged by simply summing over their downweighted counts per bin (e.g. for a clustersize of 250 the corresponding matrix is simply multiplied by 2/250 before summing). The resulting merged matrix is then coarsend to different bin sizes (`cooler zoomify`; default: 5000N) and balanced using iterative correction and Knight-Ruiz per chromosome and genomewide.
-7. *Annotating cluster identity of contacts per bin*
+8. *Annotating cluster identity of contacts per bin*
 The last step of the pipeline is adding the cluster identity of the recorded contacts to each bin, which is done by intersecting the aformentioned BED file (see step 5) with the genome bins. The results are then written to the `bins` table of the generated cooler for each bin size. The format of the annotation looks somewhat like this `c_2_1,c_8_10,c_5_20,...` where each alignment is recorded as `c_<clustersize>_<clusternumber>`. This information can later be used to assess the number of clusters overlapping a given set of regions of interest
 
-The final result of the pipeline is then saved to the folder set with `--outdir` (default: `results`). This includes the balanced contact matrix (`<outdir>/cool/balanced`) and the bin annotations (`<outdir>/cool/annotations`; TSV file for each multicooler and resolution thereof), the individual contact matrices for each clustersize as multicooler (`<outdir>/cool/base`; these are raw contacts at base resolution (default: 5kb) without downweighting and no balancing), the filtered alignments (`<outdir>/alignments`) and the respective BED files (`<outdir>/clusterbed`). Optionally, you can also set `--savePairs true` to save the generated pairs files for each cluster and `--saveQfilteredAlignments true` to save alignments before blacklist filtering (`<outdir>/alignments`). Additionally, the generated MultiQC report will be saved to (`<outdir>/multiqc`)
+The final result of the pipeline is then saved to the folder set with `--outdir` (default: `results`). This includes the balanced contact matrix (`<outdir>/cool/balanced`) and the bin annotations (`<outdir>/cool/annotations`; TSV file for each multicooler and resolution thereof), the individual contact matrices for each clustersize as multicooler (`<outdir>/cool/base`; these are raw contacts at base resolution (default: 5kb) without downweighting and no balancing), the filtered alignments (`<outdir>/alignments`) and the respective BED files (`<outdir>/clusterbed`). Optionally, you can also set `--savePairs true` to save the generated pairs files for each cluster and `--saveQfilteredAlignments true` to save alignments before blacklist filtering (`<outdir>/alignments`).
+9. *Reporting*
+The pipeline generates various statistics along the way which are all conveniently summarized in a MultiQC plot (saved in `<outdir>/multiqc`). Furthermore, raw contacts are plotted on a per chromosome basis (`<ourdir>/plots`)
 
 ## Parameters
 This section provides an overview of the available command line arguments of the pipeline
