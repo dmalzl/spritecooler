@@ -16,7 +16,6 @@ process EXTRACT_BCS {
     output:
     tuple val(meta), path("*bcextract.fq.gz"),          emit: reads
     tuple val(meta), path("*_mqc.tsv"),                 emit: stats
-    tuple val(meta), path("*valid_invalid_count.tsv"),  emit: summary
 
     script:
     """
