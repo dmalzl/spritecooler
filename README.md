@@ -40,7 +40,7 @@ EVEN    Even2Bo6        TATCAATGATGGTGC
 EVEN    Even2Bo3        CCTCACGTCTAGGCG
 ```
 
-**Note that the above command will only work if you have a local mirror of the used [iGenomes](https://ewels.github.io/AWS-iGenomes/) genome you specified. Otherwise you will need to supply all files necessary to generate the STAR and Bowtie2 indexes via `--fasta`, `--chromSizes` and `--gtf`. If `--blacklist` is not supplied the blacklist filtering step will simply be skipped. The following command shows an example of how to use a custom genome file
+**Note that the above command will only work if you have a local mirror of the used [iGenomes](https://ewels.github.io/AWS-iGenomes/) genome you specified. Otherwise you will need to supply all files necessary to generate the STAR and Bowtie2 indexes via `--fasta`, `--chromSizes` and `--gtf`. If `--blacklist` is not supplied the blacklist filtering step will simply be skipped. The following command shows an example of how to use a custom genome file**
 ```
 nextflow run dmalzl/spritecooler \
         --samples samples.csv \
