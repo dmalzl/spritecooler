@@ -43,6 +43,19 @@ EVEN    Even2Bo6        TATCAATGATGGTGC
 EVEN    Even2Bo3        CCTCACGTCTAGGCG
 ```
 
+**Note that the above command will only work if you have a local mirror of the used [iGenomes](https://ewels.github.io/AWS-iGenomes/) genome you specified. Otherwise you will need to supply all files necessary to generate the STAR and Bowtie2 indexes via `--fasta` and `--chromSizes`. If `--genomeMask` is not supplied the blacklist filtering step will simply be skipped. The following command shows an example of how to use a custom genome file
+```
+nextflow run dmalzl/spritecooler \
+        --samples samples.csv \
+        --barcodes barcodes.tsv \
+        --r1Layout DPMRPM \
+        --r2Layout 'Y|SPACER|ODD|SPACER|EVEN|SPACER|ODD' \
+        --mismatch 'DPM:0,Y:0,EVEN:2,ODD:2' \
+        --fasta genome.fa \
+        --chromSizes chrom_sizes.tsv \
+        --genomeMask genome_blacklist.bed
+```
+
 ## Steps
 Executing the above command will run through all necessary steps to process the data from raw reads to balanced and annotated cooler format. A detailed listing of all the main steps can be found below.
 
