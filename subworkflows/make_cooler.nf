@@ -37,10 +37,10 @@ workflow MAKE_COOLER {
 
     MERGE_CLUSTER_COOLERS.out.cool
         .map {
-            meta, bed ->
+            meta, cool ->
             meta_new = [:]
             meta_new.id = meta.sample
-            [ meta_new, bed ]
+            [ meta_new, cool ]
         }
         .groupTuple ( by: [0] )
         .branch {
