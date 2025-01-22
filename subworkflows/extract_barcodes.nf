@@ -26,7 +26,10 @@ workflow EXTRACT_BARCODES {
         mqc_poswise_header
     )
 
-    MAKE_DPM_FASTA ( barcodes )
+    MAKE_DPM_FASTA ( 
+        barcodes,
+        r1Layout
+    )
 
     TRIM_RPM_DPM ( 
         EXTRACT_BCS.out.reads,

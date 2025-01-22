@@ -12,6 +12,11 @@ def parse_args():
         help = 'tab-separated file containing DPM sequences. has to have columns category, barcodename, barcodesequence in this order'
     )
     parser.add_argument(
+        '--dpm',
+        default = 'DPM',
+        help = 'name of the category to generate the fasta file from'
+    )
+    parser.add_argument(
         '-o',
         '--outfile',
         required = True,
@@ -20,12 +25,12 @@ def parse_args():
     return parser.parse_args()
 
 
-def read_dpms(barcodefile):
+def read_dpms(barcodefile, dpm):
     dpms = {}
     with open(barcodefile, 'r') as file:
         for line in file:
             cat, name, seq = line.rstrip().split('\t')
-            if cat != 'DPM':
+            if cat != dpm:
                 continue
 
             dpms[name] = seq
@@ -41,7 +46,7 @@ def write_dpm_fasta(dpms, outfile):
 
 def main():
     args = parse_args()
-    dpms = read_dpms(args.input)
+    dpms = read_dpms(args.input, args.dpm)
     write_dpm_fasta(
         dpms,
         args.outfile
