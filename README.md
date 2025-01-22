@@ -4,9 +4,7 @@
 a cooler way to analyse your SPRITE-seq data
 
 ## Introduction
-spritecooler is a nextflow pipeline for processing SPRITE-seq data aligned with the 4DN guidelines. It was developed be a complete reimplementation of the sprite-pipeline [v1.0](https://github.com/GuttmanLab/sprite-pipeline) (still lacks the RNA-DNA processing part of [v2.0](https://github.com/GuttmanLab/sprite2.0-pipeline)) in nextflow and Python
-leveraging the [Cooler framework](https://github.com/open2c/cooler) for contact matrix creating, storage and manipulation. This also enables the data to be integrated in existing Hi-C workflows and viewers
-such as [higlass](https://higlass.io/)
+spritecooler is a nextflow pipeline for processing SPRITE-seq data aligned with the 4DN guidelines. It was developed be a complete reimplementation of the sprite-pipeline [v1.0](https://github.com/GuttmanLab/sprite-pipeline) (still lacks the RNA-DNA processing part of [v2.0](https://github.com/GuttmanLab/sprite2.0-pipeline)) in nextflow and Python leveraging the [Cooler framework](https://github.com/open2c/cooler) for contact matrix creating, storage and manipulation. This also enables the data to be integrated in existing Hi-C workflows and viewers such as [higlass](https://higlass.io/)
 
 ## Installation
 To run the pipeline you need to install [nextflow](https://www.nextflow.io/) (version 23.10.1 or higher) and any distribution of [conda](https://docs.anaconda.com/) (we recommend [miniconda](https://docs.anaconda.com/miniconda/); make sure you have one of the newer versions here also; the pipeline currenly runs on conda environments, may change to containers in the future). 
@@ -43,7 +41,7 @@ EVEN    Even2Bo6        TATCAATGATGGTGC
 EVEN    Even2Bo3        CCTCACGTCTAGGCG
 ```
 
-**Note that the above command will only work if you have a local mirror of the used [iGenomes](https://ewels.github.io/AWS-iGenomes/) genome you specified. Otherwise you will need to supply all files necessary to generate the STAR and Bowtie2 indexes via `--fasta` and `--chromSizes`. If `--genomeMask` is not supplied the blacklist filtering step will simply be skipped. The following command shows an example of how to use a custom genome file
+**Note that the above command will only work if you have a local mirror of the used [iGenomes](https://ewels.github.io/AWS-iGenomes/) genome you specified. Otherwise you will need to supply all files necessary to generate the STAR and Bowtie2 indexes via `--fasta` and `--chromSizes`. If `--genomeMask` is not supplied the blacklist filtering step will simply be skipped. The following command shows an example of how to use a custom genome file**
 ```
 nextflow run dmalzl/spritecooler \
         --samples samples.csv \
