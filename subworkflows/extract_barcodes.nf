@@ -11,6 +11,7 @@ workflow EXTRACT_BARCODES {
     r1layout
     r2layout
     mismatch
+    splitTag
     mqc_overall_header
     mqc_poswise_header
     mqc_dpmrpm_header
@@ -28,7 +29,7 @@ workflow EXTRACT_BARCODES {
 
     MAKE_DPM_FASTA ( 
         barcodes,
-        r1Layout
+        splitTag
     )
 
     TRIM_RPM_DPM ( 

@@ -11,4 +11,4 @@ dependencies:
   - pysam=0.22.1
   - python=3.12.8
   - pip:
-      - spritefridge==1.3.5
+      - spritefridge==1.3.6

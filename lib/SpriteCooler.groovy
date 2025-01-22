@@ -94,6 +94,7 @@ class SpriteCooler {
         log.info " barcodes                 : ${params.barcodes}"
         log.info " r1Layout                 : ${params.r1Layout}"
         log.info " r2Layout                 : ${params.r2Layout}"
+        log.info " splitTag                 : ${params.splitTag}"
         log.info " mismatch                 : ${params.mismatch}"
         log.info " minClusterSize           : ${params.minClusterSize}"
         log.info " maxClusterSize           : ${params.maxClusterSize}"
@@ -146,10 +147,6 @@ class SpriteCooler {
     // check if layout is specified correctly and parse them
     //
     private static Set<String> parseLayout(params, log) {
-        if (!params.r1Layout || !params.r2Layout) {
-            log.error " ERROR - Read layouts not fully specified. Please make sure both layouts have been specified"
-            System.exit(1)
-        }
         Set r1Barcodes = params.r1Layout.tokenize('|')
         Set r2Barcodes = params.r2Layout.tokenize('|')
         return r1Barcodes.plus(r2Barcodes).minus('SPACER')

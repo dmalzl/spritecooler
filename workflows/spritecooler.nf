@@ -170,6 +170,7 @@ workflow SPRITECOOLER {
         params.r1Layout,
         params.r2Layout,
         params.mismatch,
+        params.splitTag,
         ch_extractbc_overall_mqch,
         ch_extractbc_poswise_mqch
     )
