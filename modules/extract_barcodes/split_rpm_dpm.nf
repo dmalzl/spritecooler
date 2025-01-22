@@ -15,8 +15,15 @@ process SPLIT_RPM_DPM {
 
     script:
     """
-    zgrep -A 3 DPM ${reads} | grep -v -- "^--$" | gzip > ${meta.id}_dpm.fq.gz &
-    zgrep -A 3 RPM ${reads} | grep -v -- "^--$" | gzip > ${meta.id}_rpm.fq.gz
+    zgrep -A 3 DPM ${reads} \\
+    | grep -v -- "^--$" \\
+    | sed -e '/^@/ s/DPM[^|]*|//g' \\
+    | gzip > ${meta.id}_dpm.fq.gz &
+
+    zgrep -A 3 RPM ${reads} \\
+    | grep -v -- "^--$" \\
+    | sed -e '/^@/ s/RPM[^|]*|//g' \\
+    | gzip > ${meta.id}_rpm.fq.gz
 
     echo "DPM\t"$(gzcat ${meta.id}_dpm.fq.gz | wc -l) > ${meta.id}_dpm.tsv &
     echo "RPM\t"$(gzcat ${meta.id}_rpm.fq.gz | wc -l) > ${meta.id}_rpm.tsv
