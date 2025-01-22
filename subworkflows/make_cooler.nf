@@ -36,10 +36,11 @@ workflow MAKE_COOLER {
 
     MERGE_CLUSTER_COOLERS.out.cool
         .map {
-            meta, bed ->
+            meta, cool ->
             meta_new = [:]
             meta_new.id = meta.sample
-            [ meta_new, bed ]
+            meta_new.sample = meta.sample
+            [ meta_new, cool ]
         }
         .groupTuple ( by: [0] )
         .branch {
@@ -55,6 +56,7 @@ workflow MAKE_COOLER {
 
     MERGE_REPLICATE_COOLERS.out.cool
         .mix ( MERGE_CLUSTER_COOLERS.out.cool, ch_branched_cools.single )
+        .filter { meta, cool -> meta.id != meta.sample } // filter pseudo merged in case single replicate
         .set { ch_base_cool }
 
     ZOOMIFY_COOLER (
