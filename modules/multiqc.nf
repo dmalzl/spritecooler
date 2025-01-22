@@ -11,7 +11,7 @@ process MULTIQC {
     path('extract_bc/*')
     path('dpm_trim/*')
     path('fastqc_dpm/*')
-    path('bowtie_stats/*')
+    path('align_stats/*')
     path('filter_stats/*')
     path('mask_stats/*')
     path('cluster_size/*')
