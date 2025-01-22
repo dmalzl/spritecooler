@@ -64,18 +64,15 @@ This step will run `fastqc` as well as `trim_galore` to assess the quality of th
 2. *Barcode extraction*
 The QCd reads are then processed to extract the used barcode sequence. Only reads with a full complement of barcodes are retained. For this we use a Python reimplementation of the original Guttman Java tool. In theory this reimplementation is should be flexible enough to accomodate any barcoding scheme but has a few quirks that need to be thought of when fiddling with it. The code below shows the main loop the extraction goes through. So in essence the set number of mismatches allowed do not apply to DPM and NY sequences. A useful thing to keep in mind might be that in the end, only the barcode name is recorded in the read. This means that the barcode category can accomodate more than just barcodes of this category. e.g. adding RPMs to DPM category to allow RNA-DNA interaction data processing etc.
 ```python
-for bc_category, min_bc_len, max_bc_len in layout:
+for bc_category, min_bc_len, max_bc_len, allowed_mismatches in layout:
         if bc_category.startswith('S'):
                 # skip ahead spacer_len bases
                 continue
 
-        if bc_category == 'Y':
-                # exact match variable length barcodes (dict hashing)
-                # NY barcode is either 9 or 10 bases long
-                continue
-
-        if bc_cat.startswith('D'):
-                # exactly match the DPM sequence (dict hashing)
+        if not allowed_mismatches:
+                # match barcode category with exact match i.e. dict hashing
+                # also allows variable length barcode categories here
+                # and will try to find a match in each length until one is found or exhaustion
                 continue
 
         # find matching barcode by use of regular expression
