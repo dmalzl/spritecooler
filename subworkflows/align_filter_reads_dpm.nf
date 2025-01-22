@@ -7,7 +7,7 @@ workflow ALIGN_FILTER_READS {
     ch_dpm_fastq
     bowtie2Index
     minMapQ
-    ch_genome_mask
+    blacklist
     mqc_filter_header
     mqc_mask_header
 
@@ -23,15 +23,23 @@ workflow ALIGN_FILTER_READS {
         mqc_filter_header
     )
 
-    FILTER_MASKED_REGIONS (
-        FILTER_ALIGNMENTS.out.bam,
-        ch_genome_mask,
-        mqc_mask_header
-    )
+    if ( blacklist.exists() ) {
+        FILTER_MASKED_REGIONS (
+            FILTER_ALIGNMENTS.out.bam,
+            blacklist,
+            mqc_mask_header
+        )
+        ch_mask_bam     = FILTER_MASKED_REGIONS.out.bam
+        ch_mask_stats   = FILTER_MASKED_REGIONS.out.stats
+
+    } else {
+        ch_mask_bam     = FILTER_ALIGNMENTS.out.bam
+        ch_mask_stats   = Channel.empty()
+    }
 
     emit:
-    bam         = FILTER_MASKED_REGIONS.out.bam
+    bam         = ch_mask_bam
     align       = BOWTIE2_ALIGN.out.log
     filtered    = FILTER_ALIGNMENTS.out.stats
-    masked      = FILTER_MASKED_REGIONS.out.stats
+    masked      = ch_mask_stats
 }

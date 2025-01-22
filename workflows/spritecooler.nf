@@ -8,9 +8,10 @@ SpriteCooler.checkParams( params, log )
 if ( params.genome && params.genomes && !params.igenomes_ignore ) {
     igenomes_bowtie2    = SpriteCooler.getGenomeAttribute(params, 'bowtie2',    log)
     igenomes_star       = SpriteCooler.getGenomeAttribute(params, 'star',       log)
-    igenomes_gtf        = SpriteCooler.getGenomeAttribute(params, 'gtf',       log)
+    igenomes_gtf        = SpriteCooler.getGenomeAttribute(params, 'gtf',        log)
     igenomes_fasta      = SpriteCooler.getGenomeAttribute(params, 'fasta',      log)
     igenomes_chromSizes = SpriteCooler.getGenomeAttribute(params, 'chromSizes', log)
+    igenomes_blacklist  = SpriteCooler.getGenomeAttribute(params, 'blacklist',  log)
 
 } else {
     igenomes_bowtie2    = ''
@@ -18,7 +19,7 @@ if ( params.genome && params.genomes && !params.igenomes_ignore ) {
     igenomes_gtf        = ''
     igenomes_fasta      = ''
     igenomes_chromSizes = ''
-
+    igenomes_blacklist  = ''
 }
 
 // Check input path parameters to see if they exist
@@ -26,8 +27,7 @@ checkPathParamList = [
     params.samples,
     params.barcodes,
     params.fasta,
-    params.chromSizes,
-    params.genomeMask
+    params.chromSizes
 ]
 
 checkPathiGenomes = [
@@ -73,6 +73,7 @@ dynamic_params.genomeSizes      = params.genome ? igenomes_chromSizes : params.c
 dynamic_params.bowtie2Index     = igenomes_bowtie2 ? igenomes_bowtie2 : "computed from fasta"
 dynamic_params.starIndex        = igenomes_star ? igenomes_bowtie2 : "computed from fasta"
 dynamic_params.gtf              = params.gtf ? params.gtf : igenomes_gtf
+dynamic_params.blacklist        = params.blacklist ? params.blacklist : igenomes_blacklist
 dynamic_params.genomeSizeType   = SpriteCooler.getGenomeSizeType( dynamic_params.genomeSizes )
 dynamic_params.genomeName       = params.genome ? params.genome : file(dynamic_params.genomeFasta).getSimpleName()
 dynamic_params.baseResolution   = baseResolution
@@ -177,7 +178,7 @@ workflow SPRITECOOLER {
         EXTRACT_BARCODES.out.dpm,
         ch_genome.bowtie2,
         params.mapq,
-        file ( params.genomeMask ),
+        file ( dynamic_params.blacklist ),
         ch_alignfilter_mqch,
         ch_mask_mqch
     )
@@ -186,7 +187,7 @@ workflow SPRITECOOLER {
         EXTRACT_BARCODES.out.rpm,
         ch_genome.star,
         params.mapq,
-        file ( params.genomeMask ),
+        file ( dynamic_params.blacklist ),
         ch_alignfilter_mqch,
         ch_mask_mqch
     )
