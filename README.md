@@ -140,8 +140,11 @@ Alternatively, path to genome FASTA file to use for alignment
 #### `--chromSizes`     
 A tab-separated file containing chromosome names and their sizes
 
-#### `--genomeMask`
-BED file to use for filtering reads from problematic regions
+#### `--blacklist`
+BED file to use for filtering reads from problematic regions. will override igenomes
+
+#### `--gtf`
+GTF file containing gene annotation. will override igenomes
 
 #### `--savePairs`
 whether to write pairs files to results. set to `--savePairs true` in case you want the pairs files (default: false)
