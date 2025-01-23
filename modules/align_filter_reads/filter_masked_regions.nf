@@ -5,7 +5,7 @@ process FILTER_MASKED_REGIONS {
     conda "${workflow.projectDir}/conda/spritefridge.yml"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), val(readtype), path(bam)
     path(genome_mask)
     path(mqc_header)
 
@@ -14,7 +14,7 @@ process FILTER_MASKED_REGIONS {
     tuple val(meta), path("*maskstats_mqc.tsv"),    emit: stats
 
     script:
-    def prefix = "${meta.id}_${meta.readtype}"
+    def prefix = "${meta.id}_${readtype}"
     """
     bedtools intersect -v \\
         -a ${bam} \\

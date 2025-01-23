@@ -5,14 +5,15 @@ process BOWTIE2_ALIGN {
     conda "${workflow.projectDir}/conda/bowtie2.yml"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), val(readtype), path(reads)
     path(index)
 
     output:
-    tuple val(meta), path('*bam'),          emit: bam
-    tuple val(meta), path('*bowtie2.log'),  emit: log
+    tuple val(meta), val(readtype), path('*bam'),   emit: bam
+    tuple val(meta), path('*bowtie2.log'),          emit: log
 
     script:
+    def prefix = "${meta.id}_${readtype}"
     """
     # taken from cutandrun nf-core pipeline
     # basically finds the name of the index and exits if not found
@@ -25,9 +26,9 @@ process BOWTIE2_ALIGN {
         --phred33 \\
         -x \$INDEX \\
         -U ${reads} \\
-    2> ${meta.id}.tmp.log \\
-    | samtools view -b > ${meta.id}.bam
+    2> ${prefix}.tmp.log \\
+    | samtools view -b > ${prefix}.bam
 
-    cat ${meta.id}.tmp.log | grep -v Warning > ${meta.id}.bowtie2.log
+    cat ${prefix}.tmp.log | grep -v Warning > ${prefix}.bowtie2.log
     """
 }

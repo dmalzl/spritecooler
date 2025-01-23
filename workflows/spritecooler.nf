@@ -218,27 +218,7 @@ workflow SPRITECOOLER {
         .set { ch_mask_stats }
 
     ALIGN_FILTER_READS_DPM.out.bam
-        .map {
-            meta, bam -> 
-            meta_new = [:]
-            meta_new.id = meta.id
-            meta_new.sample = meta.sample
-            [ meta_new, bam ]
-        }
-        .set { ch_dpm_bam }
-
-    ALIGN_FILTER_READS_RPM.out.bam
-        .map {
-            meta, bam -> 
-            meta_new = [:]
-            meta_new.id = meta.id
-            meta_new.sample = meta.sample
-            [ meta_new, bam ]
-        }
-        .set { ch_rpm_bam }
-
-    ch_dpm_bam
-        .join ( ch_rpm_bam, remainder: true )
+        .join ( ALIGN_FILTER_READS_RPM.out.bam, remainder: true )
         .map { it -> [it[0], remove_null(it[1..-1])] }
         .set { ch_bams }
 

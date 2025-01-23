@@ -52,8 +52,15 @@ workflow ALIGN_FILTER_READS {
         ch_mask_stats   = Channel.empty()
     }
 
+    ch_mask_bam
+        .map {
+            meta, readtype, bam ->
+            [ meta, bam ]
+        }
+        .set { ch_out_bam }
+
     emit:
-    bam         = ch_mask_bam
+    bam         = ch_out_bam
     align       = ch_align_stats
     filtered    = FILTER_ALIGNMENTS.out.stats
     masked      = ch_mask_stats

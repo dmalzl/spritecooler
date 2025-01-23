@@ -46,27 +46,19 @@ workflow EXTRACT_BARCODES {
     SPLIT_RPM_DPM.out.rpm        
         .map { 
             meta, fastq -> 
-            meta_new = [:]
-            meta_new.id = meta.id
-            meta_new.sample = meta.sample
-            meta_new.readtype = "rpm"
-            [ meta_new, fastq ]
+            [ meta, 'rpm', fastq ]
         }
         .set { ch_rpm_fastq }
 
     SPLIT_RPM_DPM.out.dpm
         .map { 
             meta, fastq -> 
-            meta_new = [:]
-            meta_new.id = meta.id
-            meta_new.sample = meta.sample
-            meta_new.readtype = "dpm"
-            [ meta_new, fastq ]
+            [ meta, 'dpm', fastq ]
         }
         .set { ch_dpm_fastq }
 
-    ch_rpm_fastq
-        .mix ( ch_dpm_fastq )
+    SPLIT_RPM_DPM.out.rpm 
+        .mix ( SPLIT_RPM_DPM.out.dpm )
         .set { ch_rpm_dpm }
 
     FASTQC ( ch_rpm_dpm )

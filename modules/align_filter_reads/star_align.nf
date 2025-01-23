@@ -4,21 +4,22 @@ process STAR_ALIGN {
     conda "${workflow.projectDir}/conda/star.yml"
 
     input:
-    tuple val(meta), path(reads, stageAs: "input*/*")
+    tuple val(meta), val(readtype), path(reads, stageAs: "input*/*")
     path(index)
 
     output:
-    tuple val(meta), path('*.out.bam'),         emit: bam 
-    tuple val(meta), path('*Log.final.out'),    emit: log
+    tuple val(meta), val(readtype), path('*.out.bam'),  emit: bam 
+    tuple val(meta), path('*Log.final.out'),            emit: log
 
     script:
     def read_files_command = reads.extension == 'gz' ? "--readFilesCommand zcat" : ''
+    def prefix = "${meta.id}_${readtype}"
     """
     STAR \\
         --genomeDir ${index} \\
         --readFilesIn ${reads} \\
         --runThreadN ${task.cpus} \\
-        --outFileNamePrefix ${meta.id}. \\
+        --outFileNamePrefix ${prefix}. \\
         --outSAMtype BAM Unsorted \\
         ${read_files_command}
     """
