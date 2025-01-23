@@ -27,8 +27,8 @@ process SPLIT_RPM_DPM {
 
     wait
 
-    echo "DPM\t"\$(gzcat ${meta.id}_dpm.fq.gz | wc -l) > ${meta.id}_dpm.tsv &
-    echo "RPM\t"\$(gzcat ${meta.id}_rpm.fq.gz | wc -l) > ${meta.id}_rpm.tsv
+    echo "DPM\t"\$(zcat ${meta.id}_dpm.fq.gz | wc -l) > ${meta.id}_dpm.tsv &
+    echo "RPM\t"\$(zcat ${meta.id}_rpm.fq.gz | wc -l) > ${meta.id}_rpm.tsv
 
     wait    # wait for jobs to finish
 
