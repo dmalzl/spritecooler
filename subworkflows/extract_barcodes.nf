@@ -57,8 +57,8 @@ workflow EXTRACT_BARCODES {
         }
         .set { ch_dpm_fastq }
 
-    SPLIT_RPM_DPM.out.rpm 
-        .mix ( SPLIT_RPM_DPM.out.dpm )
+    ch_dpm_fastq 
+        .mix ( ch_rpm_fastq )
         .set { ch_rpm_dpm }
 
     FASTQC ( ch_rpm_dpm )

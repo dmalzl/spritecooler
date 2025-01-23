@@ -167,6 +167,10 @@ workflow SPRITECOOLER {
     CAT_FASTQ ( ch_fastq.multiple )
         .reads
         .mix ( ch_fastq.single )
+        .map {
+            meta, fastq -> 
+            [ meta, '', fastq ] // for fastqc
+        }
         .set { ch_cat_fastq }
 
     FASTQC ( ch_cat_fastq )
