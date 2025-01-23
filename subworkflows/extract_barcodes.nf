@@ -5,6 +5,21 @@ include { TRIM_DPM as TRIM_RPM_DPM  } from '../modules/extract_barcodes/trim_dpm
 include { FASTQC                    } from '../modules/fastqc.nf'
 
 
+def add_rpm_dpm_meta(ch_split_out, readtype) {
+    ch_add_meta = ch_split_out
+        .map { 
+            meta, fastq -> 
+            meta_new = [:]
+            meta_new.id = meta.id
+            meta_new.sample = meta.sample
+            meta_new.readtype = readtype
+            [ meta_new, fastq ]
+        }
+    
+    return ch_add_meta
+}
+
+
 workflow EXTRACT_BARCODES {
     take:
     ch_trim_fastq
@@ -43,23 +58,15 @@ workflow EXTRACT_BARCODES {
         mqc_dpmrpm_header
     )
 
-    SPLIT_RPM_DPM.out.rpm
-        .map { 
-            meta, fastq -> 
-            meta_new = meta.clone()
-            meta_new.readtype = 'rpm'
-            [ meta_new, fastq ]
-        }
-        .set { ch_rpm_fastq }
+    ch_rpm_fastq = add_rpm_dpm_meta ( 
+        SPLIT_RPM_DPM.out.rpm,
+        'rpm'
+    )
 
-    SPLIT_RPM_DPM.out.dpm
-        .map { 
-            meta, fastq -> 
-            meta_new = meta.clone()
-            meta_new.readtype = 'dpm'
-            [ meta_new, fastq ]
-        }
-        .set { ch_dpm_fastq }
+    ch_dpm_fastq = add_rpm_dpm_meta ( 
+        SPLIT_RPM_DPM.out.dpm,
+        'dpm'
+    )
 
     ch_rpm_fastq
         .mix ( ch_dpm_fastq )
