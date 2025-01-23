@@ -12,12 +12,14 @@ process STAR_ALIGN {
     tuple val(meta), path('*Log.final.out'),    emit: log
 
     script:
+    def read_files_commad = reads.extension == 'gz' ? "--readFilesCommand zcat" : ''
     """
     STAR \\
         --genomeDir ${index} \\
         --readFilesIn ${reads} \\
         --runThreadN ${task.cpus} \\
         --outFileNamePrefix ${meta.id}. \\
-        --outSAMtype BAM Unsorted
+        --outSAMtype BAM Unsorted \\
+        ${read_files_command}
     """
 }
