@@ -73,8 +73,8 @@ workflow EXTRACT_BARCODES {
     FASTQC ( ch_rpm_dpm )
 
     emit:
-    dpm     = SPLIT_RPM_DPM.out.dpm
-    rpm     = SPLIT_RPM_DPM.out.rpm
+    dpm     = ch_dpm_fastq
+    rpm     = ch_rpm_fastq
     extract = EXTRACT_BCS.out.stats
     split   = SPLIT_RPM_DPM.out.stats
     trim    = TRIM_RPM_DPM.out.reports
