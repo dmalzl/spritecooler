@@ -1,5 +1,5 @@
 include { STAR_ALIGN                                            } from '../modules/align_filter_reads/star_align.nf'
-include { FILTER_ALIGNMENTS as FILTER_REGIONS_RPM               } from '../modules/align_filter_reads/filter_alignments.nf'
+include { FILTER_ALIGNMENTS as FILTER_ALIGNMENTS_RPM            } from '../modules/align_filter_reads/filter_alignments.nf'
 include { FILTER_MASKED_REGIONS as FILTER_MASKED_REGIONS_RPM    } from '../modules/align_filter_reads/filter_masked_regions.nf'
 
 workflow ALIGN_FILTER_READS_RPM {
@@ -12,7 +12,6 @@ workflow ALIGN_FILTER_READS_RPM {
     mqc_mask_header
 
     main:
-    if align
     STAR_ALIGN (
         ch_dpm_fastq,
         bowtie2Index
