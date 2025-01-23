@@ -236,7 +236,7 @@ workflow SPRITECOOLER {
         TRIMGALORE.out.reports.collect { it[1] },
         TRIMGALORE.out.zip.collect { it[1].flatten() },
         EXTRACT_BARCODES.out.extract.collect { it[1] },
-        EXTRACT_BARCODES.out.split.collect { it[1] }
+        EXTRACT_BARCODES.out.split.collect { it[1] },
         EXTRACT_BARCODES.out.trim.collect { it[1] },
         EXTRACT_BARCODES.out.zip.collect { it[1] },
         ch_align_stats.collect { it[1] },

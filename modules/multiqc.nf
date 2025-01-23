@@ -9,6 +9,7 @@ process MULTIQC {
     path('adapter_trim/*')
     path('fastqc_trim/*')
     path('extract_bc/*')
+    path('split_stats/*')
     path('dpm_trim/*')
     path('fastqc_dpm/*')
     path('align_stats/*')
