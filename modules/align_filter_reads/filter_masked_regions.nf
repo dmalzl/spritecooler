@@ -10,8 +10,8 @@ process FILTER_MASKED_REGIONS {
     path(mqc_header)
 
     output:
-    tuple val(meta), path("*masked.bam"),           emit: bam
-    tuple val(meta), path("*maskstats_mqc.tsv"),    emit: stats
+    tuple val(meta), val(readtype), path("*masked.bam"),    emit: bam
+    tuple val(meta), path("*maskstats_mqc.tsv"),            emit: stats
 
     script:
     def prefix = "${meta.id}_${readtype}"
