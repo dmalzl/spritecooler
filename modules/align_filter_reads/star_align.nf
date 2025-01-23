@@ -12,7 +12,7 @@ process STAR_ALIGN {
     tuple val(meta), path('*Log.final.out'),    emit: log
 
     script:
-    def read_files_commad = reads.extension == 'gz' ? "--readFilesCommand zcat" : ''
+    def read_files_command = reads.extension == 'gz' ? "--readFilesCommand zcat" : ''
     """
     STAR \\
         --genomeDir ${index} \\
