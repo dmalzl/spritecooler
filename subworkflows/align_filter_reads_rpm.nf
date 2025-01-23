@@ -13,7 +13,7 @@ workflow ALIGN_FILTER_READS_RPM {
 
     main:
     STAR_ALIGN (
-        ch_dpm_fastq,
+        ch_rpm_fastq,
         bowtie2Index
     )
 
