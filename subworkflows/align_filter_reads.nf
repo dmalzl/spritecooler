@@ -16,7 +16,7 @@ workflow ALIGN_FILTER_READS {
     main:
     if (readtype == 'DPM') {
         BOWTIE2_ALIGN (
-            ch_dpm_fastq,
+            ch_fastq,
             alignIndex
         )
         ch_bam          = BOWTIE2_ALIGN.out.bam
@@ -25,7 +25,7 @@ workflow ALIGN_FILTER_READS {
 
     if (readtype == 'RPM') {
         STAR_ALIGN (
-            ch_rpm_fastq,
+            ch_fastq,
             starIndex
         )
         ch_bam          = STAR_ALIGN.out.bam
