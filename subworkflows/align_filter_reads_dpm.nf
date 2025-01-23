@@ -2,7 +2,7 @@ include { BOWTIE2_ALIGN                                         } from '../modul
 include { FILTER_ALIGNMENTS as FILTER_ALIGNMENTS_DPM            } from '../modules/align_filter_reads/filter_alignments.nf'
 include { FILTER_MASKED_REGIONS as FILTER_MASKED_REGIONS_DPM    } from '../modules/align_filter_reads/filter_masked_regions.nf'
 
-workflow ALIGN_FILTER_READS {
+workflow ALIGN_FILTER_READS_DPM {
     take:
     ch_dpm_fastq
     bowtie2Index

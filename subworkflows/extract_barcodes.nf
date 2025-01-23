@@ -2,7 +2,7 @@ include { EXTRACT_BCS               } from '../modules/extract_barcodes/extract_
 include { SPLIT_RPM_DPM             } from '../modules/extract_barcodes/split_rpm_dpm.nf'
 include { MAKE_DPM_FASTA            } from '../modules/extract_barcodes/make_dpm_fasta.nf'
 include { TRIM_DPM as TRIM_RPM_DPM  } from '../modules/extract_barcodes/trim_dpm.nf'
-include { FASTQC_DPM                } from '../modules/fastqc.nf'
+include { FASTQC                    } from '../modules/fastqc.nf'
 
 workflow EXTRACT_BARCODES {
     take:
