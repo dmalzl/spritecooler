@@ -167,13 +167,16 @@ workflow SPRITECOOLER {
     CAT_FASTQ ( ch_fastq.multiple )
         .reads
         .mix ( ch_fastq.single )
-        .map {
-            meta, fastq -> 
-            [ meta, '', fastq ] // for fastqc
-        }
         .set { ch_cat_fastq }
 
-    FASTQC ( ch_cat_fastq )
+    ch_cat_fastq
+        .map {
+            meta, fastq -> 
+            [ meta, '', fastq ]
+        }
+        .set { ch_fastqc }
+
+    FASTQC ( ch_fastqc )
 
     TRIMGALORE ( ch_cat_fastq )
 
