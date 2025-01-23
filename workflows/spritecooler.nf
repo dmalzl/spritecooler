@@ -229,8 +229,25 @@ workflow SPRITECOOLER {
         .mix ( ALIGN_FILTER_READS_RPM.out.masked )
         .set { ch_mask_stats }
 
-    ch_dpm_bam = remove_rpm_dpm_meta ( ALIGN_FILTER_READS_DPM.out.bam )
-    ch_rpm_bam = remove_rpm_dpm_meta ( ALIGN_FILTER_READS_RPM.out.bam )
+    ALIGN_FILTER_READS_DPM.out.bam
+        .map {
+            meta, bam -> 
+            meta_new = [:]
+            meta_new.id = meta.id
+            meta_new.sample = meta.sample
+            [ meta_new, bam ]
+        }
+        .set { ch_dpm_bam }
+
+    ALIGN_FILTER_READS_RPM.out.bam
+        .map {
+            meta, bam -> 
+            meta_new = [:]
+            meta_new.id = meta.id
+            meta_new.sample = meta.sample
+            [ meta_new, bam ]
+        }
+        .set { ch_rpm_bam }
 
     ch_dpm_bam
         .join ( ch_rpm_bam, remainder: true )
