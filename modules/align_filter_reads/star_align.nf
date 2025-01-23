@@ -1,7 +1,7 @@
 process STAR_ALIGN {
     tag "$meta.id"
 
-    conda "${workflow.projectDir}/star.yml"
+    conda "${workflow.projectDir}/conda/star.yml"
 
     input:
     tuple val(meta), path(reads, stageAs: "input*/*")
