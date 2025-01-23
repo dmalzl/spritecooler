@@ -173,7 +173,8 @@ workflow SPRITECOOLER {
         params.mismatch,
         params.splitTag,
         ch_extractbc_overall_mqch,
-        ch_extractbc_poswise_mqch
+        ch_extractbc_poswise_mqch,
+        ch_dpmrpm_mqch
     )
     
     ALIGN_FILTER_READS_DPM (
