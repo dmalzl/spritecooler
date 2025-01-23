@@ -30,7 +30,7 @@ process SPLIT_RPM_DPM {
 
     wait    # wait for jobs to finish
 
-    cat ${mqc_header} ${meta.id}_dna.tsv ${meta.id}_rpm.tsv > ${meta.id}_dpmrpmstats_mqc.tsv
+    cat ${mqc_header} ${meta.id}_dpm.tsv ${meta.id}_rpm.tsv > ${meta.id}_dpmrpmstats_mqc.tsv
     """
 
 }
