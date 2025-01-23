@@ -14,12 +14,13 @@ process FILTER_ALIGNMENTS {
     tuple val(meta), path("*_mqc.tsv"),     emit: stats
 
     script:
+    def prefix = "${meta.id}_${meta.readtype}"
     """
     filter_alignments.py \\
         -i ${bam} \\
         -q ${minq} \\
-        -o ${meta.id}
+        -o ${prefix}
 
-    cat ${mqc_header} ${meta.id}.stats.tsv > ${meta.id}_filterstats_mqc.tsv
+    cat ${mqc_header} ${prefix}.stats.tsv > ${prefix}_filterstats_mqc.tsv
     """
 }

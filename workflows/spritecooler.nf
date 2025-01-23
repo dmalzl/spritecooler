@@ -121,6 +121,20 @@ def remove_null(files) {
     }
     return ret
 }
+
+def remove_rpm_dpm_meta(ch_bam) {
+    ch_bam
+        .map {
+            meta, bam -> 
+            meta_new = [:]
+            meta_new.id = meta.id
+            meta_new.sample = meta.sample
+            [ meta_new, bam ]
+        }
+        .set { ch_remove_bam }
+
+    return ch_remove_bam
+}
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     RUN MAIN WORKFLOW
@@ -207,8 +221,11 @@ workflow SPRITECOOLER {
         .mix ( ALIGN_FILTER_READS_RPM.out.masked )
         .set { ch_mask_stats }
 
-    ALIGN_FILTER_READS_DPM.out.bam
-        .join ( ALIGN_FILTER_READS_RPM.out.bam, remainder: true )
+    ch_dpm_bam = remove_rpm_dpm_meta ( ALIGN_FILTER_READS_DPM.out.bam )
+    ch_rpm_bam = remove_rpm_dpm_meta ( ALIGN_FILTER_READS_RPM.out.bam )
+    
+    ch_dpm_bam
+        .join ( ch_rpm_bam, remainder: true )
         .map { it -> [it[0], remove_null(it[1..-1])] }
         .set { ch_bams }
 

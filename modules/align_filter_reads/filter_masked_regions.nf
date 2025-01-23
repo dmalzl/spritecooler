@@ -14,17 +14,18 @@ process FILTER_MASKED_REGIONS {
     tuple val(meta), path("*maskstats_mqc.tsv"),    emit: stats
 
     script:
+    def prefix = "${meta.id}_${meta.readtype}"
     """
     bedtools intersect -v \\
         -a ${bam} \\
         -b ${genome_mask} \\
-        > ${meta.id}.masked.bam
+        > ${prefix}.masked.bam
 
     compute_mask_stats.py \\
         -i ${bam} \\
-        -m ${meta.id}.masked.bam \\
-        -o ${meta.id}.stats.tsv
+        -m ${prefix}.masked.bam \\
+        -o ${prefix}.stats.tsv
 
-    cat ${mqc_header} ${meta.id}.stats.tsv > ${meta.id}_maskstats_mqc.tsv
+    cat ${mqc_header} ${prefix}.stats.tsv > ${prefix}_maskstats_mqc.tsv
     """
 }
