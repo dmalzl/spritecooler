@@ -26,7 +26,7 @@ workflow ALIGN_FILTER_READS {
     if (readtype == 'RPM') {
         STAR_ALIGN (
             ch_fastq,
-            starIndex
+            alignIndex
         )
         ch_bam          = STAR_ALIGN.out.bam
         ch_align_stats  = STAR_ALIGN.out.log
