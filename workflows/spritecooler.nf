@@ -100,17 +100,17 @@ ch_mask_mqch                = file ( "${workflow.projectDir}/assets/multiqc/mask
     IMPORT LOCAL MODULES/SUBWORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-include { INPUT_CHECK               } from '../subworkflows/input_check.nf'
-include { PREPARE_GENOME            } from '../subworkflows/prepare_genome.nf'
-include { CAT_FASTQ                 } from '../modules/cat_fastq.nf'
-include { TRIMGALORE                } from '../modules/trimgalore.nf'
-include { FASTQC                    } from '../modules/fastqc.nf'
-include { EXTRACT_BARCODES          } from '../subworkflows/extract_barcodes.nf'
-include { ALIGN_FILTER_READS_DPM    } from '../subworkflows/align_filter_reads_dpm.nf'
-include { ALIGN_FILTER_READS_RPM    } from '../subworkflows/align_filter_reads_rpm.nf'
-include { MAKE_PAIRS                } from '../subworkflows/make_pairs.nf'
-include { MAKE_COOLER               } from '../subworkflows/make_cooler.nf'
-include { MULTIQC                   } from '../modules/multiqc.nf'
+include { INPUT_CHECK                                   } from '../subworkflows/input_check.nf'
+include { PREPARE_GENOME                                } from '../subworkflows/prepare_genome.nf'
+include { CAT_FASTQ                                     } from '../modules/cat_fastq.nf'
+include { TRIMGALORE                                    } from '../modules/trimgalore.nf'
+include { FASTQC                                        } from '../modules/fastqc.nf'
+include { EXTRACT_BARCODES                              } from '../subworkflows/extract_barcodes.nf'
+include { ALIGN_FILTER_READS as ALIGN_FILTER_READS_DPM  } from '../subworkflows/align_filter_reads.nf'
+include { ALIGN_FILTER_READS as ALIGN_FILTER_READS_RPM  } from '../subworkflows/align_filter_reads.nf'
+include { MAKE_PAIRS                                    } from '../subworkflows/make_pairs.nf'
+include { MAKE_COOLER                                   } from '../subworkflows/make_cooler.nf'
+include { MULTIQC                                       } from '../modules/multiqc.nf'
 
 //define some simple utilities
 def remove_null(files) {
@@ -123,7 +123,7 @@ def remove_null(files) {
 }
 
 def remove_rpm_dpm_meta(ch_bam) {
-    ch_bam
+    ch_remove_bam = ch_bam
         .map {
             meta, bam -> 
             meta_new = [:]
@@ -131,7 +131,6 @@ def remove_rpm_dpm_meta(ch_bam) {
             meta_new.sample = meta.sample
             [ meta_new, bam ]
         }
-        .set { ch_remove_bam }
 
     return ch_remove_bam
 }
@@ -197,7 +196,8 @@ workflow SPRITECOOLER {
         params.mapq,
         file ( dynamic_params.blacklist ),
         ch_alignfilter_mqch,
-        ch_mask_mqch
+        ch_mask_mqch,
+        "DPM"
     )
 
     ALIGN_FILTER_READS_RPM (
@@ -206,7 +206,8 @@ workflow SPRITECOOLER {
         params.mapq,
         file ( dynamic_params.blacklist ),
         ch_alignfilter_mqch,
-        ch_mask_mqch
+        ch_mask_mqch,
+        "RPM"
     )
 
     ALIGN_FILTER_READS_DPM.out.align
@@ -223,7 +224,7 @@ workflow SPRITECOOLER {
 
     ch_dpm_bam = remove_rpm_dpm_meta ( ALIGN_FILTER_READS_DPM.out.bam )
     ch_rpm_bam = remove_rpm_dpm_meta ( ALIGN_FILTER_READS_RPM.out.bam )
-    
+
     ch_dpm_bam
         .join ( ch_rpm_bam, remainder: true )
         .map { it -> [it[0], remove_null(it[1..-1])] }

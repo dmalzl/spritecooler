@@ -6,14 +6,13 @@ include { FASTQC                    } from '../modules/fastqc.nf'
 
 
 def add_rpm_dpm_meta(ch_split_out, readtype) {
-    ch_split_out
+    ch_add_meta = ch_split_out
         .map { 
             meta, fastq -> 
             meta_new = meta.clone()
-            meta_new.part = readtype
+            meta_new.readtype = readtype
             [ meta_new, fastq ]
         }
-        .set { ch_add_meta }
     
     return ch_add_meta
 }
