@@ -48,7 +48,7 @@ def prepare_genome_for_tools = []
 
 // if we do not have --genome
 if ( !params.genome ) {
-    // bowtie2 index
+
     if ( !params.gtf ) {
         log.error "--genome not specified and no GTF given, which is needed for STAR. Exiting!"
         System.exit(1)
@@ -65,6 +65,13 @@ if ( !params.genome ) {
     if ( params.chromSizes.endsWith("xml") ) {
         prepare_genome_for_tools << "chromSizes"
     }
+
+} else {
+
+    if ( igenomes_chromSizes.endsWith("xml") ) {
+        prepare_genome_for_tools << "chromSizes"
+    }
+
 }
 
 dynamic_params = [:]
@@ -155,7 +162,7 @@ workflow SPRITECOOLER {
         .set { ch_fastq }
 
     // prepare genome files
-    if (!prepare_genome_for_tools.isEmpty()) {
+    if ( !prepare_genome_for_tools.isEmpty() ) {
         ch_genome = PREPARE_GENOME (
             prepare_genome_for_tools,
             dynamic_params
