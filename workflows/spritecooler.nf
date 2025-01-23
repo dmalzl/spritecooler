@@ -75,11 +75,11 @@ dynamic_params.starIndex        = igenomes_star ? igenomes_star : "computed from
 dynamic_params.gtf              = params.gtf ? params.gtf : igenomes_gtf
 dynamic_params.blacklist        = params.blacklist ? params.blacklist : igenomes_blacklist
 dynamic_params.genomeSizeType   = SpriteCooler.getGenomeSizeType( dynamic_params.genomeSizes )
-dynamic_params.genomeName       = params.genome ? params.genome : file(dynamic_params.genomeFasta).getSimpleName()
+dynamic_params.genomeName       = params.genome ? params.genome : file( dynamic_params.genomeFasta ).getSimpleName()
 dynamic_params.baseResolution   = baseResolution
 dynamic_params.resolutions      = resolutions
 
-SpriteCooler.paramsSummaryLog( params, dynamic_params, log )
+SpriteCooler.paramsSummaryLog ( params, dynamic_params, log )
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -127,7 +127,7 @@ def remove_null(files) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 workflow SPRITECOOLER {
-    ch_input = file( params.samples )
+    ch_input = file ( params.samples )
 
     INPUT_CHECK ( ch_input )
         .reads
@@ -150,8 +150,9 @@ workflow SPRITECOOLER {
 
     } else {
         ch_genome = [:]
-        ch_genome.index     = file( dynamic_params.bowtie2Index )
-        ch_genome.sizes     = file( dynamic_params.genomeSizes )
+        ch_genome.bowtie2   = file ( dynamic_params.bowtie2Index )
+        ch_genome.star      = file ( dynamic_params.starIndex )
+        ch_genome.sizes     = file ( dynamic_params.genomeSizes )
     }
     
     // concatenate fastqs of samples with multiple readfiles
