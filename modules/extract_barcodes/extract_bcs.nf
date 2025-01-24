@@ -19,13 +19,15 @@ process EXTRACT_BCS {
     tuple val(meta), path("*valid_invalid_count.tsv"),  emit: summary
 
     script:
+    def r1layout = layout1 ? layout1 : ''
+    def r2layout = layout2 ? layout2 : ''
     """
     spritefridge extractbc \\
         -r1 ${reads[0]} \\
         -r2 ${reads[1]} \\
         -bc ${barcodes} \\
-        -l1 "${layout1}" \\
-        -l2 "${layout2}" \\
+        ${r1layout} \\
+        ${l2layout} \\
         -m "${mismatch}" \\
         -o ${meta.id}.bcextract.fq.gz \\
         -p ${task.cpus}
