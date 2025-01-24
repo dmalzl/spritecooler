@@ -43,7 +43,8 @@ workflow EXTRACT_BARCODES {
         mqc_dpmrpm_header
     )
 
-    SPLIT_RPM_DPM.out.rpm        
+    SPLIT_RPM_DPM.out.rpm   
+        .filter { meta, fastq -> fastq.countFastq() > 0 }     
         .map { 
             meta, fastq -> 
             [ meta, 'rpm', fastq ]
@@ -51,6 +52,7 @@ workflow EXTRACT_BARCODES {
         .set { ch_rpm_fastq }
 
     SPLIT_RPM_DPM.out.dpm
+        .filter { meta, fastq -> fastq.countFastq() > 0 } 
         .map { 
             meta, fastq -> 
             [ meta, 'dpm', fastq ]
