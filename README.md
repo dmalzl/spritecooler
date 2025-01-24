@@ -45,16 +45,17 @@ Either one of the layouts can be left out to enable barcode extraction of only o
 nextflow run dmalzl/spritecooler \
         --samples samples.csv \
         --barcodes barcodes.tsv \
-        --splitTag LIGTAG \
-        --r2Layout 'Y|SPACER|ODD|SPACER|EVEN|SPACER|ODD|SPACER|LIGTAG' \
-        --mismatch 'LIGTAG:2,Y:0,EVEN:2,ODD:2' \
+        --splitTag DPM \
+        --r1Layout DPM \
+        --r2Layout 'Y|SPACER|ODD|SPACER|EVEN|SPACER|ODD' \
+        --mismatch 'DPM:0,Y:0,EVEN:2,ODD:2' \
         --genome GRCm38 \
 ```
 
 The `--splitTag` parameter tells the pipeline which of the barcode categories to use for splitting the reads into RNA and DNA sequences which are then aligned separately.
 
 **Note that the above commands will only work if you have a local mirror of the used [iGenomes](https://ewels.github.io/AWS-iGenomes/) genome you specified. Otherwise you will need to supply all files necessary to generate the STAR and Bowtie2 indexes via `--fasta`, `--chromSizes` and `--gtf`. If `--blacklist` is not supplied the blacklist filtering step will simply be skipped. The following command shows an example of how to use a custom genome file**
-```
+```bash
 nextflow run dmalzl/spritecooler \
         --samples samples.csv \
         --barcodes barcodes.tsv \
