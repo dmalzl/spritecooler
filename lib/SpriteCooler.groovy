@@ -122,7 +122,7 @@ class SpriteCooler {
     //
     private static void checkGenomeSettings(params, log) {
         if (!params.genome && !params.fasta) {
-            log.error " ERROR - Neither genome nor fasta file are specified"
+            log.error "Neither genome nor fasta file are specified"
             System.exit(1)
         }
 
@@ -165,7 +165,7 @@ class SpriteCooler {
     //
     private static Set<String> parseMismatch(params, log) {
         if (!params.mismatch) {
-            log.error " ERROR - Mismatches are not set"
+            log.error "Mismatches are not set"
             System.exit(1)
         }
         Set mismatchCategories = params.mismatch
@@ -179,18 +179,23 @@ class SpriteCooler {
     // check if mismatches are specified
     //
     private static void checkBarcodesSettings(params, log) {
+        if (!params.splitTag) {
+            log.warn "--splitTag is not set.\n" + 
+            "This will result in skipping the splitting of the FASTQ and will assume that only DNA-DNA contacts are present (i.e. DPM).\n" +
+            "If this is not the behaviour you want please make sure --splitTag is set correctly"
+        }
         def layoutCategories = parseLayout(params, log)
         def bcCategories = getAvailableBarcodeCategories(params.barcodes)
         def bcintersection = layoutCategories.intersect(bcCategories)
         if (!layoutCategories.equals(bcintersection)) {
-            log.error " ERROR - Not all barcode categories from layout are present in the given barcode file"
+            log.error "Not all barcode categories from layout are present in the given barcode file"
             System.exit(1)
         }
         
         def mismatchCategories = parseMismatch(params, log)
         def mmintersection = mismatchCategories.intersect(layoutCategories)
         if (!mismatchCategories.equals(mmintersection)) {
-            log.error " ERROR - Not all used barcode categories have a corresponding mismatch setting"
+            log.error "Not all used barcode categories have a corresponding mismatch setting"
             System.exit(1)
         }
     }

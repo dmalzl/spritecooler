@@ -42,7 +42,7 @@ workflow EXTRACT_BARCODES {
 
     MAKE_DPM_FASTA ( 
         barcodes,
-        splitTag
+        splitTag ? splitTag : "DPM"
     )
 
     TRIM_RPM_DPM ( 
@@ -50,20 +50,28 @@ workflow EXTRACT_BARCODES {
         MAKE_DPM_FASTA.out.fasta
     )
 
-    SPLIT_RPM_DPM ( 
-        TRIM_RPM_DPM.out.reads,
-        mqc_dpmrpm_header
-    )
+    if (splitTag) {
+        SPLIT_RPM_DPM ( 
+            TRIM_RPM_DPM.out.reads,
+            mqc_dpmrpm_header
+        )
 
-    ch_rpm_fastq = add_readtype_and_filter ( 
-        SPLIT_RPM_DPM.out.rpm,
-        'rpm'
-    )
+        ch_rpm_fastq = add_readtype_and_filter ( 
+            SPLIT_RPM_DPM.out.rpm,
+            'rpm'
+        )
 
-    ch_dpm_fastq = add_readtype_and_filter (
-        SPLIT_RPM_DPM.out.dpm,
-        'dpm'
-    )
+        ch_dpm_fastq = add_readtype_and_filter (
+            SPLIT_RPM_DPM.out.dpm,
+            'dpm'
+        )
+    } else {
+        ch_rpm_fastq = Channel.empty()
+        ch_dpm_fastq = add_readtype_and_filter (
+            TRIM_RPM_DPM.out.dpm,
+            'dpm'
+        )
+    }
 
     ch_dpm_fastq 
         .mix ( ch_rpm_fastq )
