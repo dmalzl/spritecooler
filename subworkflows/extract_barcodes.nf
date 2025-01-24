@@ -68,7 +68,7 @@ workflow EXTRACT_BARCODES {
     } else {
         ch_rpm_fastq = Channel.empty()
         ch_dpm_fastq = add_readtype_and_filter (
-            TRIM_RPM_DPM.out.dpm,
+            TRIM_RPM_DPM.out.reads,
             'dpm'
         )
     }

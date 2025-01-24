@@ -88,6 +88,11 @@ dynamic_params.resolutions      = resolutions
 
 SpriteCooler.paramsSummaryLog ( params, dynamic_params, log )
 
+if ( !params.splitTag ) {
+    log.warn "--splitTag is not set.\n" + 
+    "This will result in skipping the splitting of the FASTQ and will assume that only DNA-DNA contacts are present (i.e. DPM).\n" +
+    "If this is not the behaviour you want please make sure --splitTag is set correctly"
+}
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     INSTANTIATE MULTIQC CONFIGS
@@ -202,32 +207,43 @@ workflow SPRITECOOLER {
         "DPM"
     )
 
-    ALIGN_FILTER_READS_RPM (
-        EXTRACT_BARCODES.out.rpm,
-        ch_genome.star,
-        params.mapq,
-        file ( dynamic_params.blacklist ),
-        ch_alignfilter_mqch,
-        ch_mask_mqch,
-        "RPM"
-    )
+    if ( params.splitTag ) {
 
-    ALIGN_FILTER_READS_DPM.out.align
-        .mix ( ALIGN_FILTER_READS_RPM.out.align )
-        .set { ch_align_stats }
+        ALIGN_FILTER_READS_RPM (
+            EXTRACT_BARCODES.out.rpm,
+            ch_genome.star,
+            params.mapq,
+            file ( dynamic_params.blacklist ),
+            ch_alignfilter_mqch,
+            ch_mask_mqch,
+            "RPM"
+        )
 
-    ALIGN_FILTER_READS_DPM.out.filtered
-        .mix ( ALIGN_FILTER_READS_RPM.out.filtered )
-        .set { ch_filter_stats }
+        ALIGN_FILTER_READS_DPM.out.align
+            .mix ( ALIGN_FILTER_READS_RPM.out.align )
+            .set { ch_align_stats }
 
-    ALIGN_FILTER_READS_DPM.out.masked
-        .mix ( ALIGN_FILTER_READS_RPM.out.masked )
-        .set { ch_mask_stats }
+        ALIGN_FILTER_READS_DPM.out.filtered
+            .mix ( ALIGN_FILTER_READS_RPM.out.filtered )
+            .set { ch_filter_stats }
 
-    ALIGN_FILTER_READS_DPM.out.bam
-        .join ( ALIGN_FILTER_READS_RPM.out.bam, remainder: true )
-        .map { it -> [it[0], remove_null(it[1..-1])] }
-        .set { ch_bams }
+        ALIGN_FILTER_READS_DPM.out.masked
+            .mix ( ALIGN_FILTER_READS_RPM.out.masked )
+            .set { ch_mask_stats }
+
+        ALIGN_FILTER_READS_DPM.out.bam
+            .join ( ALIGN_FILTER_READS_RPM.out.bam, remainder: true )
+            .map { it -> [it[0], remove_null(it[1..-1])] }
+            .set { ch_bams }
+
+    } else {
+
+        ch_align_stats  = ALIGN_FILTER_READS_DPM.out.align
+        ch_filter_stats = ALIGN_FILTER_READS_DPM.out.filtered
+        ch_mask_stats   = ALIGN_FILTER_READS_DPM.out.masked
+        ch_bams         = ALIGN_FILTER_READS_DPM.out.bam
+
+    }
 
     MAKE_PAIRS (
         ch_bams,

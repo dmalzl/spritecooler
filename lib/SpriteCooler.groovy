@@ -179,11 +179,6 @@ class SpriteCooler {
     // check if mismatches are specified
     //
     private static void checkBarcodesSettings(params, log) {
-        if (!params.splitTag) {
-            log.warn "--splitTag is not set.\n" + 
-            "This will result in skipping the splitting of the FASTQ and will assume that only DNA-DNA contacts are present (i.e. DPM).\n" +
-            "If this is not the behaviour you want please make sure --splitTag is set correctly"
-        }
         def layoutCategories = parseLayout(params, log)
         def bcCategories = getAvailableBarcodeCategories(params.barcodes)
         def bcintersection = layoutCategories.intersect(bcCategories)
