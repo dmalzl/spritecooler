@@ -51,11 +51,14 @@ workflow EXTRACT_BARCODES {
     )
 
     if (splitTag) {
+
         SPLIT_RPM_DPM ( 
             TRIM_RPM_DPM.out.reads,
             mqc_dpmrpm_header
         )
 
+        ch_split_stats = SPLIT_RPM_DPM.out.stats
+        
         ch_rpm_fastq = add_readtype_and_filter ( 
             SPLIT_RPM_DPM.out.rpm,
             'rpm'
@@ -65,12 +68,16 @@ workflow EXTRACT_BARCODES {
             SPLIT_RPM_DPM.out.dpm,
             'dpm'
         )
+
     } else {
-        ch_rpm_fastq = Channel.empty()
-        ch_dpm_fastq = add_readtype_and_filter (
+
+        ch_split_stats  = Channel.empty() 
+        ch_rpm_fastq    = Channel.empty()
+        ch_dpm_fastq    = add_readtype_and_filter (
             TRIM_RPM_DPM.out.reads,
             'dpm'
         )
+
     }
 
     ch_dpm_fastq 
@@ -83,7 +90,7 @@ workflow EXTRACT_BARCODES {
     dpm     = ch_dpm_fastq
     rpm     = ch_rpm_fastq
     extract = EXTRACT_BCS.out.stats
-    split   = SPLIT_RPM_DPM.out.stats
+    split   = ch_split_stats
     trim    = TRIM_RPM_DPM.out.reports
     html    = FASTQC.out.html
     zip     = FASTQC.out.zip
