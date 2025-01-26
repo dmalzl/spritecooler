@@ -85,7 +85,7 @@ custom_content:
   order:
     - barcode_extraction_overall
     - barcode_extraction_poswise
-    - rna_dna_split
+    - rpm_dpm_stats
     - cluster_size
     - alignment_filtering
     - alignment_deduplication

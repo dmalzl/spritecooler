@@ -1,7 +1,7 @@
-# id: 'dpm_rpm_stats'
+# id: 'rpm_dpm_stats'
 # section_name: 'DPM RPM split statistics'
 # description: "shows number of DPM / RPM containing reads"
-# anchor: 'dpm_rpm_stats'
+# anchor: 'rpm_dpm_stats'
 # format: 'tsv'
 # plot_type: 'bargraph'
 # pconfig:
