@@ -52,7 +52,7 @@ nextflow run dmalzl/spritecooler \
         --genome GRCm38 \
 ```
 
-The `--splitTag` parameter tells the pipeline which of the barcode categories to use for splitting the reads into RNA and DNA sequences which are then aligned separately.
+The `--splitTag` parameter tells the pipeline which of the barcode categories to use for splitting the reads into RNA and DNA sequences which are then aligned separately. In this mode the default is to remove the barcodes upon which the data is split from the barcode sequence of each read. If this is not the desired behaviour you can tell the pipeline to keep the tag barcodes by specifying `--keepSplitTag true`.
 
 **Note that the above commands will only work if you have a local mirror of the used [iGenomes](https://ewels.github.io/AWS-iGenomes/) genome you specified. Otherwise you will need to supply all files necessary to generate the STAR and Bowtie2 indexes via `--fasta`, `--chromSizes` and `--gtf`. If `--blacklist` is not supplied the blacklist filtering step will simply be skipped. The following command shows an example of how to use a custom genome file**
 ```bash
@@ -67,8 +67,6 @@ nextflow run dmalzl/spritecooler \
         --chromSizes chrom_sizes.tsv \
         [--blacklist genome_blacklist.bed]
 ```
-
-
 
 ## Steps
 Executing the above command will run through all necessary steps to process the data from raw reads to balanced and annotated cooler format. A detailed listing of all the main steps can be found below.
@@ -187,3 +185,6 @@ whether to write pairs files to results. set to `--savePairs true` in case you w
 
 #### `--saveQfilteredAlignments`
 whether to also save quality filtered primary alignments. set to `--saveQfilteredAlignments true`(default: false)
+
+#### `--keepSplitTag`
+if set to `--keepSplitTag true`, keeps the tag upon which the data is split in the set of barcodes for each read.

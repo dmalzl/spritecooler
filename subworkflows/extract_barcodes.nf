@@ -25,6 +25,7 @@ workflow EXTRACT_BARCODES {
     r2layout
     mismatch
     splitTag
+    keepSplitTag
     mqc_overall_header
     mqc_poswise_header
     mqc_dpmrpm_header
@@ -50,15 +51,16 @@ workflow EXTRACT_BARCODES {
         MAKE_DPM_FASTA.out.fasta
     )
 
-    if (splitTag) {
+    if ( splitTag ) {
 
         SPLIT_RPM_DPM ( 
             TRIM_RPM_DPM.out.reads,
+            keepSplitTag,
             mqc_dpmrpm_header
         )
 
         ch_split_stats = SPLIT_RPM_DPM.out.stats
-        
+
         ch_rpm_fastq = add_readtype_and_filter ( 
             SPLIT_RPM_DPM.out.rpm,
             'rpm'

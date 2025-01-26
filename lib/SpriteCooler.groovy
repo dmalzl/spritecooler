@@ -95,6 +95,7 @@ class SpriteCooler {
         log.info " r1Layout                 : ${params.r1Layout}"
         log.info " r2Layout                 : ${params.r2Layout}"
         log.info " splitTag                 : ${params.splitTag}"
+        log.info " keepSplitTag             : ${params.keepSplitTag}"
         log.info " mismatch                 : ${params.mismatch}"
         log.info " minClusterSize           : ${params.minClusterSize}"
         log.info " maxClusterSize           : ${params.maxClusterSize}"
