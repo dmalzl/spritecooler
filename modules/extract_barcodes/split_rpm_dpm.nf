@@ -15,8 +15,8 @@ process SPLIT_RPM_DPM {
     tuple val(meta), path('*mqc.tsv'),      emit: stats
 
     script:
-    def remove_dpm_tag = keepSplitTag ? '' : "| sed -e '/^@/ s/DPM[^|]*|//g' -e '/^@/ s/|DPM[^|]*\$//g' \\"
-    def remove_rpm_tag = keepSplitTag ? '' : "| sed -e '/^@/ s/RPM[^|]*|//g' -e '/^@/ s/|RPM[^|]*\$//g' \\"
+    def remove_dpm_tag = keepSplitTag ? '\\' : "| sed -e '/^@/ s/DPM[^|]*|//g' -e '/^@/ s/|DPM[^|]*\$//g' \\"
+    def remove_rpm_tag = keepSplitTag ? '\\' : "| sed -e '/^@/ s/RPM[^|]*|//g' -e '/^@/ s/|RPM[^|]*\$//g' \\"
     """
     zgrep -A 3 DPM ${reads} \\
     | grep -v -- "^--\$" \\
