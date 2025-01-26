@@ -1,11 +1,11 @@
-# id: 'barcode_extraction'
-# section_name: 'Barcode Extraction'
+# id: 'barcode_extraction_poswise'
+# section_name: 'Barcode Extraction Poswise'
 # description: "shows poswise statistics on extracted barcodes per read"
-# anchor: 'barcode_extraction'
+# anchor: 'barcode_extraction_poswise'
 # format: 'tsv'
 # plot_type: 'table'
 # pconfig:
 #     id: "barcode_extraction_plot_poswise"
 #     title: "Poswise Extraction Stats"
-#     min: 0
-#     max: 100
+#     xmin: 0
+#     xmax: 100
