@@ -6,12 +6,16 @@ process MAKE_DPM_FASTA {
 
     input:
     file(barcodes)
+    val(dpm)
 
     output:
     path("dpm.fasta"), emit: fasta
 
     script:
     """
-    make_dpm_fasta.py -i ${barcodes} -o dpm.fasta
+    make_dpm_fasta.py \\
+        -i ${barcodes} \\
+        --dpm ${dpm} \\
+        -o dpm.fasta
     """
 }

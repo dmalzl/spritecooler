@@ -4,7 +4,7 @@ process BOWTIE2_BUILD_INDEX {
     memory = { genomeSizeType == 'large' ? 100.GB * task.attempt : 20.GB * task.attempt }
     time = { genomeSizeType == 'large' ? 8.h * task.attempt : 4.h * task.attempt }
 
-    conda "bioconda::bowtie2=2.5.4"
+    conda "${workflow.projectDir}/conda/bowtie2.yml"
 
     input:
     file(genomeFasta)

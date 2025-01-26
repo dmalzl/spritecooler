@@ -18,13 +18,15 @@ process EXTRACT_BCS {
     tuple val(meta), path("*_mqc.tsv"),                 emit: stats
 
     script:
+    def r1layout = layout1 ? "-l1 '${layout1}'" : ""
+    def r2layout = layout2 ? "-l2 '${layout2}'" : ""
     """
     spritefridge extractbc \\
         -r1 ${reads[0]} \\
         -r2 ${reads[1]} \\
         -bc ${barcodes} \\
-        -l1 "${layout1}" \\
-        -l2 "${layout2}" \\
+        ${r1layout} \\
+        ${r2layout} \\
         -m "${mismatch}" \\
         -o ${meta.id}.bcextract.fq.gz \\
         -p ${task.cpus}

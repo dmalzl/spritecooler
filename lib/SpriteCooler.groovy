@@ -94,6 +94,8 @@ class SpriteCooler {
         log.info " barcodes                 : ${params.barcodes}"
         log.info " r1Layout                 : ${params.r1Layout}"
         log.info " r2Layout                 : ${params.r2Layout}"
+        log.info " splitTag                 : ${params.splitTag}"
+        log.info " keepSplitTag             : ${params.keepSplitTag}"
         log.info " mismatch                 : ${params.mismatch}"
         log.info " minClusterSize           : ${params.minClusterSize}"
         log.info " maxClusterSize           : ${params.maxClusterSize}"
@@ -107,7 +109,9 @@ class SpriteCooler {
         log.info " Fasta                    : ${dynamic.genomeFasta}"
         log.info " ChromSizes               : ${dynamic.genomeSizes}"
         log.info " Bowtie2 Index            : ${dynamic.bowtie2Index}"
-        log.info " Genome maks              : ${params.genomeMask}"
+        log.info " STAR Index               : ${dynamic.starIndex}"
+        log.info " Blackist                 : ${dynamic.blacklist}"
+        log.info " GTF                      : ${dynamic.gtf}"
         log.info " Output Directory         : ${params.outdir}"
         log.info " ======================"
         log.info ""
@@ -119,7 +123,7 @@ class SpriteCooler {
     //
     private static void checkGenomeSettings(params, log) {
         if (!params.genome && !params.fasta) {
-            log.error " ERROR - Neither genome nor fasta file are specified"
+            log.error "Neither genome nor fasta file are specified"
             System.exit(1)
         }
 
@@ -144,10 +148,6 @@ class SpriteCooler {
     // check if layout is specified correctly and parse them
     //
     private static Set<String> parseLayout(params, log) {
-        if (!params.r1Layout || !params.r2Layout) {
-            log.error " ERROR - Read layouts not fully specified. Please make sure both layouts have been specified"
-            System.exit(1)
-        }
         Set r1Barcodes = params.r1Layout.tokenize('|')
         Set r2Barcodes = params.r2Layout.tokenize('|')
         return r1Barcodes.plus(r2Barcodes).minus('SPACER')
@@ -166,7 +166,7 @@ class SpriteCooler {
     //
     private static Set<String> parseMismatch(params, log) {
         if (!params.mismatch) {
-            log.error " ERROR - Mismatches are not set"
+            log.error "Mismatches are not set"
             System.exit(1)
         }
         Set mismatchCategories = params.mismatch
@@ -184,14 +184,14 @@ class SpriteCooler {
         def bcCategories = getAvailableBarcodeCategories(params.barcodes)
         def bcintersection = layoutCategories.intersect(bcCategories)
         if (!layoutCategories.equals(bcintersection)) {
-            log.error " ERROR - Not all barcode categories from layout are present in the given barcode file"
+            log.error "Not all barcode categories from layout are present in the given barcode file"
             System.exit(1)
         }
         
         def mismatchCategories = parseMismatch(params, log)
         def mmintersection = mismatchCategories.intersect(layoutCategories)
         if (!mismatchCategories.equals(mmintersection)) {
-            log.error " ERROR - Not all used barcode categories have a corresponding mismatch setting"
+            log.error "Not all used barcode categories have a corresponding mismatch setting"
             System.exit(1)
         }
     }

@@ -1,4 +1,4 @@
-name: align
+name: bowtie2
 channels:
   - bioconda
   - conda-forge

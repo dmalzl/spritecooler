@@ -7,48 +7,55 @@ disable_version_detection: true
 # Run only these modules
 run_modules:
   - custom_content
+  - bowtie2
+  - star
   - fastqc
   - cutadapt
-  - bowtie2
 
 # Order of modules
 module_order:
   - custom_content
   - bowtie2:
     name: "Bowtie2 alignment stats"
-    info: "This section of the report shows Bowtie2 aligment statistics"
+    info: "This section of the report shows Bowtie2 DPM aligment statistics"
     path_filters:
-      - "./bowtie_stats/*bowtie2.log"
+      - "./align_stats/*bowtie2.log"
+
+  - star:
+    name: "STAR alignment stats"
+    info: "This section of the report shows STAR RPM aligment statistics"
+    path_filters:
+      - "./align_stats/*Log.final.out"
 
   - fastqc:
-      name: "FastQC (raw)"
-      info: "This section of the report shows FastQC results before adapter trimming."
-      path_filters:
-        - "./fastqc_raw/*.zip"
+    name: "FastQC (raw)"
+    info: "This section of the report shows FastQC results before adapter trimming."
+    path_filters:
+      - "./fastqc_raw/*.zip"
 
   - cutadapt:
-      name: "Cutadapt (adapter trimming)"
-      info: "This section of the report shows Cutadapt results for plain adapter trimming"
-      path_filters:
-        - "./adapter_trim/*txt"
+    name: "Cutadapt (adapter trimming)"
+    info: "This section of the report shows Cutadapt results for plain adapter trimming"
+    path_filters:
+      - "./adapter_trim/*txt"
 
   - fastqc:
-      name: "FastQC (trimmed)"
-      info: "This section of the report shows FastQC results after adapter trimming."
-      path_filters:
-        - "./fastqc_trim/*.zip"
+    name: "FastQC (trimmed)"
+    info: "This section of the report shows FastQC results after adapter trimming."
+    path_filters:
+      - "./fastqc_trim/*.zip"
 
   - cutadapt:
-      name: "Cutadapt (DPM trimming)"
-      info: "This section of the report shows Cutadapt results for DPM trimming"
-      path_filters:
-        - "./dpm_trim/*txt"
+    name: "Cutadapt (DPM trimming)"
+    info: "This section of the report shows Cutadapt results for DPM trimming"
+    path_filters:
+      - "./dpm_trim/*txt"
 
   - fastqc:
-      name: "FastQC (DPM trimmed)"
-      info: "This section of the report shows FastQC results after DPM trimming."
-      path_filters:
-        - "./fastqc_dpm/*.zip"
+    name: "FastQC (DPM trimmed)"
+    info: "This section of the report shows FastQC results after DPM trimming."
+    path_filters:
+      - "./fastqc_dpm/*.zip"
 
 extra_fn_clean_exts:
   - ".bcextract"
@@ -61,6 +68,7 @@ extra_fn_clean_exts:
   - "_maskstats"
   - "_overall_extractstats"
   - "_poswise_extractstats"
+  - "_dpmrpmstats"
   - "_trimmed_val_1"
   - "_trimmed_val_2"
 
@@ -77,8 +85,8 @@ custom_content:
   order:
     - barcode_extraction_overall
     - barcode_extraction_poswise
+    - rpm_dpm_stats
     - cluster_size
     - alignment_filtering
     - alignment_deduplication
     - alignment_masking
-    
