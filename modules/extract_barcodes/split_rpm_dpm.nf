@@ -30,8 +30,10 @@ process SPLIT_RPM_DPM {
 
     wait
 
-    echo "DPM\t"\$(zcat ${meta.id}_dpm.fq.gz | wc -l) > ${meta.id}_dpm.tsv &
-    echo "RPM\t"\$(zcat ${meta.id}_rpm.fq.gz | wc -l) > ${meta.id}_rpm.tsv
+    dpms=\$(zcat ${meta.id}_dpm.fq.gz | wc -l)
+    rpms=\$(zcat ${meta.id}_rpm.fq.gz | wc -l)
+    echo "DPM\t"\$((\$dpms / 4)) > ${meta.id}_dpm.tsv &
+    echo "RPM\t"\$((\$rpms / 4)) > ${meta.id}_rpm.tsv
 
     wait    # wait for jobs to finish
 
