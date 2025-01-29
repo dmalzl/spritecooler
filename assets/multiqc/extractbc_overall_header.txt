@@ -9,3 +9,4 @@
 #     title: "Extraction Stats"
 #     xlab: "# Reads"
 #     cpswitch_counts_label: "Number of Reads"
+#     cpswitch_c_active: False
