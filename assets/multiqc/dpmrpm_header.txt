@@ -9,3 +9,4 @@
 #     title: "DPM RPM split stats"
 #     xlab: "# Reads"
 #     cpswitch_counts_label: "Number of Reads"
+#     cpswitch_c_active: False

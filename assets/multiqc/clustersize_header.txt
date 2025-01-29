@@ -9,3 +9,4 @@
 #     title: "Cluster Size Stats"
 #     xlab: "# Clusters"
 #     cpswitch_counts_label: "Number of Clusters"
+#     cpswitch_c_active: False
