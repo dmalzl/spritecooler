@@ -8,18 +8,18 @@ process PLOT_COOLER {
     tuple val(meta), path(mcool)
 
     output:
-    tuple val(meta), path("plots/*pdf"),    emit: plots
+    tuple val(meta), path("${meta.id}"),    emit: plots
 
     script:
     """
-    mkdir plots
+    mkdir ${meta.id}
 
     coolpath=${mcool}::/resolutions/1000000
     for chrom in `cooler dump -t chroms \${coolpath} | cut -f 1`;
     do
         cooler show \\
             --cmap afmhot_r \\
-            -o plots/${meta.id}_\${chrom}.pdf \\
+            -o ${meta.id}/${meta.id}_\${chrom}.pdf \\
             \$coolpath \\
             \$chrom
     done
