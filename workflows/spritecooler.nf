@@ -264,13 +264,20 @@ workflow SPRITECOOLER {
         dynamic_params.genomeName
     )
 
+    // needed for multiqc exec if DPM only
+    EXTRACT_BARCODES.out.split
+        .collect { it[1] }
+        .ifEmpty("${workflow.projectDir}/assets/multiqc/dummy_split_stats.txt")
+        .set { ch_split_stats }
+
+
     MULTIQC (
         ch_multiqc_config,
         FASTQC.out.zip.collect { it[1].flatten() },
         TRIMGALORE.out.reports.collect { it[1] },
         TRIMGALORE.out.zip.collect { it[1].flatten() },
         EXTRACT_BARCODES.out.extract.collect { it[1] },
-        EXTRACT_BARCODES.out.split.collect { it[1] },
+        ch_split_stats,
         EXTRACT_BARCODES.out.trim.collect { it[1] },
         EXTRACT_BARCODES.out.zip.collect { it[1] },
         ch_align_stats.collect { it[1] },

@@ -73,7 +73,7 @@ workflow EXTRACT_BARCODES {
 
     } else {
 
-        ch_split_stats  = file ( "${workflow.projectDir}/assets/multiqc/dummy_split_stats.txt" )
+        ch_split_stats  = Channel.empty()
         ch_rpm_fastq    = Channel.empty()
         ch_dpm_fastq    = add_readtype_and_filter (
             TRIM_RPM_DPM.out.reads,
