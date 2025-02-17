@@ -7,6 +7,6 @@
 # pconfig:
 #     id: "cluster_size_plot"
 #     title: "Cluster Size Stats"
-#     xlab: "# Clusters"
+#     ylab: "# Reads"
 #     cpswitch_counts_label: "Number of Clusters"
 #     cpswitch_c_active: False

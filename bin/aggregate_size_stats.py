@@ -43,6 +43,8 @@ def main():
         header = None,
         names = ['size', 'count']
     )
+    # need to transform like this since spritefridge outputs number of clusters
+    stats['count'] = stats['count'] * stats['size']
     stats['bins'] = pd.cut(
         stats['size'],
         bins = bins,

@@ -7,6 +7,6 @@
 # pconfig:
 #     id: "alignment_dedup_plot"
 #     title: "Deduplication Stats"
-#     xlab: "# Reads"
+#     ylab: "# Reads"
 #     cpswitch_counts_label: "Number of Reads"
 #     cpswitch_c_active: False
