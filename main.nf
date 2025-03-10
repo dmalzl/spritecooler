@@ -1,7 +1,7 @@
 nextflow.enable.dsl = 2
 
 params.help     = false
-params.version  = 'v2.0.1'
+params.version  = 'v2.0.2'
 Main.initialise(workflow, params, log)
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

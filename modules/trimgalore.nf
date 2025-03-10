@@ -3,6 +3,7 @@ process TRIMGALORE {
     tag "$meta.id"
 
     conda "${workflow.projectDir}/conda/trimgalore.yml"
+    container "biocontainers/trim-galore:0.6.10--hdfd78af_1"
 
     input:
     tuple val(meta), path(reads)

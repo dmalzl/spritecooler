@@ -2,6 +2,8 @@ process SORT_BED {
 
     tag "$meta.id"
 
+    container "centos:latest"
+
     input:
     tuple val(meta), path(bed)
 

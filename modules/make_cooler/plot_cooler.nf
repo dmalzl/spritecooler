@@ -2,7 +2,8 @@ process PLOT_COOLER {
 
     tag "$meta.id"
 
-    conda "${workflow.projectDir}/conda/coolplotter.yml"
+    conda "${workflow.projectDir}/conda/coolplotter/environment.yml"
+    container "dmalzl/coolplotter:1.0.0"
 
     input:
     tuple val(meta), path(mcool)

@@ -2,6 +2,8 @@
 process GUNZIP {
     tag "${archive}"
 
+    container "centos:latest"
+
     input:
     file(archive)
 

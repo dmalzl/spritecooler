@@ -2,7 +2,8 @@ process BOWTIE2_ALIGN {
 
     tag "$meta.id"
 
-    conda "${workflow.projectDir}/conda/bowtie2.yml"
+    conda "${workflow.projectDir}/conda/bowtie2/envrionment.yml"
+    container "dmalzl/bowtie2:2.5.4"
 
     input:
     tuple val(meta), val(readtype), path(reads)

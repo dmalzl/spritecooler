@@ -3,6 +3,7 @@ process FASTQC {
     tag "$meta.id"
 
     conda "bioconda::fastqc=0.12.1"
+    container "biocontainers/fastqc:0.12.1--hdfd78af_0"
 
     input:
     tuple val(meta), val(suffix), path(reads)

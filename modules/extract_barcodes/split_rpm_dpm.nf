@@ -2,8 +2,6 @@ process SPLIT_RPM_DPM {
 
     tag "$meta.id"
 
-    conda "${workflow.projectDir}/conda/spritefridge.yml"
-
     input:
     tuple val(meta), path(reads)
     val(keepSplitTag)

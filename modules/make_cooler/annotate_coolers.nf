@@ -2,7 +2,8 @@ process ANNOTATE_COOLERS {
 
     tag "$meta.id"
 
-    conda "${workflow.projectDir}/conda/spritefridge.yml"
+    conda "${workflow.projectDir}/conda/spritefridge/environment.yml"
+    container "dmalzl/spritefridge:1.4.0"
 
     input:
     tuple val(meta), path(mcool), path(bed)
