@@ -3,7 +3,7 @@ process XML_TO_TSV {
       tag "xml2tsv"
 
       conda "${workflow.projectDir}/conda/spritefridge.yml"
-      container "dmalzl/spritefridge:1.4.0"
+      container "docker.io/dmalzl/spritefridge:1.4.0"
 
       input:
       file(chromSizeXML)

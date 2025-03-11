@@ -5,7 +5,7 @@ process BOWTIE2_BUILD_INDEX {
     time = { genomeSizeType == 'large' ? 8.h * task.attempt : 4.h * task.attempt }
 
     conda "${workflow.projectDir}/conda/bowtie2/envrionment.yml"
-    container "dmalzl/bowtie2:2.5.4"
+    container "docker.io/dmalzl/bowtie2:2.5.4"
 
     input:
     file(genomeFasta)
