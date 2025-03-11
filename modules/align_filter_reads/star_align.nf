@@ -2,7 +2,7 @@ process STAR_ALIGN {
     tag "$meta.id"
 
     conda "${workflow.projectDir}/conda/star.yml"
-    container 'nf-core/htslib_samtools_star_gawk:311d422a50e6d829'
+    container "quay.io/nf-core/htslib_samtools_star_gawk:311d422a50e6d829"
 
     input:
     tuple val(meta), val(readtype), path(reads, stageAs: "input*/*")

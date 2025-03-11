@@ -2,7 +2,7 @@ process STAR_GENOMEGENERATE {
     tag "$star_base"
 
     conda "${workflow.projectDir}/star.yml"
-    container 'nf-core/htslib_samtools_star_gawk:311d422a50e6d829'
+    container "quay.io/nf-core/htslib_samtools_star_gawk:311d422a50e6d829"
 
     input:
     path(genomeFasta)

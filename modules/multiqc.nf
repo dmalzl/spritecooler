@@ -2,7 +2,7 @@ process MULTIQC {
     tag 'multiqc'
 
     conda "${workflow.projectDir}/conda/multiqc.yml"
-    container "biocontainers/multiqc:1.27.1--pyhdfd78af_0"
+    container "quay.io/biocontainers/multiqc:1.27.1--pyhdfd78af_0"
 
     input:
     path multiqc_config
