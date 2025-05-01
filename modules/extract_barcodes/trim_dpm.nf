@@ -3,7 +3,7 @@ process TRIM_DPM {
     tag "$meta.id"
 
     conda "${workflow.projectDir}/conda/cutadapt.yml"
-    container "biocontainers/cutadapt:5.0--py311haab0aaa_0"
+    container "quay.io/biocontainers/cutadapt:5.0--py311haab0aaa_0"
 
     input:
     tuple val(meta), path(reads)
