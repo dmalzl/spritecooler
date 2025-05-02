@@ -2,7 +2,7 @@
 process GUNZIP {
     tag "${archive}"
 
-    container "docker.io/centos:latest"
+    container "docker.io/centos:centos7"
 
     input:
     file(archive)

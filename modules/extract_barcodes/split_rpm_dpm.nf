@@ -2,7 +2,7 @@ process SPLIT_RPM_DPM {
 
     tag "$meta.id"
 
-    container "docker.io/centos:latest"
+    container "docker.io/centos:centos7"
 
     input:
     tuple val(meta), path(reads)
