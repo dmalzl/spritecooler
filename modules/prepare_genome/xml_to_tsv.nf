@@ -13,6 +13,7 @@ process XML_TO_TSV {
 
       script:
       """
-      xml2tsv.py ${chromSizeXML} chromSizes.tsv
+      xml2tsv.py ${chromSizeXML} tmp_chromsizes.tsv
+      sort -V -k1,1 tmp_chromsizes.tsv > chromSizes.tsv
       """
 }
