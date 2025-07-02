@@ -10,7 +10,7 @@ def filter_add_readtype_and_count(ch, readtype) {
         .map { 
             meta, fastq ->
             meta.count = fastq.countFastq()
-            meta.size = Math.max(meta.count.intdiv(300000000), 1)
+            meta.size = Math.max(meta.count.intdiv(200000000), 1)
             [ meta, readtype, fastq ]
         }
         .filter { meta, rtype, fastq -> meta.count > 0 } 
