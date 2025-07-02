@@ -5,13 +5,15 @@ include { TRIM_DPM as TRIM_RPM_DPM  } from '../modules/extract_barcodes/trim_dpm
 include { FASTQC                    } from '../modules/fastqc.nf'
 
 
-def add_readtype_and_filter(ch, readtype) {
+def filter_add_readtype_and_count(ch, readtype) {
     def ch_return = ch
-        .filter { meta, fastq -> fastq.countFastq() > 0 } 
         .map { 
-            meta, fastq -> 
+            meta, fastq ->
+            meta.count = fastq.countFastq()
+            meta.size = Math.max(meta.count.intdiv(300000000), 1)
             [ meta, readtype, fastq ]
         }
+        .filter { meta, readtype, fastq -> meta.count > 0 } 
 
     return ch_return
 }
@@ -61,12 +63,12 @@ workflow EXTRACT_BARCODES {
 
         ch_split_stats = SPLIT_RPM_DPM.out.stats
 
-        ch_rpm_fastq = add_readtype_and_filter ( 
+        ch_rpm_fastq = filter_add_readtype_and_count ( 
             SPLIT_RPM_DPM.out.rpm,
             'rpm'
         )
 
-        ch_dpm_fastq = add_readtype_and_filter (
+        ch_dpm_fastq = filter_add_readtype_and_count (
             SPLIT_RPM_DPM.out.dpm,
             'dpm'
         )
@@ -75,7 +77,7 @@ workflow EXTRACT_BARCODES {
 
         ch_split_stats  = Channel.empty()
         ch_rpm_fastq    = Channel.empty()
-        ch_dpm_fastq    = add_readtype_and_filter (
+        ch_dpm_fastq    = filter_add_readtype_and_count (
             TRIM_RPM_DPM.out.reads,
             'dpm'
         )
