@@ -13,7 +13,7 @@ def filter_add_readtype_and_count(ch, readtype) {
             meta.size = Math.max(meta.count.intdiv(300000000), 1)
             [ meta, readtype, fastq ]
         }
-        .filter { meta, readtype, fastq -> meta.count > 0 } 
+        .filter { meta, rtype, fastq -> meta.count > 0 } 
 
     return ch_return
 }
