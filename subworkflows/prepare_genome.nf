@@ -34,7 +34,7 @@ workflow PREPARE_GENOME {
     if ("star" in prepare_genome_for_tools) {
         ch_star_index = STAR_GENOMEGENERATE (
             ch_fasta,
-            dynamic_params.gtf
+            file( dynamic_params.gtf )
         )
 
     } else {

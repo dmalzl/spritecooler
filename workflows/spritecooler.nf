@@ -49,13 +49,16 @@ def prepare_genome_for_tools = []
 // if we do not have --genome
 if ( !params.genome ) {
 
-    if ( !params.gtf ) {
+    if ( params.splitTag && !params.gtf ) {
         log.error "--genome not specified and no GTF given, which is needed for STAR. Exiting!"
         System.exit(1)
     }
     if ( params.fasta ) {
         prepare_genome_for_tools << "bowtie2"
-        prepare_genome_for_tools << "star"
+        
+        if ( params.splitTag ) {
+            prepare_genome_for_tools << "star"
+        }
 
     } else {
         log.error "Neither --genome nor --fasta are specified but needed for Bowtie2/STAR index. Exiting!"

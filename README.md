@@ -40,22 +40,22 @@ EVEN    Even2Bo6        TATCAATGATGGTGC
 EVEN    Even2Bo3        CCTCACGTCTAGGCG
 ```
 
-Either one of the layouts can be left out to enable barcode extraction of only one read. Although note that extracted barcodes will always be appended to the read name of read1 and read2 will always be discarded. So to process the original RNA-DNA SPRITE-seq data from [Quinodoz et al.](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE114242) a typical pipeline command would look like the following:
+Either one of the layouts can be left out to enable barcode extraction of only one read. Although note that extracted barcodes will always be appended to the read name of read1 and read2 will always be discarded. So to process the original RNA-DNA SPRITE-seq data from [Quinodoz et al.](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE114242) a typical pipeline command for processing DNA-DNA contacts (which is the default) would look like the following:
 ```bash
 nextflow run dmalzl/spritecooler \
         --samples samples.csv \
         --barcodes barcodes.tsv \
-        --splitTag DPM \
         --r1Layout DPM \
         --r2Layout 'Y|SPACER|ODD|SPACER|EVEN|SPACER|ODD' \
         --mismatch 'DPM:0,Y:0,EVEN:2,ODD:2' \
         --genome GRCm38 \
 ```
 
-The `--splitTag` parameter tells the pipeline which of the barcode categories to use for splitting the reads into RNA and DNA sequences which are then aligned separately. In this mode the default is to remove the barcodes upon which the data is split from the barcode sequence of each read. If this is not the desired behaviour you can tell the pipeline to keep the tag barcodes by specifying `--keepSplitTag true`.
+If it is desired to also process DNA-RNA consider adding the `--splitTag` parameter (see below). This tells the pipeline which of the barcode categories to use for splitting the reads into RNA and DNA sequences which are then aligned separately. In this mode the default is to remove the barcodes upon which the data is split from the barcode sequence of each read. If this is not the desired behaviour you can tell the pipeline to keep the tag barcodes by specifying `--keepSplitTag true`.
 
-**Note that the above commands will only work if you have a local mirror of the used [iGenomes](https://ewels.github.io/AWS-iGenomes/) genome you specified. Otherwise you will need to supply all files necessary to generate the STAR and Bowtie2 indexes via `--fasta`, `--chromSizes` and `--gtf`. If `--blacklist` is not supplied the blacklist filtering step will simply be skipped. The following command shows an example of how to use a custom genome file**
+**Note that the above commands will only work if you have a local mirror of the used [iGenomes](https://ewels.github.io/AWS-iGenomes/) genome you specified. Otherwise you will need to supply all files necessary to generate at least the Bowtie2 index via `--fasta`, `--chromSizes`, `--gtf` is only necessary if RNA-DNA contacts are also to be analysed which will need a STAR index. If `--blacklist` is not supplied the blacklist filtering step will simply be skipped. The following command shows an example of how to use a custom genome file**
 ```bash
+# only DNA-DNA contacts
 nextflow run dmalzl/spritecooler \
         --samples samples.csv \
         --barcodes barcodes.tsv \
@@ -63,9 +63,20 @@ nextflow run dmalzl/spritecooler \
         --r2Layout 'Y|SPACER|ODD|SPACER|EVEN|SPACER|ODD' \
         --mismatch 'DPM:0,Y:0,EVEN:2,ODD:2' \
         --fasta genome.fa \
+        --chromSizes chrom_sizes.tsv \
+```
+```bash
+# only DNA-RNA contacts
+nextflow run dmalzl/spritecooler \
+        --samples samples.csv \
+        --barcodes barcodes.tsv \
+        --splitTag DPM \
+        --r1Layout DPM \
+        --r2Layout 'Y|SPACER|ODD|SPACER|EVEN|SPACER|ODD' \
+        --mismatch 'DPM:0,Y:0,EVEN:2,ODD:2' \
+        --fasta genome.fa \
         --gtf genes.gtf \
         --chromSizes chrom_sizes.tsv \
-        [--blacklist genome_blacklist.bed]
 ```
 
 ## Steps
@@ -92,7 +103,7 @@ for bc_category, min_bc_len, max_bc_len, allowed_mismatches in layout:
 3. *Trimming DPM/RPM remnants*
 The given DPM/RPM barcodes are converted to FASTA format and used with `cutadapt` to remove any 3' DPM contamination from the raw reads after which another `fastqc` run is executed.
 4. *Splitting reads into DNA/RNA containing reads*
-After trimming barcode remnants the reads are split into two files one containing DPM (i.e. DNA) reads and the other containing RPM (i.e. RNA) reads which are aligned separately.
+After trimming barcode remnants the reads are split into two files one containing DPM (i.e. DNA) reads and the other containing RPM (i.e. RNA) reads which are aligned separately. This only happens if `--splitTag` is supplied.
 5. *Alignment and filtering*
 After quality control and barcode extraction and splitting, the genomic sequence / RNA containing reads are aligned to the reference genome using either Bowtie2 (DNA) or STAR (RNA). The produced alignments are then filtered such that (i) only primary alignments with a mapping quality higher then the set `--minq` and (ii) only alignments outside of the blacklisted regions (see `--blacklist`) are retained
 6. *Identifying clusters and making pairs files*
@@ -142,7 +153,7 @@ barcode layout of read2 of the form barcodecategories delimited with '|'. Note t
 ```
             
 #### `--splitTag`
-Barcode category to use for splitting the sequence data into RNA and DNA sequences. This assumes that the barcode names in the barcode file start with `RPM` in case of RNA containing sequences and `DPM` in case of DNA containing sequences. Please make sure your barcode names comply to this. If not set, the pipeline will assume that only DNA containing sequences are to be processed and will skip the splitting and separate alignment of RNA containing sequences.
+Optional. Sets the barcode category to use for splitting the sequence data into RNA and DNA sequences. This assumes that the barcode names in the barcode file start with `RPM` in case of RNA containing sequences and `DPM` in case of DNA containing sequences. Please make sure your barcode names comply to this. If not set, the pipeline will assume that only DNA containing sequences are to be processed and will skip the splitting and separate alignment of RNA containing sequences.
 
 #### `--mismatch` 
 specifies the number of mismatches to allow for each barcode category has to be given as a comma-separated list of colon-separated category:nmismatch values
@@ -178,7 +189,7 @@ A tab-separated file containing chromosome names and their sizes
 BED file to use for filtering reads from problematic regions. will override igenomes
 
 #### `--gtf`
-GTF file containing gene annotation. will override igenomes
+GTF file containing gene annotation. will override igenomes. Optional if `--splitTag` is not supplied otherwise mandatory.
 
 #### `--savePairs`
 whether to write pairs files to results. set to `--savePairs true` in case you want the pairs files (default: false)
