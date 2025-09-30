@@ -84,7 +84,7 @@ class SpriteCooler {
         log.info ""
         log.info "++++++++++++++++++++++++++++++++"
         log.info "+                              +"
-        log.info "+      SPRITECOOLER ${params.version}     +"
+        log.info "+      SPRITECOOLER ${params.version}      +"
         log.info "+                              +"
         log.info "++++++++++++++++++++++++++++++++"
         log.info ""
