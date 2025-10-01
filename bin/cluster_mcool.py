@@ -6,15 +6,8 @@ import re
 
 import argparse as ap
 
-# needs to be fixed in spritefridge in the future
-# from spritefridge.combine.ioutils import clustersize_from_filename
+from spritefridge.combine.ioutils import clustersize_from_filename
 from cooler import fileops
-
-
-cs_regex = re.compile('_(?P<cs>[0-9]+)_base')
-def clustersize_from_filename(filename):
-    m = cs_regex.search(filename)
-    return int(m.group('cs'))
 
 
 def parse_args():

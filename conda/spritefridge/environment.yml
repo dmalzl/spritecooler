@@ -13,4 +13,4 @@ dependencies:
   - pybedtools=0.10.0
   - gxx
   - pip:
-      - spritefridge==1.4.0
+      - spritefridge==1.4.1
