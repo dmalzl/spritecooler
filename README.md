@@ -29,7 +29,7 @@ SPRITE01,r1,SRR7216005_1.fq.gz,SRR7216005_2.fq.gz
 SPRITE01,r2,SRR7216006_1.fq.gz,SRR7216006_2.fq.gz
 SPRITE02,r1,SRR7216007_1.fq.gz,SRR7216007_2.fq.gz
 ```
-The `sample` and `replicate` columns determine the data groupings during the processing. Specifically, all data with same sample and replicate will be concatenated before going through the different processing stages. Data with same sample but different replicate will be merged after generating the base matrix. Irrespective of these mergings the pipeline will also output results for each replicate up to generating the base matrix.
+The `sample` and `replicate` columns determine the data groupings during the processing. Specifically, all data with same sample and replicate will be concatenated before going through the different processing stages. Data with same sample but different replicate will be merged after generating the base matrix. Irrespective of these mergings the pipeline will also output results for each replicate up to generating the base matrix. **please make sure that replicate is not just a number like 1 or 2 if you'd like to have entries for each replicate in the MULTIQC report. This is due to a clash of filenames with the filename cleaning mechanism of MULTIQC I could not find a solution for. prepending any character to the replicate will prevent this**
 
 The `barcodes.tsv` is a tab-separated file containing information about the barcodes to extract like barcode category, barcode name and barcode sequence
 ```
