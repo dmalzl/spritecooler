@@ -12,7 +12,7 @@ def reduce_meta(meta_list) {
         meta -> countsum = countsum + meta.count
     }
     def meta_new = [:]
-    meta_new.id = meta_list[1].id
+    meta_new.id = meta_list[1].sample
     meta_new.sample = meta_list[1].sample
     meta_new.count = countsum
     meta_new.size = Math.max(meta_new.count.intdiv(200000000), 1)
