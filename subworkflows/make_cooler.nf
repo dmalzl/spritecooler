@@ -6,6 +6,19 @@ include { PLOT_COOLER             } from '../modules/make_cooler/plot_cooler.nf'
 include { ANNOTATE_COOLERS        } from '../modules/make_cooler/annotate_coolers.nf'
 include { BALANCE_MCOOL           } from '../modules/make_cooler/balance_mcool.nf'
 
+def reduce_meta(meta_list) {
+    def countsum = 0
+    meta_list.each {
+        meta -> countsum = countsum + meta.count
+    }
+    def meta_new = [:]
+    meta_new.id = meta_list[1].id
+    meta_new.sample = meta_list[1].sample
+    meta_new.count = countsum
+    meta_new.size = Math.max(meta_new.count.intdiv(200000000), 1)
+    return meta_new
+}
+
 workflow MAKE_COOLER {
     take:
     ch_chunked_pairs
@@ -41,15 +54,15 @@ workflow MAKE_COOLER {
             meta_new = [:]
             meta_new.id = meta.sample
             meta_new.sample = meta.sample
-            [ meta_new, cool ]
+            [ meta_new, meta, cool ]
         }
         .groupTuple ( by: [0] )
         .branch {
-            meta, cools ->
+            meta_new, meta, cools ->
                 single  : cools.size() == 1
-                    return [ meta, cools.flatten() ]
+                    return [ meta.flatten(), cools.flatten() ]
                 multiple: cools.size() > 1
-                    return [ meta, cools.flatten() ]
+                    return [ reduce_meta(meta), cools.flatten() ]
         }
         .set { ch_branched_cools }
 
