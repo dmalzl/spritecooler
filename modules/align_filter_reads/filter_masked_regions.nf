@@ -3,7 +3,7 @@ process FILTER_MASKED_REGIONS {
     tag "$meta.id"
 
     conda "${workflow.projectDir}/conda/spritefridge/environment.yml"
-    container "docker.io/dmalzl/spritefridge:1.4.1"
+    container "docker.io/dmalzl/spritefridge:1.4.2"
 
     input:
     tuple val(meta), val(readtype), path(bam)
