@@ -2,7 +2,7 @@ process CAT_FASTQ {
     
     tag "$meta.id"
 
-    container "docker.io/centos:7"
+    container "docker.io/centos:8"
 
     input:
     tuple val(meta), path(reads, name: "input*/*")

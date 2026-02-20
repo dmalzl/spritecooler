@@ -6,7 +6,7 @@ RUN conda env create -f environment.yml && \
     conda clean -afy
 
 
-FROM centos:7
+FROM centos:8
 
 COPY --from=conda /opt/conda/envs/coolplotter /opt/conda/envs/coolplotter
 
