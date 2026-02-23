@@ -73,7 +73,7 @@ workflow MAKE_COOLER {
         .set { ch_single_filtered }
 
     MERGE_REPLICATE_COOLERS.out.cool
-        .mix ( MERGE_CLUSTER_COOLERS.out.cool, ch_single_filtered )
+        .mix ( ch_single_filtered )
         .set { ch_base_cool }
 
     ZOOMIFY_COOLER (
