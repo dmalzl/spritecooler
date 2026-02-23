@@ -68,12 +68,12 @@ workflow MAKE_COOLER {
 
     MERGE_REPLICATE_COOLERS ( ch_branched_cools.multiple )
 
-    ch_branched_cools.single
-        .filter { meta, cool -> meta.id != meta.sample } // filter pseudo merged in case single replicate
-        .set { ch_single_filtered }
+    // ch_branched_cools.single
+    //     .filter { meta, cool -> meta.id != meta.sample } // filter pseudo merged in case single replicate
+    //     .set { ch_single_filtered }
 
     MERGE_REPLICATE_COOLERS.out.cool
-        .mix ( ch_single_filtered )
+        .mix ( MERGE_CLUSTER_COOLERS.out.cool )
         .set { ch_base_cool }
 
     ZOOMIFY_COOLER (
